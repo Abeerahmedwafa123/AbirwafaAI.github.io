@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Session 8 – Pixar Character Prompt Builder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #1f3b64 0%, #020617 40%, #020617 100%);
+      color: #0f172a;
+      padding: 20px;
+    }
+
+    .page-wrapper {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: linear-gradient(135deg, #f9fafb 0%, #e5e7eb 50%, #f9fafb 100%);
+      border-radius: 18px;
+      box-shadow: 0 22px 45px rgba(15, 23, 42, 0.45);
+      padding: 22px 26px 26px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .logo-title {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .logo-title img {
+      height: 60px;
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 8px rgba(15, 23, 42, 0.35));
+    }
+
+    .titles {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .titles h1 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .titles p {
+      font-size: 0.9rem;
+      color: #4b5563;
+    }
+
+    .session-pill {
+      padding: 6px 16px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #1d4ed8, #38bdf8);
+      color: white;
+      font-size: 0.9rem;
+      font-weight: 600;
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.5);
+      white-space: nowrap;
+    }
+
+    .controls-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
+      justify-content: flex-end;
+    }
+
+    button {
+      cursor: pointer;
+      border: none;
+      border-radius: 999px;
+      padding: 8px 18px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.2s ease;
+    }
+
+    button.primary {
+      background: linear-gradient(135deg, #1d4ed8, #38bdf8);
+      color: #f9fafb;
+      box-shadow: 0 10px 20px rgba(37, 99, 235, 0.45);
+    }
+
+    button.primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 28px rgba(37, 99, 235, 0.6);
+    }
+
+    button.secondary {
+      background: #e5e7eb;
+      color: #111827;
+      box-shadow: 0 6px 12px rgba(15, 23, 42, 0.15);
+    }
+
+    button.secondary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.25);
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.1fr);
+      gap: 20px;
+    }
+
+    @media (max-width: 900px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .controls-row {
+        justify-content: flex-start;
+      }
+    }
+
+    .section-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-title span.icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #1d4ed8, #38bdf8);
+      color: #eff6ff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      box-shadow: 0 6px 14px rgba(37, 99, 235, 0.5);
+    }
+
+    .hint {
+      font-size: 0.82rem;
+      color: #6b7280;
+      margin-bottom: 10px;
+    }
+
+    .panel {
+      border-radius: 14px;
+      background: radial-gradient(circle at top left, rgba(255,255,255,0.9), rgba(226,232,240,0.9));
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      padding: 12px 14px;
+      margin-bottom: 10px;
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    @media (max-width: 700px) {
+      .field-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    select,
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 7px 9px;
+      border-radius: 10px;
+      border: 1px solid #cbd5f5;
+      font-size: 0.85rem;
+      background: rgba(255, 255, 255, 0.95);
+      outline: none;
+      transition: border 0.15s ease, box-shadow 0.15s ease, background 0.15s;
+    }
+
+    select:focus,
+    input[type="text"]:focus,
+    textarea:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 2px rgba(37,99,235,0.25);
+      background: #ffffff;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 140px;
+    }
+
+    .camera-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    @media (max-width: 900px) {
+      .camera-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .camera-card {
+      background: linear-gradient(135deg, #e0ecff, #eef2ff);
+      border-radius: 12px;
+      padding: 8px 10px;
+      border: 1px solid rgba(129, 140, 248, 0.6);
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      cursor: pointer;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, border 0.12s ease;
+    }
+
+    .camera-card:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 18px rgba(79, 70, 229, 0.25);
+      border-color: #4f46e5;
+    }
+
+    .camera-card input[type="radio"] {
+      margin-top: 3px;
+      cursor: pointer;
+    }
+
+    .camera-text {
+      font-size: 0.8rem;
+    }
+
+    .camera-text .label {
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 2px;
+    }
+
+    .camera-text .desc {
+      color: #4b5563;
+      font-size: 0.78rem;
+      line-height: 1.3;
+    }
+
+    .output-card {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      background: radial-gradient(circle at top right, rgba(191, 219, 254, 0.9), rgba(248, 250, 252, 0.95));
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      padding: 14px;
+    }
+
+    .output-card h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 6px;
+    }
+
+    .output-hint {
+      font-size: 0.8rem;
+      color: #6b7280;
+      margin-bottom: 8px;
+    }
+
+    .output-area {
+      flex: 1;
+      margin-bottom: 10px;
+    }
+
+    .output-area textarea {
+      height: 100%;
+      min-height: 220px;
+      font-family: "JetBrains Mono", "Consolas", "Courier New", monospace;
+      font-size: 0.8rem;
+      line-height: 1.45;
+      background: rgba(15,23,42,0.98);
+      color: #e5e7eb;
+      border-radius: 10px;
+      border: 1px solid rgba(15,23,42,0.8);
+      padding: 10px;
+      white-space: pre;
+    }
+
+    .copy-info {
+      font-size: 0.78rem;
+      color: #6b7280;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrapper">
+    <div class="card">
+      <header>
+        <div class="logo-title">
+          <img src="https://github.com/Abeerahmedwafa123/Mental-Math-/raw/main/Edu%20Logo%20White.png" alt="Edulixa Logo" />
+          <div class="titles">
+            <h1 id="title-main">Session 8 – Pixar Character Prompt Builder</h1>
+            <p id="subtitle">Help your students choose their character details and auto-generate a professional AI image prompt.</p>
+          </div>
+        </div>
+        <div class="session-pill" id="session-pill">SESSION 8</div>
+      </header>
+
+      <div class="controls-row">
+        <button class="secondary" id="translateBtn" onclick="translateToArabic()">
+          🌍 Translate to Arabic
+        </button>
+        <button class="primary" onclick="generatePrompt()">
+          ✨ Generate Prompt
+        </button>
+      </div>
+
+      <main>
+        <!-- LEFT SIDE: FORM -->
+        <section>
+          <!-- Basics -->
+          <div class="panel">
+            <div class="section-title">
+              <span class="icon">1</span>
+              <span id="basics-title">Character Basics</span>
+            </div>
+            <p class="hint" id="basics-hint">
+              Choose the foundation of your character: name, age, gender, and what kind of being they are.
+            </p>
+            <div class="field-grid">
+              <div>
+                <label for="name" id="label-name">Character Name</label>
+                <input type="text" id="name" placeholder="Lila, Zayn, Noor..." />
+              </div>
+              <div>
+                <label for="gender" id="label-gender">Gender / Identity</label>
+                <select id="gender">
+                  <option value="">-- Select --</option>
+                  <option>Girl</option>
+                  <option>Boy</option>
+                  <option>Magical shapeshifter</option>
+                  <option>Non-binary</option>
+                  <option>Custom</option>
+                </select>
+              </div>
+              <div>
+                <label for="age" id="label-age">Age Range</label>
+                <select id="age">
+                  <option value="">-- Select --</option>
+                  <option>5–6 (early childhood)</option>
+                  <option>7–9 (primary school)</option>
+                  <option>10–12 (preteens)</option>
+                  <option>13–16 (teens)</option>
+                  <option>Adult mentor</option>
+                  <option>Custom</option>
+                </select>
+              </div>
+              <div>
+                <label for="species" id="label-species">Species</label>
+                <select id="species">
+                  <option value="">-- Select --</option>
+                  <option>Human</option>
+                  <option>Talking animal</option>
+                  <option>Robot</option>
+                  <option>Magical creature</option>
+                  <option>Cartoon alien</option>
+                  <option>Custom</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Appearance -->
+          <div class="panel">
+            <div class="section-title">
+              <span class="icon">2</span>
+              <span id="appearance-title">Physical Appearance</span>
+            </div>
+            <p class="hint" id="appearance-hint">
+              Decide how your character looks: face, skin, hair, body shape, and outfit colors.
+            </p>
+            <div class="field-grid">
+              <div>
+                <label for="face" id="label-face">Facial Features</label>
+                <select id="face">
+                  <option value="">-- Select --</option>
+                  <option>Big round eyes and wide smile</option>
+                  <option>Almond-shaped eyes and dimples</option>
+                  <option>Freckles and chubby cheeks</option>
+                  <option>Serious eyebrows and soft features</option>
+                  <option>Custom</option>
+                </select>
+              </div>
+              <div>
+                <label for="skin" id="label-skin">Skin / Tone</label>
+                <select id="skin">
+                  <option value="">-- Select --</option>
+                  <option>Fair</option>
+                  <option>Olive</option>
+                  <option>Brown</option>
+                  <option>Dark brown</option>
+                  <option>Fantasy color (blue, purple, etc.)</option>
+                  <option>Custom</option>
+                </select>
+              </div>
+              <div>
+                <label for="hair" id="label-hair">Hair or Headgear</label>
+                <select id="hair">
+                  <option value="">-- Select --</option>
+                  <option>Curly hair with headband</option>
+                  <option>Short spiky hair</option>
+                  <option>Long straight hair</option>
+                  <option>Hijab</option>
+                  <option>Wizard hat or helmet</option>
+                  <option>Bald with glasses</option>
+                  <option>Custom</option>
+                </select>
+              </div>
+              <div>
+                <label for="bodyShape" id="label-body">Body Shape</label>
+                <select id="bodyShape">
+                  <option value="">-- Select --</option>
+                  <option>Short and round</option>
+                  <option>Slim and tall</option>
+                  <option>Chubby and cute</option>
+                  <option>Average with exaggerated hands/feet</option>
+                  <option>Tiny with a big head</option>
+                  <option>Custom</option>
+                </select>
+              </div>
+              <div>
+                <label for="outfit" id="label-outfit">Signature Outfit & Colors</label>
+                <input type="text" id="outfit" placeholder="Blue overalls and red sneakers, cape and glowing gloves..." />
+              </div>
+              <div>
+                <label for="styleExtras" id="label-styleextras">Extra Style Details (optional)</label>
+                <input type="text" id="styleExtras" placeholder="Soft lighting, vibrant colors, cute expression..." />
+              </div>
+            </div>
+          </div>
+
+          <!-- Personality & Role -->
+          <div class="panel">
+            <div class="section-title">
+              <span class="icon">3</span>
+              <span id="personality-title">Personality & Role</span>
+            </div>
+            <p class="hint" id="personality-hint">
+              Who are they inside the story? Choose their personality, role, and dream.
+            </p>
+            <div class="field-grid">
+              <div>
+                <label for="personality" id="label-personality">Personality Style</label>
+                <select id="personality">
+                  <option value="">-- Select --</option>
+                  <option>Brave and curious</option>
+                  <option>Shy and thoughtful</option>
+                  <option>Silly and playful</option>
+                  <option>Clever and confident</option>
+                  <option>Kind and nurturing</option>
+                  <option>Custom</option>
+                </select>
+              </div>
+              <div>
+                <label for="trait" id="label-trait">Special Trait or Quirk</label>
+                <select id="trait">
+                  <option value="">-- Select --</option>
+                  <option>Glowing backpack</option>
+                  <option>Magic pencil</option>
+                  <option>Stutters when excited</option>
+                  <option>Talks to animals</option>
+                  <option>Makes funny sound effects</option>
+                  <option>Custom</option>
+                </select>
+              </div>
+              <div>
+                <label for="role" id="label-role">Character’s Role</label>
+                <select id="role">
+                  <option value="">-- Select --</option>
+                  <option>Hero on a mission</option>
+                  <option>Funny sidekick</option>
+                  <option>Wise mentor</option>
+                  <option>Creative inventor</option>
+                  <option>Explorer or traveler</option>
+                  <option>Custom</option>
+                </select>
+              </div>
+              <div>
+                <label for="goal" id="label-goal">Goal or Dream</label>
+                <select id="goal">
+                  <option value="">-- Select --</option>
+                  <option>Become a famous explorer</option>
+                  <option>Help others learn</option>
+                  <option>Make peace between two worlds</option>
+                  <option>Save their village from danger</option>
+                  <option>Discover their hidden talent</option>
+                  <option>Custom</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- World & Story -->
+          <div class="panel">
+            <div class="section-title">
+              <span class="icon">4</span>
+              <span id="world-title">World & Story</span>
+            </div>
+            <p class="hint" id="world-hint">
+              Choose the world around your character and the main lesson or theme.
+            </p>
+            <div class="field-grid">
+              <div>
+                <label for="world" id="label-world">Where Do They Live?</label>
+                <select id="world">
+                  <option value="">-- Select --</option>
+                  <option>Modern city</option>
+                  <option>Magical forest</option>
+                  <option>Outer space</option>
+                  <option>Floating school island</option>
+                  <option>Desert village</option>
+                  <option>Custom</option>
+                </select>
+              </div>
+              <div>
+                <label for="theme" id="label-theme">Story Theme or Lesson</label>
+                <select id="theme">
+                  <option value="">-- Select --</option>
+                  <option>Kindness and empathy</option>
+                  <option>Teamwork and leadership</option>
+                  <option>Facing fears bravely</option>
+                  <option>Honesty and being yourself</option>
+                  <option>Curiosity and learning</option>
+                  <option>Custom</option>
+                </select>
+              </div>
+              <div>
+                <label for="culture" id="label-culture">Cultural / Language Representation</label>
+                <select id="culture">
+                  <option value="">-- Select --</option>
+                  <option>Arabic speaker with local outfit</option>
+                  <option>Multicultural style</option>
+                  <option>Inspired by Arab/Egyptian folklore</option>
+                  <option>Speaks many languages</option>
+                  <option>Custom</option>
+                </select>
+              </div>
+              <div>
+                <label for="background" id="label-background">Background Style (visual)</label>
+                <input type="text" id="background" placeholder="Teal gradient, magical forest, outer space..." />
+              </div>
+            </div>
+          </div>
+
+          <!-- Camera -->
+          <div class="panel">
+            <div class="section-title">
+              <span class="icon">5</span>
+              <span id="camera-title">Camera Shot & Angle</span>
+            </div>
+            <p class="hint" id="camera-hint">
+              The camera decides how we see the character. Choose the view that matches your story.
+            </p>
+            <div class="camera-grid">
+              <label class="camera-card">
+                <input type="radio" name="cameraShot" value="Wide Shot (full character and detailed background)" />
+                <div class="camera-text">
+                  <div class="label" id="camera-ws-label">Wide Shot (WS)</div>
+                  <div class="desc" id="camera-ws-desc">Shows the full character and the environment. Best for story settings.</div>
+                </div>
+              </label>
+              <label class="camera-card">
+                <input type="radio" name="cameraShot" value="Full Body Shot (head to toe, focus on pose and outfit)" />
+                <div class="camera-text">
+                  <div class="label" id="camera-fs-label">Full Body Shot (FS)</div>
+                  <div class="desc" id="camera-fs-desc">Head-to-toe view. Great for poses, outfits, and action stances.</div>
+                </div>
+              </label>
+              <label class="camera-card">
+                <input type="radio" name="cameraShot" value="Medium Shot (waist up, focus on action or dialogue)" />
+                <div class="camera-text">
+                  <div class="label" id="camera-ms-label">Medium Shot (MS)</div>
+                  <div class="desc" id="camera-ms-desc">Waist-up view. Perfect for dialogue and simple actions.</div>
+                </div>
+              </label>
+              <label class="camera-card">
+                <input type="radio" name="cameraShot" value="Close-Up (focus on face and emotions)" />
+                <div class="camera-text">
+                  <div class="label" id="camera-cu-label">Close-Up (CU)</div>
+                  <div class="desc" id="camera-cu-desc">Zooms in on the face to show strong emotions and expressions.</div>
+                </div>
+              </label>
+              <label class="camera-card">
+                <input type="radio" name="cameraShot" value="Extreme Close-Up (focus on one detail like the eyes or hands)" />
+                <div class="camera-text">
+                  <div class="label" id="camera-ecu-label">Extreme Close-Up (ECU)</div>
+                  <div class="desc" id="camera-ecu-desc">Focuses on a single detail (eye, hand, object) for dramatic effect.</div>
+                </div>
+              </label>
+              <label class="camera-card">
+                <input type="radio" name="cameraShot" value="Over-the-Shoulder Shot (from behind the character, showing what they see)" />
+                <div class="camera-text">
+                  <div class="label" id="camera-ots-label">Over-the-Shoulder (OTS)</div>
+                  <div class="desc" id="camera-ots-desc">We look from behind the character at what they’re seeing or doing.</div>
+                </div>
+              </label>
+              <label class="camera-card">
+                <input type="radio" name="cameraShot" value="Bird’s Eye View (looking down from above)" />
+                <div class="camera-text">
+                  <div class="label" id="camera-bird-label">Bird’s Eye View</div>
+                  <div class="desc" id="camera-bird-desc">The camera looks down from above. Great for crowds or maps.</div>
+                </div>
+              </label>
+              <label class="camera-card">
+                <input type="radio" name="cameraShot" value="Low Angle Shot (looking up at the character, heroic and powerful)" />
+                <div class="camera-text">
+                  <div class="label" id="camera-low-label">Low Angle</div>
+                  <div class="desc" id="camera-low-desc">Looks up at the character, making them appear strong or heroic.</div>
+                </div>
+              </label>
+              <label class="camera-card">
+                <input type="radio" name="cameraShot" value="Dutch Angle (tilted camera for magic or chaos)" />
+                <div class="camera-text">
+                  <div class="label" id="camera-dutch-label">Dutch Angle (Tilted)</div>
+                  <div class="desc" id="camera-dutch-desc">The camera is slightly tilted for magic, chaos, or intense moments.</div>
+                </div>
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <!-- RIGHT SIDE: OUTPUT -->
+        <section>
+          <div class="output-card">
+            <h2 id="output-title">Final Professional Prompt</h2>
+            <p class="output-hint" id="output-hint">
+              Click “Generate Prompt”, then copy this text and paste it into ChatGPT or your favorite image tool.
+            </p>
+            <div class="output-area">
+              <textarea id="promptOutput" readonly placeholder="Your Pixar-style character prompt will appear here..."></textarea>
+            </div>
+            <div style="display:flex; justify-content: space-between; align-items:center; gap:8px;">
+              <button class="primary" type="button" onclick="copyPrompt()">
+                📋 Copy Prompt
+              </button>
+              <p class="copy-info" id="copy-info">
+                Tip: You can still edit the text before copying if you want to customise it.
+              </p>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    function buildLine(label, value) {
+      if (!value || value.trim() === "") return "";
+      return label + ": " + value.trim() + "\\n";
+    }
+
+    function generatePrompt() {
+      const name = document.getElementById("name").value;
+      const gender = document.getElementById("gender").value;
+      const age = document.getElementById("age").value;
+      const species = document.getElementById("species").value;
+
+      const face = document.getElementById("face").value;
+      const skin = document.getElementById("skin").value;
+      const hair = document.getElementById("hair").value;
+      const bodyShape = document.getElementById("bodyShape").value;
+      const outfit = document.getElementById("outfit").value;
+      const styleExtras = document.getElementById("styleExtras").value;
+
+      const personality = document.getElementById("personality").value;
+      const trait = document.getElementById("trait").value;
+      const role = document.getElementById("role").value;
+      const goal = document.getElementById("goal").value;
+
+      const world = document.getElementById("world").value;
+      const theme = document.getElementById("theme").value;
+      const culture = document.getElementById("culture").value;
+      const background = document.getElementById("background").value;
+
+      const cameraRadio = document.querySelector('input[name="cameraShot"]:checked');
+      const cameraShot = cameraRadio ? cameraRadio.value : "";
+
+      let prompt = "Create a Pixar-style 3D character.\\n\\n";
+
+      prompt += buildLine("Name", name || "Custom character");
+      prompt += buildLine("Gender / Identity", gender);
+      prompt += buildLine("Age Range", age);
+      prompt += buildLine("Species", species);
+
+      prompt += "\\nAppearance:\\n";
+      prompt += buildLine("- Face", face);
+      prompt += buildLine("- Skin / Tone", skin);
+      prompt += buildLine("- Hair / Headgear", hair);
+      prompt += buildLine("- Body Shape", bodyShape);
+      prompt += buildLine("- Outfit & Colors", outfit);
+
+      if (styleExtras && styleExtras.trim() !== "") {
+        prompt += buildLine("- Extra Style Details", styleExtras);
+      }
+
+      prompt += "\\nPersonality & Role:\\n";
+      prompt += buildLine("- Personality Style", personality);
+      prompt += buildLine("- Special Trait or Quirk", trait);
+      prompt += buildLine("- Character’s Role", role);
+      prompt += buildLine("- Goal or Dream", goal);
+
+      prompt += "\\nWorld & Story:\\n";
+      prompt += buildLine("- Setting", world);
+      prompt += buildLine("- Story Theme or Lesson", theme);
+      prompt += buildLine("- Cultural / Language Representation", culture);
+
+      prompt += "\\nCamera & Background:\\n";
+      prompt += buildLine("- Camera Shot", cameraShot);
+      prompt += buildLine("- Background Style", background);
+
+      prompt += "\\nStyle: Pixar-style 3D, high-definition, soft lighting, clean render, no on-screen text.";
+
+      document.getElementById("promptOutput").value = prompt;
+    }
+
+    function copyPrompt() {
+      const textarea = document.getElementById("promptOutput");
+      textarea.select();
+      textarea.setSelectionRange(0, 99999);
+      navigator.clipboard.writeText(textarea.value).then(() => {
+        const info = document.getElementById("copy-info");
+        const oldText = info.textContent;
+        info.textContent = "Copied! Paste this into ChatGPT or your image generator.";
+        setTimeout(() => {
+          info.textContent = oldText;
+        }, 2500);
+      });
+    }
+
+    // One-way translation to Arabic for labels, hints, and titles
+    function translateToArabic() {
+      // Prevent double-translation
+      const btn = document.getElementById("translateBtn");
+      btn.disabled = true;
+      btn.textContent = "✅ تم الترجمة إلى العربية";
+
+      document.documentElement.lang = "ar";
+
+      // Titles
+      document.getElementById("title-main").textContent =
+        "الجلسة 8 – مُنشئ الأوامر لشخصية بيكسار";
+      document.getElementById("subtitle").textContent =
+        "ساعد طلابك على اختيار تفاصيل شخصيتهم وتجميع أمر احترافي لإنشاء الصورة بالذكاء الاصطناعي.";
+      document.getElementById("session-pill").textContent = "الجلسة 8";
+
+      // Basics
+      document.getElementById("basics-title").textContent = "الأساسيات – تعريف الشخصية";
+      document.getElementById("basics-hint").textContent =
+        "اختر الأساسيات: الاسم، العمر، الهوية، ونوع الكائن.";
+      document.getElementById("label-name").textContent = "اسم الشخصية";
+      document.getElementById("name").placeholder = "ليلى، زين، نور...";
+      document.getElementById("label-gender").textContent = "النوع / الهوية";
+      document.getElementById("label-age").textContent = "الفئة العمرية";
+      document.getElementById("label-species").textContent = "نوع الشخصية (بشر، حيوان، روبوت...)";
+
+      // Appearance
+      document.getElementById("appearance-title").textContent = "المظهر الخارجي";
+      document.getElementById("appearance-hint").textContent =
+        "حدّد شكل الشخصية: الوجه، لون البشرة، الشعر أو غطاء الرأس، شكل الجسم، والملابس.";
+      document.getElementById("label-face").textContent = "ملامح الوجه";
+      document.getElementById("label-skin").textContent = "البشرة / اللون";
+      document.getElementById("label-hair").textContent = "الشعر أو غطاء الرأس";
+      document.getElementById("label-body").textContent = "شكل الجسم";
+      document.getElementById("label-outfit").textContent = "الملابس والألوان المميّزة";
+      document.getElementById("outfit").placeholder =
+        "أفرول أزرق وحذاء رياضي أحمر، عباءة وقفازات مضيئة...";
+      document.getElementById("label-styleextras").textContent = "تفاصيل أسلوب إضافية (اختياري)";
+      document.getElementById("styleExtras").placeholder =
+        "إضاءة ناعمة، ألوان زاهية، تعبير لطيف...";
+
+      // Personality & Role
+      document.getElementById("personality-title").textContent = "الشخصية والدور في القصة";
+      document.getElementById("personality-hint").textContent =
+        "من هي الشخصية داخل القصة؟ اختر أسلوب شخصيتها، ودورها، وحلمها.";
+      document.getElementById("label-personality").textContent = "أسلوب الشخصية";
+      document.getElementById("label-trait").textContent = "ميزة خاصة أو تصرّف فريد";
+      document.getElementById("label-role").textContent = "دور الشخصية في القصة";
+      document.getElementById("label-goal").textContent = "الهدف أو الحلم";
+
+      // World & Story
+      document.getElementById("world-title").textContent = "العالم والقصة";
+      document.getElementById("world-hint").textContent =
+        "اختر العالم الذي تعيش فيه الشخصية والرسالة أو الدرس الأساسي.";
+      document.getElementById("label-world").textContent = "أين تعيش الشخصية؟";
+      document.getElementById("label-theme").textContent = "موضوع القصة أو الرسالة";
+      document.getElementById("label-culture").textContent = "الهوية الثقافية / اللغوية";
+      document.getElementById("label-background").textContent = "شكل الخلفية (بصريًا)";
+      document.getElementById("background").placeholder =
+        "تدرّج لوني بلون تركوازي، غابة سحرية، فضاء خارجي...";
+
+      // Camera section
+      document.getElementById("camera-title").textContent = "زاوية التصوير والكاميرا";
+      document.getElementById("camera-hint").textContent =
+        "زاوية الكاميرا تحدّد كيف نرى الشخصية. اختر اللقطة التي تناسب قصتك.";
+
+      document.getElementById("camera-ws-label").textContent = "لقطة واسعة (WS)";
+      document.getElementById("camera-ws-desc").textContent =
+        "تُظهر الشخصية بالكامل مع البيئة من حولها. مثالية لعرض مكان القصة.";
+
+      document.getElementById("camera-fs-label").textContent = "لقطة كاملة للجسم (FS)";
+      document.getElementById("camera-fs-desc").textContent =
+        "من الرأس إلى القدمين. ممتازة لوضعيات الجسم والملابس والحركة.";
+
+      document.getElementById("camera-ms-label").textContent = "لقطة متوسّطة (MS)";
+      document.getElementById("camera-ms-desc").textContent =
+        "من الخصر إلى الأعلى. مناسبة للحوار والحركة البسيطة.";
+
+      document.getElementById("camera-cu-label").textContent = "لقطة قريبة (CU)";
+      document.getElementById("camera-cu-desc").textContent =
+        "تركّز على الوجه لإظهار المشاعر والتعبيرات بوضوح.";
+
+      document.getElementById("camera-ecu-label").textContent = "لقطة قريبة جدًا (ECU)";
+      document.getElementById("camera-ecu-desc").textContent =
+        "تركّز على تفصيلة واحدة مثل العين أو اليد أو غرض معيّن لزيادة التأثير.";
+
+      document.getElementById("camera-ots-label").textContent = "لقطة من فوق الكتف (OTS)";
+      document.getElementById("camera-ots-desc").textContent =
+        "نرى من خلف الشخصية ما تنظر إليه أو ما تفعله أمامها.";
+
+      document.getElementById("camera-bird-label").textContent = "لقطة من أعلى (عين الطائر)";
+      document.getElementById("camera-bird-desc").textContent =
+        "الكاميرا تنظر من أعلى. رائعة لعرض الزحام أو المشاهد الكبيرة.";
+
+      document.getElementById("camera-low-label").textContent = "لقطة من أسفل (Low Angle)";
+      document.getElementById("camera-low-desc").textContent =
+        "ننظر من أسفل إلى الشخصية، فتبدو قوية أو بطولية.";
+
+      document.getElementById("camera-dutch-label").textContent = "لقطة مائلة (Dutch Angle)";
+      document.getElementById("camera-dutch-desc").textContent =
+        "الكاميرا مائلة قليلًا لإحساس بالسحر أو الفوضى أو التوتر.";
+
+      // Buttons & output
+      document.getElementById("translateBtn").textContent = "✅ تم الترجمة إلى العربية";
+      document.getElementById("output-title").textContent = "الأمر النهائي الاحترافي";
+      document.getElementById("output-hint").textContent =
+        "اضغط على «إنشاء الأمر» ثم انسخ هذا النص والصقه في شات جي بي تي أو أداة الصور المفضلة لديك.";
+      document.getElementById("promptOutput").placeholder =
+        "سيظهر هنا أمر إنشاء صورة الشخصية بأسلوب بيكسار...";
+      document.getElementById("copy-info").textContent =
+        "ملاحظة: يمكنك تعديل النص يدويًا قبل نسخه إذا أردت تخصيصه.";
+    }
+  </script>
+</body>
+</html>

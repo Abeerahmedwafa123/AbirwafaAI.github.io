@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Session 9 – Flow + Hedra Training</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --bg: #050814;
+      --bg-card: #0c1224;
+      --bg-card-soft: #111832;
+      --accent: #4dabf7;
+      --accent-soft: rgba(77, 171, 247, 0.12);
+      --accent-strong: #74c0fc;
+      --text-main: #f8f9fa;
+      --text-muted: #adb5bd;
+      --border-soft: #24324f;
+      --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.45);
+      --radius-lg: 18px;
+      --radius-pill: 999px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      background: radial-gradient(circle at top, #12223f 0, #050814 55%, #02030a 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding: 24px;
+      display: flex;
+      justify-content: center;
+    }
+
+    body[dir="rtl"] {
+      direction: rtl;
+      text-align: right;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 1100px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 24px;
+      margin-bottom: 24px;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, #102345, #050814);
+      border: 1px solid rgba(173, 181, 189, 0.28);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .branding {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .branding img {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.45));
+    }
+
+    .title-block h1 {
+      font-size: 1.9rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .title-block h1 span {
+      color: var(--accent-strong);
+    }
+
+    .title-block p {
+      margin-top: 4px;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    .tag {
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(116, 192, 252, 0.7);
+      background: radial-gradient(circle at top left, rgba(116, 192, 252, 0.24), transparent 60%);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent-strong);
+    }
+
+    .translate-btn {
+      padding: 8px 18px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--accent-strong);
+      background: var(--accent-soft);
+      color: var(--accent-strong);
+      font-size: 0.88rem;
+      cursor: pointer;
+      margin-left: 12px;
+    }
+
+    .translate-btn:hover {
+      background: var(--accent-strong);
+      color: #050814;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 1.2fr);
+      gap: 20px;
+    }
+
+    @media (max-width: 880px) {
+      main {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+      }
+      .header-right {
+        align-self: flex-end;
+      }
+    }
+
+    .accordion {
+      background: rgba(5, 8, 20, 0.7);
+      border-radius: var(--radius-lg);
+      padding: 14px;
+      border: 1px solid var(--border-soft);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .accordion-item {
+      border-radius: 14px;
+      margin-bottom: 10px;
+      overflow: hidden;
+      border: 1px solid transparent;
+      background: transparent;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .accordion-item.open {
+      border-color: var(--accent-soft);
+      background: linear-gradient(135deg, rgba(12, 18, 36, 0.9), rgba(7, 15, 33, 0.9));
+    }
+
+    .accordion-header {
+      cursor: pointer;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .accordion-header h2 {
+      font-size: 0.98rem;
+      font-weight: 600;
+    }
+
+    .accordion-icon {
+      font-size: 1.2rem;
+      color: var(--accent);
+      transition: transform 0.2s ease;
+    }
+
+    .accordion-item.open .accordion-icon {
+      transform: rotate(90deg);
+    }
+
+    .accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      padding: 0 14px 0;
+    }
+
+    .accordion-item.open .accordion-body {
+      padding-bottom: 12px;
+    }
+
+    .accordion-body p,
+    .accordion-body li,
+    .accordion-body code {
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: var(--text-muted);
+    }
+
+    .accordion-body p + p {
+      margin-top: 8px;
+    }
+
+    .accordion-body ul {
+      margin: 8px 0 4px 18px;
+      list-style: disc;
+    }
+
+    body[dir="rtl"] .accordion-body ul {
+      margin: 8px 18px 4px 0;
+    }
+
+    .accordion-body code {
+      display: block;
+      background: #050814;
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-top: 8px;
+      font-family: "JetBrains Mono", ui-monospace;
+      white-space: pre-wrap;
+      border: 1px solid rgba(36, 50, 79, 0.9);
+      color: #e7f5ff;
+    }
+
+    .side-panel {
+      background: rgba(5, 8, 20, 0.7);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-soft);
+      padding: 16px;
+      box-shadow: var(--shadow-soft);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .side-panel h3 {
+      font-size: 1rem;
+      margin-bottom: 4px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: var(--radius-pill);
+      background: var(--accent-soft);
+      color: var(--accent-strong);
+      font-size: 0.78rem;
+      margin-right: 6px;
+      margin-bottom: 6px;
+    }
+    body[dir="rtl"] .pill {
+      margin-left: 6px;
+      margin-right: 0;
+    }
+  </style>
+</head>
+
+<body dir="ltr">
+  <div class="page">
+
+    <!-- HEADER -->
+    <header>
+      <div class="branding">
+        <img src="https://github.com/Abeerahmedwafa123/Mental-Math-/blob/main/Edu%20Logo%20White.png?raw=1">
+        <div class="title-block">
+          <h1 id="main-title"><span>Session 9</span> – AI Video Creation</h1>
+          <p id="sub-title">Flow (Veo 3) + Hedra – Teacher Training Guide</p>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <div class="tag" id="tag-text">Teacher PD · Video & AI</div>
+        <button class="translate-btn" id="translateBtn">🌍 Arabic</button>
+      </div>
+    </header>
+
+    <!-- MAIN EN -->
+    <main id="main-en">
+
+      <!-- LEFT PANEL EN -->
+      <div class="accordion">
+
+        <!-- FLOW EN -->
+        <article class="accordion-item open">
+          <div class="accordion-header">
+            <h2>Google Labs – Flow (Veo 3): Creating Cinematic Scenes</h2>
+            <div class="accordion-icon">›</div>
+          </div>
+
+          <div class="accordion-body">
+            <p><strong>Scenebuilder</strong> is the main workspace where you create all Veo 3 scenes.</p>
+
+            <ul>
+              <li>Go to <strong>labs.google</strong> → open Flow.</li>
+              <li>Select your project → now you are in Scenebuilder.</li>
+              <li>At the bottom, click the dropdown:
+                <ul>
+                  <li><strong>Text to Video</strong></li>
+                  <li><strong>Frames to Video</strong> (upload 2 frames)</li>
+                  <li><strong>Ingredients to Video</strong></li>
+                  <li><strong>Create Image</strong></li>
+                </ul>
+              </li>
+              <li>For transitions:
+                upload a first frame + second frame using <strong>Frames to Video</strong>.
+              </li>
+              <li>Paste your prompt in the box below.</li>
+              <li>Select your model:
+                <strong>Veo 3.1 – Fast</strong> or
+                <strong>Veo 3 – High Quality</strong>
+              </li>
+            </ul>
+
+            <p><strong>Example prompt:</strong></p>
+            <code>Create a smooth cinematic transition between the two uploaded frames. 
+Keep the character consistent with the images. Maintain Pixar-style 3D animation, soft 
+golden lighting, and gentle camera movement. No text on screen. 16:9 ratio.</code>
+          </div>
+        </article>
+
+        <!-- HEDRA EN -->
+        <article class="accordion-item">
+          <div class="accordion-header">
+            <h2>Hedra: Talking Avatar & Character Animation</h2>
+            <div class="accordion-icon">›</div>
+          </div>
+
+          <div class="accordion-body">
+            <ul>
+              <li><strong>Add character:</strong> upload your avatar image.</li>
+              <li><strong>Add speech:</strong> upload audio or type text to use AI voice.</li>
+              <li><strong>Describe your video:</strong> optional instructions for emotion and style.</li>
+            </ul>
+
+            <p><strong>Example description:</strong></p>
+            <code>Use natural head movement and clear lip-sync. Maintain eye contact with 
+a warm teaching tone.</code>
+          </div>
+        </article>
+
+        <!-- COMBINE EN -->
+        <article class="accordion-item">
+          <div class="accordion-header">
+            <h2>Combining Flow + Hedra</h2>
+            <div class="accordion-icon">›</div>
+          </div>
+
+          <div class="accordion-body">
+            <ul>
+              <li><strong>Flow:</strong> cinematic background scenes.</li>
+              <li><strong>Hedra:</strong> talking avatar explanation.</li>
+              <li>Download both outputs and combine them in <strong>Canva</strong>.</li>
+            </ul>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- RIGHT PANEL EN -->
+      <aside class="side-panel">
+        <section>
+          <h3>Session Goals</h3>
+          <ul>
+            <li>Create cinematic scenes using Flow + Veo 3</li>
+            <li>Generate talking avatars using Hedra</li>
+            <li>Combine both into one lesson video</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Tools Used</h3>
+          <div>
+            <span class="pill">Google Labs – Flow</span>
+            <span class="pill">Veo 3 / 3.1</span>
+            <span class="pill">Hedra Character 3</span>
+            <span class="pill">Canva</span>
+          </div>
+        </section>
+
+        <section>
+          <h3>Teacher Tips</h3>
+          <p>Keep clips short (10–20s). Use consistent avatars. Save your prompts for future sessions.</p>
+        </section>
+      </aside>
+
+    </main>
+
+    <!-- MAIN AR -->
+    <main id="main-ar" style="display:none;">
+
+      <!-- LEFT PANEL AR -->
+      <div class="accordion">
+
+        <!-- FLOW AR -->
+        <article class="accordion-item open">
+          <div class="accordion-header">
+            <h2>Google Labs – Flow (Veo 3): إنشاء مشاهد سينمائية</h2>
+            <div class="accordion-icon">›</div>
+          </div>
+
+          <div class="accordion-body">
+            <p><strong>Scenebuilder</strong> هي المساحة التي يتم فيها إنشاء جميع مشاهد Veo 3.</p>
+
+            <ul>
+              <li>ادخلي إلى <strong>labs.google</strong> → واختاري Flow.</li>
+              <li>افتحي مشروعك → الآن أنتِ في Scenebuilder.</li>
+              <li>
+                من الأسفل، افتحي القائمة:
+                <ul>
+                  <li><strong>Text to Video</strong></li>
+                  <li><strong>Frames to Video</strong></li>
+                  <li><strong>Ingredients to Video</strong></li>
+                  <li><strong>Create Image</strong></li>
+                </ul>
+              </li>
+              <li>لإنشاء انتقال بين صورتين، استخدمي <strong>Frames to Video</strong> وارفعي الصورتين.</li>
+              <li>اكتبي الـ Prompt في الصندوق.</li>
+              <li>
+                اختاري النموذج:
+                <strong>Veo 3.1 – Fast</strong> أو
+                <strong>Veo 3 – High Quality</strong>
+              </li>
+            </ul>
+
+            <p><strong>مثال Prompt:</strong></p>
+            <code>أنشئ انتقالاً سينمائياً سلساً بين الصورتين المرفوعتين. حافظ على ثبات شكل 
+الشخصية. استخدم أسلوب بيكسار ثلاثي الأبعاد. بدون نص. 16:9.</code>
+          </div>
+        </article>
+
+        <!-- HEDRA AR -->
+        <article class="accordion-item">
+          <div class="accordion-header">
+            <h2>Hedra: تحريك الشخصيات وإنشاء فيديو ناطق</h2>
+            <div class="accordion-icon">›</div>
+          </div>
+
+          <div class="accordion-body">
+            <ul>
+              <li><strong>إضافة شخصية:</strong> رفع صورة أو اختيار Avatar.</li>
+              <li><strong>إضافة صوت:</strong> رفع ملف صوتي أو كتابة نص.</li>
+              <li><strong>وصف الفيديو:</strong> تعليمات إضافية حول المشاعر والحركة.</li>
+            </ul>
+
+            <p><strong>مثال للوصف:</strong></p>
+            <code>استخدمي حركة رأس طبيعية مع مزامنة واضحة لحركة الفم وتعابير دافئة.</code>
+          </div>
+        </article>
+
+        <!-- COMBINE AR -->
+        <article class="accordion-item">
+          <div class="accordion-header">
+            <h2>دمج Flow + Hedra</h2>
+            <div class="accordion-icon">›</div>
+          </div>
+
+          <div class="accordion-body">
+            <ul>
+              <li><strong>Flow:</strong> مشاهد سينمائية وخلفيات قصصية.</li>
+              <li><strong>Hedra:</strong> شرح وشخصيات ناطقة.</li>
+              <li>بعد التحميل، ادمجي المقاطع داخل <strong>Canva</strong>.</li>
+            </ul>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- RIGHT PANEL AR -->
+      <aside class="side-panel">
+
+        <section>
+          <h3>أهداف الجلسة</h3>
+          <ul>
+            <li>إنشاء مشاهد سينمائية بـ Flow</li>
+            <li>توليد شخصية ناطقة بـ Hedra</li>
+            <li>دمج النتائج لإنشاء فيديو درس متكامل</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>الأدوات المستخدمة</h3>
+          <div>
+            <span class="pill">Google Labs – Flow</span>
+            <span class="pill">Veo 3 / 3.1</span>
+            <span class="pill">Hedra Character 3</span>
+            <span class="pill">Canva</span>
+          </div>
+        </section>
+
+        <section>
+          <h3>نصائح للمعلمين</h3>
+          <p>اجعلي المقاطع قصيرة. أعيدي استخدام نفس الشخصية. واحفظي الـ Prompts.</p>
+        </section>
+
+      </aside>
+
+    </main>
+  </div>
+
+  <script>
+    function setupAccordions(root) {
+      root.querySelectorAll(".accordion-header").forEach((header) => {
+        header.addEventListener("click", () => {
+          const item = header.parentElement;
+          const body = item.querySelector(".accordion-body");
+
+          if (item.classList.contains("open")) {
+            item.classList.remove("open");
+            body.style.maxHeight = null;
+          } else {
+            root.querySelectorAll(".accordion-item").forEach((other) => {
+              const otherBody = other.querySelector(".accordion-body");
+              if (other !== item) {
+                other.classList.remove("open");
+                if (otherBody) otherBody.style.maxHeight = null;
+              }
+            });
+            item.classList.add("open");
+            body.style.maxHeight = body.scrollHeight + "px";
+          }
+        });
+      });
+
+      root.querySelectorAll(".accordion-item.open .accordion-body").forEach((body) => {
+        body.style.maxHeight = body.scrollHeight + "px";
+      });
+    }
+
+    const mainEn = document.getElementById("main-en");
+    const mainAr = document.getElementById("main-ar");
+
+    setupAccordions(mainEn);
+    setupAccordions(mainAr);
+
+    const btn = document.getElementById("translateBtn");
+    const mainTitle = document.getElementById("main-title");
+    const subTitle = document.getElementById("sub-title");
+    const tagText = document.getElementById("tag-text");
+    let isArabic = false;
+
+    btn.addEventListener("click", () => {
+      isArabic = !isArabic;
+
+      if (isArabic) {
+        document.body.setAttribute("dir", "rtl");
+        btn.textContent = "🌍 English";
+        mainTitle.innerHTML = "<span>الجلسة 9</span> – إنشاء فيديوهات بالذكاء الاصطناعي";
+        subTitle.textContent = "Flow (Veo 3) + Hedra – دليل تدريب المعلمين";
+        tagText.textContent = "تطوير مهني · فيديو وذكاء اصطناعي";
+        mainEn.style.display = "none";
+        mainAr.style.display = "grid";
+      } else {
+        document.body.setAttribute("dir", "ltr");
+        btn.textContent = "🌍 Arabic";
+        mainTitle.innerHTML = "<span>Session 9</span> – AI Video Creation";
+        subTitle.textContent = "Flow (Veo 3) + Hedra – Teacher Training Guide";
+        tagText.textContent = "Teacher PD · Video & AI";
+        mainAr.style.display = "none";
+        mainEn.style.display = "grid";
+      }
+    });
+  </script>
+</body>
+</html>

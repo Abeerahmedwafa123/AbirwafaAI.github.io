@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Session 6 – Canva Templates & AI | Edulixa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --bg: #0f172a;
+      --bg-soft: #111827;
+      --accent: #6366f1;
+      --accent-soft: rgba(99, 102, 241, 0.1);
+      --accent-strong: #a855f7;
+      --card-bg: #020617;
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --border-soft: rgba(148, 163, 184, 0.2);
+      --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.9);
+      --radius-xl: 18px;
+      --radius-full: 999px;
+      --transition-fast: 180ms ease-out;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #1f2937 0, #020617 45%, #020617 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 16px;
+      transition: background var(--transition-fast), direction var(--transition-fast);
+    }
+
+    .page {
+      width: 100%;
+      max-width: 1120px;
+      background: radial-gradient(circle at top right, rgba(99,102,241,0.1), rgba(15,23,42,0.95) 40%);
+      border-radius: 28px;
+      padding: 26px 26px 30px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(236,72,153,0.14), transparent 60%),
+        radial-gradient(circle at 100% 0%, rgba(56,189,248,0.18), transparent 58%);
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .page-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo-badge {
+      background: rgba(15,23,42,0.9);
+      border-radius: 999px;
+      padding: 6px 10px;
+      border: 1px solid rgba(148,163,184,0.45);
+      display: flex;
+      align-items: center;
+      box-shadow: 0 8px 24px rgba(15,23,42,0.7);
+    }
+
+    .logo-badge img {
+      width: 70px;
+      height: 70px;
+      border-radius: 18px;
+      object-fit: contain;
+      background: rgba(15,23,42,0.9);
+    }
+
+    .title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+      padding-inline: 4px;
+    }
+
+    .eyebrow {
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent-strong);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .eyebrow-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 650;
+      letter-spacing: 0.01em;
+      color: #f9fafb;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    /* Language toggle */
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .lang-label {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    #toggle-lang {
+      border: none;
+      border-radius: var(--radius-full);
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      background: radial-gradient(circle at 0% 0%, var(--accent-strong), var(--accent));
+      color: #f9fafb;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 10px 25px rgba(79,70,229,0.7);
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast), opacity var(--transition-fast);
+    }
+
+    #toggle-lang:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 32px rgba(79,70,229,0.85);
+    }
+
+    #toggle-lang:active {
+      transform: translateY(0);
+      box-shadow: 0 8px 20px rgba(79,70,229,0.7);
+      opacity: 0.9;
+    }
+
+    /* Content layout */
+    .content-layout {
+      margin-top: 4px;
+    }
+
+    /* Steps timeline */
+    .steps-card {
+      background: linear-gradient(145deg, rgba(15,23,42,0.96), rgba(15,23,42,0.95));
+      border-radius: var(--radius-xl);
+      padding: 16px 16px 18px;
+      border: 1px solid var(--border-soft);
+      backdrop-filter: blur(18px);
+    }
+
+    .steps-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      gap: 8px;
+    }
+
+    .steps-title {
+      font-size: 15px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .steps-title span.icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      font-size: 14px;
+    }
+
+    .steps-chip {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(148,163,184,0.4);
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .steps-list {
+      list-style: none;
+      margin-top: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      /* allow panels to grow fully */
+      max-height: none;
+      overflow: visible;
+      padding-right: 4px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 10px;
+      align-items: flex-start;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: radial-gradient(circle at top left, rgba(75,85,99,0.25), rgba(15,23,42,0.92));
+      border: 1px solid rgba(55,65,81,0.7);
+      box-shadow: 0 10px 24px rgba(15,23,42,0.85);
+      position: relative;
+      overflow: hidden;
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast);
+      cursor: pointer;
+    }
+
+    .step::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(129,140,248,0.2), transparent 55%);
+      opacity: 0;
+      transition: opacity var(--transition-fast);
+      pointer-events: none;
+    }
+
+    .step:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 30px rgba(15,23,42,0.95);
+      border-color: rgba(129,140,248,0.9);
+      background: radial-gradient(circle at bottom left, rgba(15,23,42,0.98), rgba(15,23,42,0.96));
+    }
+
+    .step:hover::before {
+      opacity: 1;
+    }
+
+    .step-index {
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 0 0, #a855f7, #6366f1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: #f9fafb;
+      box-shadow: 0 8px 18px rgba(79,70,229,0.8);
+      position: relative;
+      z-index: 1;
+      flex-shrink: 0;
+    }
+
+    .step-body {
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .step-pill {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(148,163,184,0.5);
+      color: var(--text-muted);
+    }
+
+    .step-chevron {
+      margin-left: auto;
+      font-size: 11px;
+      opacity: 0.9;
+      transition: transform var(--transition-fast);
+    }
+
+    .step-text {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      margin-top: 0;
+      transition: max-height 220ms ease-out, opacity 220ms ease-out, margin-top 220ms ease-out;
+    }
+
+    .step-text strong {
+      color: #e5e7eb;
+      font-weight: 600;
+    }
+
+    .step.expanded .step-text {
+      /* large enough for long AR + EN text */
+      max-height: 800px;
+      opacity: 1;
+      margin-top: 4px;
+    }
+
+    .step.expanded .step-chevron {
+      transform: rotate(180deg);
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .controls {
+        align-self: flex-end;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .page {
+        border-radius: 18px;
+        padding: 20px 16px 22px;
+      }
+      h1 {
+        font-size: 20px;
+      }
+    }
+
+    /* RTL adjustments */
+    body.rtl .header {
+      flex-direction: row-reverse;
+    }
+
+    body.rtl .logo-wrap {
+      flex-direction: row-reverse;
+    }
+
+    body.rtl .steps-list {
+      padding-right: 0;
+      padding-left: 4px;
+    }
+
+    body.rtl .step {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    body.rtl .step-index {
+      order: 2;
+    }
+
+    body.rtl .step-body {
+      text-align: right;
+    }
+
+    body.rtl .subtitle,
+    body.rtl h1 {
+      text-align: right;
+    }
+
+    body.rtl .step-chevron {
+      margin-left: 0;
+      margin-right: auto;
+    }
+
+    body.rtl .content-layout {
+      direction: rtl;
+    }
+
+    body.rtl #toggle-lang {
+      direction: rtl;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="page-inner">
+      <header class="header">
+        <div class="logo-wrap">
+          <div class="logo-badge">
+            <!-- Edulixa logo only (no text, not duplicated) -->
+            <img src="https://raw.githubusercontent.com/Abeerahmedwafa123/Mental-Math-/main/Edu%20Logo%20White.png" alt="Edulixa Logo" />
+          </div>
+        </div>
+
+        <div class="title-block">
+          <div class="eyebrow">
+            <span class="eyebrow-dot"></span>
+            <span data-en="Session 6 · Canva in Action" data-ar="الجلسة ٦ · كانفا في التطبيق العملي">
+              Session 6 · Canva in Action
+            </span>
+          </div>
+          <h1 data-en="Using Canva Templates & AI to Design Like a Pro"
+              data-ar="استخدام قوالب كانفا وذكاء كانفا الصناعي للتصميم باحتراف">
+            Using Canva Templates & AI to Design Like a Pro
+          </h1>
+          <p class="subtitle"
+             data-en="Click each step to reveal a short, practical explanation you can follow inside Canva."
+             data-ar="انقري على كل خطوة لعرض شرح قصير وعملي يمكنك تطبيقه مباشرة داخل كانفا.">
+            Click each step to reveal a short, practical explanation you can follow inside Canva.
+          </p>
+        </div>
+
+        <div class="controls">
+          <span class="lang-label"
+                data-en="Language"
+                data-ar="اللغة">
+            Language
+          </span>
+          <button id="toggle-lang">
+            <span id="toggle-emoji">🌐</span>
+            <span id="toggle-text">Translate to Arabic</span>
+          </button>
+        </div>
+      </header>
+
+      <main class="content-layout">
+        <!-- Steps timeline -->
+        <section class="steps-card">
+          <div class="steps-header">
+            <div class="steps-title">
+              <span class="icon">✨</span>
+              <span data-en="Interactive Canva Workflow"
+                    data-ar="سير عمل تفاعلي في كانفا">
+                Interactive Canva Workflow
+              </span>
+            </div>
+            <div class="steps-chip"
+                 data-en="Tap a step to expand"
+                 data-ar="اضغطي على أي خطوة لعرض التفاصيل">
+              Tap a step to expand
+            </div>
+          </div>
+
+          <ul class="steps-list">
+            <!-- 1 -->
+            <li class="step">
+              <div class="step-index">1</div>
+              <div class="step-body">
+                <div class="step-title">
+                  <span data-en="Choose a ready-made template"
+                        data-ar="اختيار قالب جاهز">
+                    Choose a ready-made template
+                  </span>
+                  <span class="step-pill"
+                        data-en="Templates"
+                        data-ar="القوالب">
+                    Templates
+                  </span>
+                  <span class="step-chevron">⌄</span>
+                </div>
+                <p class="step-text"
+                   data-en="Click Templates → type your topic → select a design you like → click Customize to start editing."
+                   data-ar="انقري على «القوالب» Templates → اكتبي موضوع الدرس → اختاري التصميم المناسب → اضغطي «تخصيص» Customize لبدء التعديل.">
+                  Click <strong>Templates</strong> → type your topic → select a design you like → click <strong>Customize</strong> to start editing.
+                </p>
+              </div>
+            </li>
+
+            <!-- 2 -->
+            <li class="step">
+              <div class="step-index">2</div>
+              <div class="step-body">
+                <div class="step-title">
+                  <span data-en="Modify text with Ask Canva AI"
+                        data-ar="تعديل النص باستخدام Ask Canva AI">
+                    Modify text with Ask Canva AI
+                  </span>
+                  <span class="step-pill"
+                        data-en="Ask Canva AI"
+                        data-ar="Ask Canva AI">
+                    Ask Canva AI
+                  </span>
+                  <span class="step-chevron">⌄</span>
+                </div>
+                <p class="step-text"
+                   data-en="Select any text → click Ask Canva → ask it to rewrite, shorten, expand, or simplify your sentence."
+                   data-ar="حددي أي نص → اضغطي على Ask Canva → اطلبي منه إعادة الصياغة، أو الاختصار، أو الإطالة، أو التبسيط للجملة.">
+                  Select any text → click <strong>Ask Canva</strong> → ask it to rewrite, shorten, expand, or simplify your sentence.
+                </p>
+              </div>
+            </li>
+
+            <!-- 3 -->
+            <li class="step">
+              <div class="step-index">3</div>
+              <div class="step-body">
+                <div class="step-title">
+                  <span data-en="Insert text & headings"
+                        data-ar="إدراج النصوص والعناوين">
+                    Insert text & headings
+                  </span>
+                  <span class="step-pill"
+                        data-en="T for Text"
+                        data-ar="أيقونة النص T">
+                    T for Text
+                  </span>
+                  <span class="step-chevron">⌄</span>
+                </div>
+                <p class="step-text"
+                   data-en="Click the T for Text → choose Heading, Subheading, or Body text → adjust font, color, and alignment."
+                   data-ar="اضغطي على أيقونة النص T → اختاري عنوان رئيسي، أو عنوان فرعي، أو نص عادي → عدّلي الخط واللون والمحاذاة كما تريدين.">
+                  Click the <strong>T for Text</strong> → choose <strong>Heading</strong>, <strong>Subheading</strong>, or <strong>Body text</strong> → adjust font, color, and alignment.
+                </p>
+              </div>
+            </li>
+
+            <!-- 4 -->
+            <li class="step">
+              <div class="step-index">4</div>
+              <div class="step-body">
+                <div class="step-title">
+                  <span data-en="Add elements"
+                        data-ar="إضافة العناصر الرسومية">
+                    Add elements
+                  </span>
+                  <span class="step-pill"
+                        data-en="Elements"
+                        data-ar="العناصر">
+                    Elements
+                  </span>
+                  <span class="step-chevron">⌄</span>
+                </div>
+                <p class="step-text"
+                   data-en="Click Elements → type what you need in the search bar (icons, shapes, arrows…) → click to add it to your slide."
+                   data-ar="اضغطي على «العناصر» Elements → اكتبي ما تحتاجينه في خانة البحث (أيقونات، أشكال، أسهم...) → اضغطي على العنصر لإضافته إلى الشريحة.">
+                  Click <strong>Elements</strong> → type what you need in the search bar (icons, shapes, arrows…) → click to add it to your slide.
+                </p>
+              </div>
+            </li>
+
+            <!-- 5 -->
+            <li class="step">
+              <div class="step-index">5</div>
+              <div class="step-body">
+                <div class="step-title">
+                  <span data-en="Upload photos, videos & audio"
+                        data-ar="رفع الصور والفيديوهات والملفات الصوتية">
+                    Upload photos, videos & audio
+                  </span>
+                  <span class="step-pill"
+                        data-en="Uploads"
+                        data-ar="الرفع Uploads">
+                    Uploads
+                  </span>
+                  <span class="step-chevron">⌄</span>
+                </div>
+                <p class="step-text"
+                   data-en="Click Uploads → upload photos, videos, or audio files → you can also record your own voice directly."
+                   data-ar="اضغطي على «الرفع» Uploads → ارفعي الصور أو الفيديوهات أو الملفات الصوتية → ويمكنك أيضًا تسجيل صوتك مباشرةً من داخل كانفا.">
+                  Click <strong>Uploads</strong> → upload photos, videos, or audio files → you can also record your own voice directly.
+                </p>
+              </div>
+            </li>
+
+            <!-- 6 -->
+            <li class="step">
+              <div class="step-index">6</div>
+              <div class="step-body">
+                <div class="step-title">
+                  <span data-en="Insert an avatar from Apps"
+                        data-ar="إدراج صورة رمزية (أفاتار) من التطبيقات">
+                    Insert an avatar from Apps
+                  </span>
+                  <span class="step-pill"
+                        data-en="Apps"
+                        data-ar="التطبيقات Apps">
+                    Apps
+                  </span>
+                  <span class="step-chevron">⌄</span>
+                </div>
+                <p class="step-text"
+                   data-en="Go to Apps → choose an avatar app (e.g. Canva Avatars) → customize the character → insert it into your design."
+                   data-ar="انتقلي إلى «التطبيقات» Apps → اختاري تطبيق الأفاتار (مثل Canva Avatars) → خصّصي الشخصية كما تريدين → أضيفيها إلى تصميمك.">
+                  Go to <strong>Apps</strong> → choose an avatar app (e.g. Canva Avatars) → customize the character → insert it into your design.
+                </p>
+              </div>
+            </li>
+
+            <!-- 7 -->
+            <li class="step">
+              <div class="step-index">7</div>
+              <div class="step-body">
+                <div class="step-title">
+                  <span data-en="Reuse a previous template"
+                        data-ar="إعادة استخدام تصميم سابق">
+                    Reuse a previous template
+                  </span>
+                  <span class="step-pill"
+                        data-en="Projects"
+                        data-ar="المشاريع Projects">
+                    Projects
+                  </span>
+                  <span class="step-chevron">⌄</span>
+                </div>
+                <p class="step-text"
+                   data-en="Click Projects → open any previous design → adapt the content for a new lesson or group."
+                   data-ar="اضغطي على «المشاريع» Projects → افتحي أي تصميم سابق → عدّلي المحتوى ليناسب درسًا أو مجموعة جديدة.">
+                  Click <strong>Projects</strong> → open any previous design → adapt the content for a new lesson or group.
+                </p>
+              </div>
+            </li>
+
+            <!-- 8 -->
+            <li class="step">
+              <div class="step-index">8</div>
+              <div class="step-body">
+                <div class="step-title">
+                  <span data-en="Add animation to items & slides"
+                        data-ar="إضافة حركة للعناصر والشرائح">
+                    Add animation to items & slides
+                  </span>
+                  <span class="step-pill"
+                        data-en="Animate"
+                        data-ar="الحركة Animate">
+                    Animate
+                  </span>
+                  <span class="step-chevron">⌄</span>
+                </div>
+                <p class="step-text"
+                   data-en="Click an item → Animate → choose an effect. To animate a whole slide, click the slide thumbnail on the left → Animate."
+                   data-ar="انقري على أي عنصر → اختاري «تحريك» Animate → حددي تأثير الحركة. ولتحريك شريحة كاملة، اضغطي على مصغّر الشريحة في الجانب الأيسر → ثم اختاري Animate.">
+                  Click an item → <strong>Animate</strong> → choose an effect. To animate a whole slide, click the slide thumbnail on the left → <strong>Animate</strong>.
+                </p>
+              </div>
+            </li>
+
+            <!-- 9 -->
+            <li class="step">
+              <div class="step-index">9</div>
+              <div class="step-body">
+                <div class="step-title">
+                  <span data-en="Turn a photo into a colouring page"
+                        data-ar="تحويل صورة إلى ورقة تلوين">
+                    Turn a photo into a colouring page
+                  </span>
+                  <span class="step-pill"
+                        data-en="Sketchify App"
+                        data-ar="تطبيق Sketchify">
+                    Sketchify App
+                  </span>
+                  <span class="step-chevron">⌄</span>
+                </div>
+                <p class="step-text"
+                   data-en="Click Apps → search for Sketchify → open it → upload the photo from your device → convert it to a black-and-white colouring page."
+                   data-ar="اضغطي على «التطبيقات» Apps → ابحثي عن Sketchify → افتحي التطبيق → ارفعي الصورة من جهازك → حوّليها إلى ورقة تلوين بالأبيض والأسود.">
+                  Click <strong>Apps</strong> → search for <strong>Sketchify</strong> → open it → upload the photo from your device → convert it to a black-and-white colouring page.
+                </p>
+              </div>
+            </li>
+
+            <!-- 10 -->
+            <li class="step">
+              <div class="step-index">10</div>
+              <div class="step-body">
+                <div class="step-title">
+                  <span data-en="Create & bulk-generate certificates"
+                        data-ar="إنشاء شهادات فردية وجماعية">
+                    Create & bulk-generate certificates
+                  </span>
+                  <span class="step-pill"
+                        data-en="Templates + Bulk Create"
+                        data-ar="القوالب + الإنشاء الجماعي">
+                    Templates + Bulk Create
+                  </span>
+                  <span class="step-chevron">⌄</span>
+                </div>
+                <p class="step-text"
+                   data-en="Go to Templates → type Certificate → choose a design → Customize the text and logo. Then open Apps → select Bulk Create → upload an Excel sheet with names (or add them manually) → click Connect Data → map each field to the text boxes on the certificate → generate personalised certificates for the whole class."
+                   data-ar="انتقلي إلى «القوالب» Templates → اكتبي Certificate → اختاري تصميم الشهادة → خصّصي النصوص والشعار. بعد ذلك افتحي «التطبيقات» Apps → اختاري Bulk Create → ارفعي ملف Excel بأسماء الطلاب (أو اكتبي الأسماء يدويًا) → اضغطي على Connect Data → اربطي كل خانة بحقول النص داخل الشهادة → أنشئي شهادات شخصية لكل طلاب الصف دفعة واحدة.">
+                  Go to <strong>Templates</strong> → type <strong>Certificate</strong> → choose a design → <strong>Customize</strong> the text and logo. Then open <strong>Apps</strong> → select <strong>Bulk Create</strong> → upload an Excel sheet with names (or add them manually) → click <strong>Connect Data</strong> → map each field to the text boxes on the certificate → generate personalised certificates for the whole class.
+                </p>
+              </div>
+            </li>
+          </ul>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      let currentLang = "en";
+      const toggleBtn = document.getElementById("toggle-lang");
+      const toggleText = document.getElementById("toggle-text");
+      const toggleEmoji = document.getElementById("toggle-emoji");
+
+      function applyLanguage(lang) {
+        const elements = document.querySelectorAll("[data-en][data-ar]");
+
+        elements.forEach(el => {
+          const text = el.getAttribute(lang === "ar" ? "data-ar" : "data-en");
+          if (text !== null) {
+            el.textContent = text;
+          }
+        });
+
+        if (lang === "ar") {
+          document.body.classList.add("rtl");
+          document.body.setAttribute("dir", "rtl");
+          document.documentElement.lang = "ar";
+          toggleText.textContent = "Back to English";
+          toggleEmoji.textContent = "🌙";
+        } else {
+          document.body.classList.remove("rtl");
+          document.body.setAttribute("dir", "ltr");
+          document.documentElement.lang = "en";
+          toggleText.textContent = "Translate to Arabic";
+          toggleEmoji.textContent = "🌐";
+        }
+
+        currentLang = lang;
+      }
+
+      toggleBtn.addEventListener("click", function() {
+        applyLanguage(currentLang === "en" ? "ar" : "en");
+      });
+
+      // Collapsible behaviour for steps
+      const steps = document.querySelectorAll(".step");
+      steps.forEach(step => {
+        step.addEventListener("click", () => {
+          step.classList.toggle("expanded");
+        });
+      });
+
+      // initial language
+      applyLanguage("en");
+    })();
+  </script>
+</body>
+</html>

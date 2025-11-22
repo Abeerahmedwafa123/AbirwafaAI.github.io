@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Session 7 – Google AI Studio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    /* ---------- Global Styles ---------- */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1b2d4f 0%, #050814 60%, #02040a 100%);
+      color: #e9f1ff;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 30px 10px;
+    }
+
+    .page-wrapper {
+      width: 100%;
+      max-width: 1150px;
+      background: linear-gradient(145deg, #0b1423 0%, #101d33 45%, #0b1728 100%);
+      border-radius: 18px;
+      box-shadow:
+        0 18px 45px rgba(0, 0, 0, 0.65),
+        inset 0 0 0 1px rgba(122, 170, 255, 0.18);
+      padding: 28px 30px 34px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page-wrapper::before {
+      content: "";
+      position: absolute;
+      inset: -120px;
+      background: radial-gradient(circle at 0% 0%, rgba(109, 181, 255, 0.22), transparent 60%);
+      pointer-events: none;
+    }
+
+    /* ---------- Header ---------- */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 30px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .logo-wrapper img {
+      height: 60px;
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 0 8px rgba(189, 221, 255, 0.6));
+    }
+
+    .session-title {
+      flex: 1;
+      text-align: center;
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #f0f5ff;
+      text-shadow:
+        0 0 10px rgba(178, 210, 255, 0.7),
+        0 0 18px rgba(46, 130, 255, 0.9);
+    }
+
+    .lang-toggle-btn {
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(157, 204, 255, 0.9);
+      background: linear-gradient(135deg, #2f5f9f, #194171);
+      color: #f7fbff;
+      font-size: 0.9rem;
+      cursor: pointer;
+      white-space: nowrap;
+      box-shadow:
+        0 8px 18px rgba(0, 0, 0, 0.6),
+        0 0 14px rgba(123, 187, 255, 0.8);
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    }
+
+    .lang-toggle-btn:hover {
+      transform: translateY(-1px);
+      box-shadow:
+        0 10px 20px rgba(0, 0, 0, 0.7),
+        0 0 18px rgba(146, 205, 255, 0.9);
+      background: linear-gradient(135deg, #3d73ba, #205087);
+    }
+
+    /* ---------- Intro ---------- */
+    .intro {
+      position: relative;
+      z-index: 1;
+      margin-bottom: 26px;
+      padding: 14px 18px 16px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(38, 72, 124, 0.5), rgba(15, 35, 72, 0.9));
+      border: 1px solid rgba(120, 172, 255, 0.45);
+      box-shadow:
+        0 10px 24px rgba(1, 5, 15, 0.7),
+        inset 0 0 0 0.5px rgba(198, 224, 255, 0.15);
+    }
+
+    .intro h2 {
+      font-size: 1.15rem;
+      margin-bottom: 4px;
+      color: #f7fbff;
+    }
+
+    .intro p {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #d7e3ff;
+    }
+
+    /* ---------- Accordion ---------- */
+    .accordion {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 4px;
+    }
+
+    .accordion-item {
+      border-radius: 14px;
+      background: radial-gradient(circle at top left, #2b4b82 0%, #15233b 40%, #0d1729 100%);
+      border: 1px solid rgba(118, 171, 255, 0.5);
+      box-shadow:
+        0 10px 28px rgba(0, 0, 0, 0.7),
+        inset 0 0 0 0.5px rgba(222, 237, 255, 0.08);
+      overflow: hidden;
+    }
+
+    .accordion-header {
+      cursor: pointer;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      user-select: none;
+      position: relative;
+    }
+
+    .accordion-header::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(126, 186, 255, 0.16), transparent 40%);
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .accordion-header:hover::before {
+      opacity: 1;
+    }
+
+    .accordion-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #f2f6ff;
+      letter-spacing: 0.03em;
+    }
+
+    .accordion-subtitle {
+      font-size: 0.82rem;
+      color: #c0d6ff;
+      opacity: 0.95;
+    }
+
+    .accordion-header-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .accordion-icon {
+      flex-shrink: 0;
+      height: 24px;
+      width: 24px;
+      border-radius: 999px;
+      border: 1px solid rgba(173, 205, 255, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      color: #f5f8ff;
+      background: radial-gradient(circle at 30% 20%, #7eb4ff, #295ca8);
+      box-shadow:
+        0 0 12px rgba(102, 170, 255, 0.9),
+        0 0 22px rgba(55, 124, 224, 0.95);
+      transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+    }
+
+    .accordion-item.active .accordion-icon {
+      transform: rotate(90deg);
+      background: radial-gradient(circle at 30% 20%, #a5c9ff, #3b7ede);
+      box-shadow:
+        0 0 14px rgba(154, 199, 255, 0.9),
+        0 0 26px rgba(73, 145, 245, 0.95);
+    }
+
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease, opacity 0.3s ease;
+      opacity: 0;
+      background: linear-gradient(135deg, #101d35, #0a1423);
+      border-top: 1px solid rgba(108, 163, 245, 0.55);
+    }
+
+    .accordion-inner {
+      padding: 18px 22px 20px;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: #dce7ff;
+    }
+
+    .accordion-item.active .accordion-content {
+      opacity: 1;
+    }
+
+    .accordion-inner h3 {
+      font-size: 1.02rem;
+      margin: 10px 0 6px;
+      color: #f5f8ff;
+    }
+
+    .accordion-inner p {
+      margin-bottom: 8px;
+    }
+
+    .accordion-inner ul {
+      margin: 4px 0 12px 18px;
+      padding-left: 4px;
+    }
+
+    .accordion-inner li {
+      margin-bottom: 4px;
+    }
+
+    .tag-line {
+      font-size: 0.85rem;
+      color: #9eb9ff;
+      margin-bottom: 6px;
+    }
+
+    .prompt-example {
+      font-size: 0.9rem;
+      margin: 6px 0 10px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, rgba(75, 123, 196, 0.45), rgba(10, 26, 58, 0.95));
+      border: 1px solid rgba(145, 189, 255, 0.7);
+      color: #e9f2ff;
+    }
+
+    .prompt-example strong {
+      color: #ffffff;
+    }
+
+    /* Arabic container */
+    #content-ar {
+      direction: rtl;
+      text-align: right;
+    }
+
+    #content-ar .accordion-inner ul {
+      margin: 4px 18px 12px 0;
+      padding-left: 0;
+      padding-right: 4px;
+    }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 768px) {
+      .page-wrapper {
+        padding: 20px 16px 24px;
+      }
+
+      .header {
+        flex-direction: row;
+        align-items: center;
+      }
+
+      .session-title {
+        font-size: 1.3rem;
+        letter-spacing: 0.06em;
+      }
+
+      .accordion-inner {
+        padding: 16px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+
+      .session-title {
+        text-align: left;
+        width: 100%;
+      }
+
+      .logo-wrapper img {
+        height: 52px;
+      }
+
+      .lang-toggle-btn {
+        align-self: flex-end;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrapper">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo-wrapper">
+        <img
+          src="https://github.com/Abeerahmedwafa123/Mental-Math-/raw/main/Edu%20Logo%20White.png"
+          alt="Edulixa Logo"
+        />
+      </div>
+      <div class="session-title">SESSION 7</div>
+      <button id="langToggle" class="lang-toggle-btn">Translate to Arabic</button>
+    </header>
+
+    <!-- ENGLISH CONTENT -->
+    <div id="content-en">
+      <!-- Intro -->
+      <section class="intro">
+        <h2>Google AI Studio – Podcast, MovieCast & Gemini Live</h2>
+        <p>
+          Use these collapsable panels to guide students step by step: first
+          create a <strong>Podcast</strong>, then transform it into a
+          <strong>MovieCast</strong>, and finally use
+          <strong>Gemini Live</strong> with Talk, Webcam, and Share Screen for interactive learning.
+        </p>
+      </section>
+
+      <!-- Accordion Panels -->
+      <section class="accordion">
+        <!-- Panel 1: Podcast -->
+        <article class="accordion-item active">
+          <div class="accordion-header">
+            <div class="accordion-header-text">
+              <div class="accordion-title">1. Creating a Podcast in Google AI Studio</div>
+              <div class="accordion-subtitle">From text or PDF to a clear, student-friendly audio episode</div>
+            </div>
+            <div class="accordion-icon">›</div>
+          </div>
+          <div class="accordion-content">
+            <div class="accordion-inner">
+              <p class="tag-line">
+                Goal: Turn any chapter, text, or summary into a short, clear podcast with two speakers.
+              </p>
+
+              <h3>Step 1 – Start a New Podcast Project</h3>
+              <ul>
+                <li>Open <strong>Google AI Studio</strong>.</li>
+                <li>Click <strong>Create New → Podcast</strong>.</li>
+                <li>Give the project a clear name (e.g., <em>Chapter 1 – Overview Podcast</em>).</li>
+              </ul>
+
+              <h3>Step 2 – Add Your Script or Text</h3>
+              <ul>
+                <li>Paste text from a book, lesson notes, or your own summary; <strong>or</strong></li>
+                <li>Upload a PDF and let the AI extract key content.</li>
+              </ul>
+              <div class="prompt-example">
+                <strong>Useful prompts:</strong><br />
+                • “Create a 2-minute podcast explaining this chapter.”<br />
+                • “Write a dialogue between Presenter 1 and Presenter 2.”<br />
+                • “Make the tone friendly, clear, and suitable for students.”
+              </div>
+
+              <h3>Step 3 – Choose the Voices</h3>
+              <ul>
+                <li>Select a voice for <strong>Speaker 1</strong> and another for <strong>Speaker 2</strong>.</li>
+                <li>Choose the tone: calm, energetic, academic, storytelling, etc.</li>
+              </ul>
+
+              <h3>Step 4 – Run, Preview, and Download</h3>
+              <ul>
+                <li>Click <strong>Run</strong> to generate the full podcast.</li>
+                <li>Click <strong>Play</strong> to listen and check clarity and length.</li>
+                <li>If you are happy with it, click <strong>Download / Export</strong> to save it as MP3 or share the link.</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <!-- Panel 2: MovieCast -->
+        <article class="accordion-item">
+          <div class="accordion-header">
+            <div class="accordion-header-text">
+              <div class="accordion-title">2. Creating a MovieCast in Google AI Studio</div>
+              <div class="accordion-subtitle">Extend your podcast into a short educational video</div>
+            </div>
+            <div class="accordion-icon">›</div>
+          </div>
+          <div class="accordion-content">
+            <div class="accordion-inner">
+              <p class="tag-line">
+                Goal: Turn the finished podcast script into a short MovieCast with audio and visuals.
+              </p>
+
+              <h3>Step 1 – Start a New MovieCast</h3>
+              <ul>
+                <li>In <strong>Google AI Studio</strong>, click <strong>Create New → MovieCast</strong>.</li>
+                <li>Name it clearly (e.g., <em>Chapter 1 – MovieCast Summary</em>).</li>
+              </ul>
+
+              <h3>Step 2 – Add or Convert the Script</h3>
+              <ul>
+                <li>Paste the podcast script into the MovieCast editor; or</li>
+                <li>Ask AI Studio to convert it for you.</li>
+              </ul>
+              <div class="prompt-example">
+                <strong>Conversion prompts:</strong><br />
+                • “Turn my podcast script into a MovieCast script.”<br />
+                • “Create a 1-minute video-style explanation based on this text.”<br />
+                • “Add simple visual descriptions for each main part.”
+              </div>
+
+              <h3>Step 3 – Run, Preview, and Download</h3>
+              <ul>
+                <li>Click <strong>Run</strong> to generate the MovieCast.</li>
+                <li>Watch the preview to check timing, visuals, and narration.</li>
+                <li>Click <strong>Download</strong> to export it as MP4, or share it with your class.</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <!-- Panel 3: Gemini Live -->
+        <article class="accordion-item">
+          <div class="accordion-header">
+            <div class="accordion-header-text">
+              <div class="accordion-title">3. Using Gemini Live – Talk, Webcam & Share Screen</div>
+              <div class="accordion-subtitle">Real-time interaction with Gemini 2.5 Flash Native Audio</div>
+            </div>
+            <div class="accordion-icon">›</div>
+          </div>
+          <div class="accordion-content">
+            <div class="accordion-inner">
+              <p class="tag-line">
+                Goal: Use Gemini Live for instant explanations and interactive demonstrations with audio and video.
+              </p>
+
+              <h3>Step 1 – Open the Live Tab</h3>
+              <ul>
+                <li>At the top of Google AI Studio, click the <strong>Live</strong> tab.</li>
+                <li>From the cards, choose <strong>“Gemini 2.5 Flash Native Audio Preview”</strong>.</li>
+                <li>You will see the screen titled <strong>“Talk to Gemini live”</strong> with three buttons: <em>Talk</em>, <em>Webcam</em>, and <em>Share Screen</em>.</li>
+              </ul>
+
+              <h3>Step 2 – Talk</h3>
+              <p><strong>Talk</strong> starts a live voice conversation with Gemini.</p>
+              <ul>
+                <li>Click <strong>Talk</strong>, then allow microphone access if asked.</li>
+                <li>Speak naturally; Gemini replies with fluent, real-time audio.</li>
+                <li>Use it to ask for summaries, explanations, ideas, or feedback while you work.</li>
+              </ul>
+
+              <h3>Step 3 – Webcam</h3>
+              <p><strong>Webcam</strong> lets Gemini see you and anything you show to the camera.</p>
+              <ul>
+                <li>Click <strong>Webcam</strong>, then allow camera access.</li>
+                <li>Hold up a book page, worksheet, or object while you talk.</li>
+                <li>Use it to record a short explanation or to make the session more personal and visual for students.</li>
+              </ul>
+
+              <h3>Step 4 – Share Screen</h3>
+              <p><strong>Share Screen</strong> allows Gemini to see your browser tab, window, or entire screen.</p>
+              <ul>
+                <li>Click <strong>Share Screen</strong> and choose what you want to share.</li>
+                <li>Show a PDF, slides, a mind map, or a website while asking questions.</li>
+                <li>Use it to walk through a chapter, highlight key points, or demonstrate how to complete a task.</li>
+              </ul>
+
+              <p>
+                Students can combine these tools to discuss a text live,
+                show their work, and get instant support from Gemini during reading, analysis, or project work.
+              </p>
+            </div>
+          </div>
+        </article>
+      </section>
+    </div>
+
+    <!-- ARABIC CONTENT -->
+    <div id="content-ar" style="display:none;">
+      <!-- Intro AR -->
+      <section class="intro">
+        <h2>Google AI Studio – البودكاست وموفي كاست وGemini Live</h2>
+        <p>
+          استخدم هذه الألواح القابلة للطي لتوجيه الطلاب خطوة بخطوة: أولاً
+          إنشاء <strong>بودكاست</strong>، ثم تحويله إلى <strong>MovieCast</strong>،
+          ثم استخدام <strong>Gemini Live</strong> مع Talk وWebcam وShare Screen
+          لتعلم تفاعلي حي.
+        </p>
+      </section>
+
+      <!-- Accordion Panels AR -->
+      <section class="accordion">
+        <!-- Panel 1 AR: Podcast -->
+        <article class="accordion-item active">
+          <div class="accordion-header">
+            <div class="accordion-header-text">
+              <div class="accordion-title">١. إنشاء بودكاست في Google AI Studio</div>
+              <div class="accordion-subtitle">من نص أو ملف PDF إلى حلقة صوتية واضحة للطلاب</div>
+            </div>
+            <div class="accordion-icon">›</div>
+          </div>
+          <div class="accordion-content">
+            <div class="accordion-inner">
+              <p class="tag-line">
+                الهدف: تحويل أي فصل أو نص أو ملخص إلى بودكاست قصير وواضح بصوتين.
+              </p>
+
+              <h3>الخطوة ١ – بدء مشروع بودكاست جديد</h3>
+              <ul>
+                <li>افتح <strong>Google AI Studio</strong>.</li>
+                <li>اضغط <strong>إنشاء جديد → Podcast</strong>.</li>
+                <li>اختر اسمًا واضحًا للمشروع (مثلاً: <em>الفصل الأول – بودكاست ملخص</em>).</li>
+              </ul>
+
+              <h3>الخطوة ٢ – إضافة النص أو السكربت</h3>
+              <ul>
+                <li>الصق نصًّا من الكتاب أو من ملاحظات الدرس أو من ملخصك؛ <strong>أو</strong></li>
+                <li>ارفع ملف PDF ودع الذكاء الاصطناعي يستخرج أهم الأفكار.</li>
+              </ul>
+              <div class="prompt-example">
+                <strong>أمثلة على أوامر مفيدة:</strong><br />
+                • «أنشئ بودكاست مدته دقيقتان يشرح هذا الفصل.»<br />
+                • «اكتب حوارًا بين المقدم ١ والمقدم ٢.»<br />
+                • «اجعل النبرة ودية وواضحة ومناسبة للطلاب.»
+              </div>
+
+              <h3>الخطوة ٣ – اختيار الأصوات</h3>
+              <ul>
+                <li>اختر صوتًا لـ<strong>المتحدث ١</strong> وصوتًا آخر لـ<strong>المتحدث ٢</strong>.</li>
+                <li>اختر النبرة: هادئة، حماسية، أكاديمية، قصصية… إلخ.</li>
+              </ul>
+
+              <h3>الخطوة ٤ – التشغيل والمعاينة والتنزيل</h3>
+              <ul>
+                <li>اضغط على <strong>Run</strong> لإنشاء البودكاست بالكامل.</li>
+                <li>اضغط على <strong>Play</strong> للاستماع والتأكد من الوضوح والطول المناسب.</li>
+                <li>إذا كنت راضيًا عن النتيجة، اضغط <strong>Download / Export</strong> لتنزيل الملف بصيغة MP3 أو لمشاركة الرابط مع الطلاب.</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <!-- Panel 2 AR: MovieCast -->
+        <article class="accordion-item">
+          <div class="accordion-header">
+            <div class="accordion-header-text">
+              <div class="accordion-title">٢. إنشاء MovieCast في Google AI Studio</div>
+              <div class="accordion-subtitle">تطوير البودكاست إلى فيديو تعليمي قصير</div>
+            </div>
+            <div class="accordion-icon">›</div>
+          </div>
+          <div class="accordion-content">
+            <div class="accordion-inner">
+              <p class="tag-line">
+                الهدف: تحويل سكربت البودكاست الجاهز إلى MovieCast يحتوي على صوت وصور.
+              </p>
+
+              <h3>الخطوة ١ – بدء MovieCast جديد</h3>
+              <ul>
+                <li>من داخل <strong>Google AI Studio</strong> اضغط <strong>إنشاء جديد → MovieCast</strong>.</li>
+                <li>اختر اسمًا واضحًا (مثلاً: <em>الفصل الأول – ملخص MovieCast</em>).</li>
+              </ul>
+
+              <h3>الخطوة ٢ – إضافة السكربت أو تحويله</h3>
+              <ul>
+                <li>الصق سكربت البودكاست في محرر MovieCast؛ أو</li>
+                <li>اطلب من الذكاء الاصطناعي أن يحوله لك تلقائيًا.</li>
+              </ul>
+              <div class="prompt-example">
+                <strong>أوامر مقترحة:</strong><br />
+                • «حوّل سكربت البودكاست هذا إلى سكربت MovieCast.»<br />
+                • «أنشئ فيديو توضيحيًا مدته دقيقة واحدة اعتمادًا على هذا النص.»<br />
+                • «أضف وصفًا بصريًا بسيطًا لكل جزء رئيسي.»
+              </div>
+
+              <h3>الخطوة ٣ – التشغيل والمعاينة والتنزيل</h3>
+              <ul>
+                <li>اضغط <strong>Run</strong> لإنشاء الـ MovieCast.</li>
+                <li>شاهد المعاينة للتحقق من التوقيت والصور والسرد الصوتي.</li>
+                <li>اضغط <strong>Download</strong> لتنزيل الفيديو بصيغة MP4 أو لمشاركته مع الصف.</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <!-- Panel 3 AR: Gemini Live -->
+        <article class="accordion-item">
+          <div class="accordion-header">
+            <div class="accordion-header-text">
+              <div class="accordion-title">٣. استخدام Gemini Live – Talk وWebcam وShare Screen</div>
+              <div class="accordion-subtitle">تفاعل حي مع نموذج Gemini 2.5 Flash Native Audio</div>
+            </div>
+            <div class="accordion-icon">›</div>
+          </div>
+          <div class="accordion-content">
+            <div class="accordion-inner">
+              <p class="tag-line">
+                الهدف: استخدام Gemini Live للحصول على شروح فورية وعروض تفاعلية بالصوت والصورة.
+              </p>
+
+              <h3>الخطوة ١ – فتح تبويب Live</h3>
+              <ul>
+                <li>في أعلى واجهة Google AI Studio اضغط على تبويب <strong>Live</strong>.</li>
+                <li>من البطاقات الظاهرة اختر <strong>«Gemini 2.5 Flash Native Audio Preview»</strong>.</li>
+                <li>ستظهر شاشة بعنوان <strong>«Talk to Gemini live»</strong> وبها ثلاثة أزرار: <em>Talk</em> و<em>Webcam</em> و<em>Share Screen</em>.</li>
+              </ul>
+
+              <h3>الخطوة ٢ – زر Talk</h3>
+              <p><strong>Talk</strong> يبدأ محادثة صوتية مباشرة مع Gemini.</p>
+              <ul>
+                <li>اضغط <strong>Talk</strong> ثم اسمح بالوصول إلى الميكروفون إذا طُلب منك ذلك.</li>
+                <li>تحدّث بشكل طبيعي؛ سيرد Gemini بصوت حي وفوري.</li>
+                <li>يمكنك استخدامه لطلب ملخصات، أو شرح فكرة، أو اقتراحات ونصائح أثناء العمل.</li>
+              </ul>
+
+              <h3>الخطوة ٣ – زر Webcam</h3>
+              <p><strong>Webcam</strong> يسمح لـ Gemini برؤيتك ورؤية ما تعرضه أمام الكاميرا.</p>
+              <ul>
+                <li>اضغط <strong>Webcam</strong> ثم اسمح بالوصول إلى الكاميرا.</li>
+                <li>اعرض صفحة من كتاب، أو ورقة عمل، أو أي شيء تريد شرحه أثناء التحدث.</li>
+                <li>مفيد لتسجيل مقدمة أو شرح قصير يجعل الدرس أكثر إنسانية وبصرية للطلاب.</li>
+              </ul>
+
+              <h3>الخطوة ٤ – زر Share Screen</h3>
+              <p><strong>Share Screen</strong> يتيح لـ Gemini مشاهدة شاشة جهازك.</p>
+              <ul>
+                <li>اضغط <strong>Share Screen</strong> واختر علامة التبويب أو النافذة أو الشاشة الكاملة التي تريد مشاركتها.</li>
+                <li>اعرض ملف PDF أو عرض شرائح أو خريطة ذهنية أو موقع ويب واطرح أسئلتك في نفس الوقت.</li>
+                <li>استخدمه لاستعراض فصل، أو تظليل النقاط المهمة، أو توضيح خطوات حلّ مهمة أو تمرين.</li>
+              </ul>
+
+              <p>
+                يمكن للطلاب الجمع بين هذه الأدوات للتحدث عن النص بشكل حي،
+                وعرض أعمالهم، والحصول على دعم فوري من Gemini أثناء القراءة أو التحليل أو العمل على المشاريع.
+              </p>
+            </div>
+          </div>
+        </article>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    // Accordion logic (for both EN and AR sections)
+    function initAccordions(root) {
+      const items = root.querySelectorAll(".accordion-item");
+
+      items.forEach((item) => {
+        const header = item.querySelector(".accordion-header");
+        const content = item.querySelector(".accordion-content");
+
+        if (item.classList.contains("active")) {
+          content.style.maxHeight = content.scrollHeight + "px";
+        }
+
+        header.addEventListener("click", () => {
+          const isActive = item.classList.contains("active");
+
+          items.forEach((other) => {
+            if (other !== item) {
+              other.classList.remove("active");
+              const otherContent = other.querySelector(".accordion-content");
+              if (otherContent) {
+                otherContent.style.maxHeight = null;
+              }
+            }
+          });
+
+          if (!isActive) {
+            item.classList.add("active");
+            content.style.maxHeight = content.scrollHeight + "px";
+          } else {
+            item.classList.remove("active");
+            content.style.maxHeight = null;
+          }
+        });
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const contentEn = document.getElementById("content-en");
+      const contentAr = document.getElementById("content-ar");
+      const langToggle = document.getElementById("langToggle");
+      let currentLang = "en";
+
+      initAccordions(contentEn);
+      initAccordions(contentAr);
+
+      langToggle.addEventListener("click", () => {
+        if (currentLang === "en") {
+          contentEn.style.display = "none";
+          contentAr.style.display = "block";
+          langToggle.textContent = "Back to English";
+          currentLang = "ar";
+        } else {
+          contentAr.style.display = "none";
+          contentEn.style.display = "block";
+          langToggle.textContent = "Translate to Arabic";
+          currentLang = "en";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

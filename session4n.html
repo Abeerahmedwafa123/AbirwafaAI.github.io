@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Session 4 – ROSE Assessment Builder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --primary: #1e6ba8;
+      --primary-dark: #154a73;
+      --accent: #5bc0be;
+      --panel-bg: #ffffff;
+      --border: #d0d7e2;
+      --shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont,
+        "Roboto", sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #e4effa 0, #f5f7fb 35%, #ffffff 100%);
+      color: #1b2440;
+      padding: 24px;
+      transition: direction 0.3s ease, text-align 0.3s ease;
+    }
+
+    body.rtl {
+      direction: rtl;
+      text-align: right;
+    }
+
+    .page-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 24px 24px 32px;
+      border: 1px solid #e2e6f0;
+      backdrop-filter: blur(6px);
+    }
+
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .logo-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-title img {
+      height: 56px;
+      width: auto;
+      border-radius: 12px;
+      background: #ffffff;
+      padding: 6px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    }
+
+    .titles {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    #page-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+
+    #page-subtitle {
+      font-size: 0.98rem;
+      color: #4a5b7a;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    .btn {
+      border: none;
+      cursor: pointer;
+      padding: 9px 16px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.2s ease, transform 0.15s ease,
+        box-shadow 0.2s ease;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(21, 74, 115, 0.35);
+    }
+
+    .btn span.icon {
+      font-size: 1.1rem;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(21, 74, 115, 0.45);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+      box-shadow: 0 3px 8px rgba(21, 74, 115, 0.3);
+    }
+
+    .intro {
+      margin-bottom: 18px;
+      border-radius: 14px;
+      padding: 12px 14px;
+      background: linear-gradient(
+        135deg,
+        rgba(94, 196, 198, 0.14),
+        rgba(198, 215, 252, 0.18)
+      );
+      border: 1px solid rgba(149, 180, 219, 0.6);
+      font-size: 0.92rem;
+      color: #2f3a55;
+    }
+
+    .intro strong {
+      color: var(--primary-dark);
+    }
+
+    .panels-container {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .panel {
+      border-radius: 14px;
+      background: var(--panel-bg);
+      border: 1px solid var(--border);
+      box-shadow: 0 6px 14px rgba(16, 35, 75, 0.05);
+      overflow: hidden;
+    }
+
+    .panel-header {
+      width: 100%;
+      background: linear-gradient(
+        135deg,
+        rgba(30, 107, 168, 0.06),
+        rgba(91, 192, 190, 0.06)
+      );
+      border: none;
+      padding: 12px 16px;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      font-size: 0.98rem;
+      font-weight: 600;
+      color: #1f3055;
+    }
+
+    body.rtl .panel-header {
+      text-align: right;
+    }
+
+    .panel-header span.title {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .panel-header span.badge {
+      font-size: 0.78rem;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(30, 107, 168, 0.08);
+      color: #35527a;
+      border: 1px solid rgba(30, 107, 168, 0.18);
+    }
+
+    .panel-header .chevron {
+      font-size: 0.9rem;
+      transition: transform 0.2s ease;
+      color: #627197;
+    }
+
+    .panel-header.active .chevron {
+      transform: rotate(90deg);
+    }
+
+    body.rtl .panel-header.active .chevron {
+      transform: rotate(-90deg);
+    }
+
+    .panel-content {
+      max-height: 0;
+      overflow: hidden;
+      padding: 0 16px;
+      background: #ffffff;
+      transition: max-height 0.25s ease, padding-top 0.25s ease,
+        padding-bottom 0.25s ease;
+      border-top: 1px solid rgba(222, 227, 239, 0.8);
+    }
+
+    .panel-content.open {
+      padding-top: 12px;
+      padding-bottom: 14px;
+    }
+
+    .panel-inner {
+      font-size: 0.92rem;
+      color: #2a3550;
+      line-height: 1.6;
+    }
+
+    .panel-inner h4 {
+      font-size: 0.96rem;
+      margin-bottom: 6px;
+      color: var(--primary-dark);
+    }
+
+    .panel-inner p {
+      margin-bottom: 8px;
+    }
+
+    .panel-inner ul {
+      margin: 6px 0 4px;
+      padding-left: 18px;
+    }
+
+    body.rtl .panel-inner ul {
+      padding-left: 0;
+      padding-right: 18px;
+    }
+
+    .panel-inner li {
+      margin-bottom: 4px;
+    }
+
+    .pill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 2px;
+      margin-bottom: 6px;
+    }
+
+    .pill {
+      font-size: 0.8rem;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #eef3fc;
+      color: #38527b;
+      border: 1px solid #d2ddf3;
+    }
+
+    @media (max-width: 720px) {
+      .top-bar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .controls {
+        width: 100%;
+        justify-content: flex-start;
+      }
+
+      .page-container {
+        padding: 18px 16px 24px;
+      }
+
+      .panel-header {
+        font-size: 0.94rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-container">
+    <div class="top-bar">
+      <div class="logo-title">
+        <img
+          src="https://raw.githubusercontent.com/Abeerahmedwafa123/Mental-Math-/main/Edu-Logo%20(1).png"
+          alt="Edulixa Logo"
+        />
+        <div class="titles">
+          <div id="page-title">
+            Session 4 – Creating a Standardised Assessment Using AI (ROSE Framework)
+          </div>
+          <div id="page-subtitle">
+            From prompt design to grading, feedback, parent reports, and action plans.
+          </div>
+        </div>
+      </div>
+      <div class="controls">
+        <button id="lang-toggle" class="btn">
+          <span class="icon">🌐</span>
+          <span id="lang-toggle-label">Translate to Arabic</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="intro" id="intro-text">
+      <strong>Goal of Session 4:</strong> Learn how to use the ROSE framework to
+      write a powerful AI prompt that creates a standardised exam, generates a
+      mark scheme, grades student work, and produces clear parent reports and
+      action plans.
+    </div>
+
+    <div class="panels-container">
+      <!-- Panel 1 -->
+      <div class="panel">
+        <button class="panel-header">
+          <span class="title">
+            <span class="badge" id="panel1-badge">Step 1</span>
+            <span id="panel1-title">Overview & Learning Objectives</span>
+          </span>
+          <span class="chevron">▶</span>
+        </button>
+        <div class="panel-content">
+          <div class="panel-inner" id="panel1-body"></div>
+        </div>
+      </div>
+
+      <!-- Panel 2 -->
+      <div class="panel">
+        <button class="panel-header">
+          <span class="title">
+            <span class="badge" id="panel2-badge">Step 2</span>
+            <span id="panel2-title">ROSE Framework for Writing the Prompt</span>
+          </span>
+          <span class="chevron">▶</span>
+        </button>
+        <div class="panel-content">
+          <div class="panel-inner" id="panel2-body"></div>
+        </div>
+      </div>
+
+      <!-- Panel 3 -->
+      <div class="panel">
+        <button class="panel-header">
+          <span class="title">
+            <span class="badge" id="panel3-badge">Step 3</span>
+            <span id="panel3-title">Creating the Standardised Exam</span>
+          </span>
+          <span class="chevron">▶</span>
+        </button>
+        <div class="panel-content">
+          <div class="panel-inner" id="panel3-body"></div>
+        </div>
+      </div>
+
+      <!-- Panel 4 -->
+      <div class="panel">
+        <button class="panel-header">
+          <span class="title">
+            <span class="badge" id="panel4-badge">Step 4</span>
+            <span id="panel4-title">Generating the Mark Scheme with AI</span>
+          </span>
+          <span class="chevron">▶</span>
+        </button>
+        <div class="panel-content">
+          <div class="panel-inner" id="panel4-body"></div>
+        </div>
+      </div>
+
+      <!-- Panel 5 -->
+      <div class="panel">
+        <button class="panel-header">
+          <span class="title">
+            <span class="badge" id="panel5-badge">Step 5</span>
+            <span id="panel5-title">
+              Uploading Student Answers & Grading with AI
+            </span>
+          </span>
+          <span class="chevron">▶</span>
+        </button>
+        <div class="panel-content">
+          <div class="panel-inner" id="panel5-body"></div>
+        </div>
+      </div>
+
+      <!-- Panel 6 -->
+      <div class="panel">
+        <button class="panel-header">
+          <span class="title">
+            <span class="badge" id="panel6-badge">Step 6</span>
+            <span id="panel6-title">Writing a Parent Report Using AI</span>
+          </span>
+          <span class="chevron">▶</span>
+        </button>
+        <div class="panel-content">
+          <div class="panel-inner" id="panel6-body"></div>
+        </div>
+      </div>
+
+      <!-- Panel 7 -->
+      <div class="panel">
+        <button class="panel-header">
+          <span class="title">
+            <span class="badge" id="panel7-badge">Step 7</span>
+            <span id="panel7-title">Creating a Personalised Action Plan</span>
+          </span>
+          <span class="chevron">▶</span>
+        </button>
+        <div class="panel-content">
+          <div class="panel-inner" id="panel7-body"></div>
+        </div>
+      </div>
+
+      <!-- Panel 8 -->
+      <div class="panel">
+        <button class="panel-header">
+          <span class="title">
+            <span class="badge" id="panel8-badge">Step 8</span>
+            <span id="panel8-title">Final Student Deliverables</span>
+          </span>
+          <span class="chevron">▶</span>
+        </button>
+        <div class="panel-content">
+          <div class="panel-inner" id="panel8-body"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ---------- TRANSLATIONS ----------
+    const translations = {
+      en: {
+        "page-title":
+          "Session 4 – Creating a Standardised Assessment Using AI (ROSE Framework)",
+        "page-subtitle":
+          "From prompt design to grading, feedback, parent reports, and action plans.",
+        "lang-toggle-label": "Translate to Arabic",
+        "intro-text":
+          "<strong>Goal of Session 4:</strong> Learn how to use the ROSE framework to write a powerful AI prompt that creates a standardised exam, generates a mark scheme, grades student work, and produces clear parent reports and action plans.",
+        "panel1-badge": "Step 1",
+        "panel1-title": "Overview & Learning Objectives",
+        "panel1-body": `
+          <p>In this session, you will learn how to ask AI to behave like a professional assessor (Cambridge, SAT, ESL, or national curriculum) and to build a full assessment system for you.</p>
+          <h4>By the end of Session 4, you will be able to:</h4>
+          <ul>
+            <li>Write a clear ROSE prompt that assigns a professional role to the AI.</li>
+            <li>Create a standardised exam based on a blueprint or previous exam.</li>
+            <li>Ask AI to generate a detailed mark scheme.</li>
+            <li>Upload student answers for AI grading and feedback.</li>
+            <li>Produce a parent-friendly report and an action plan for weak skills.</li>
+          </ul>
+        `,
+        "panel2-badge": "Step 2",
+        "panel2-title": "ROSE Framework for Writing the Prompt",
+        "panel2-body": `
+          <h4>ROSE = Role – Objective – Steps – Examples</h4>
+          <p>Use ROSE to give AI a clear job, task, process, and model to follow.</p>
+          <ul>
+            <li><strong>R – Role:</strong> Ask AI to act as a <em>professional assessor</em>, such as:
+              <div class="pill-list">
+                <span class="pill">Cambridge Stage 6 Writing Assessor</span>
+                <span class="pill">SAT English Assessor</span>
+                <span class="pill">ESL B1/B2 Examiner</span>
+                <span class="pill">National Curriculum Exam Creator</span>
+              </div>
+            </li>
+            <li><strong>O – Objective:</strong> Tell AI the main goal: create a standardised exam based on a blueprint or a previous official exam.</li>
+            <li><strong>S – Steps:</strong> Explain which units to cover, what question types you want, and that it must also create a mark scheme.</li>
+            <li><strong>E – Examples:</strong> Upload or paste a <em>sample exam or question set</em> and tell the AI: “Follow this structure, level, and style when you create my new exam, and strictly abide by the blueprint and this example.” This keeps the new test aligned with a trusted model.</li>
+          </ul>
+          <p>You can combine the <strong>blueprint</strong> with one or two strong <strong>sample papers</strong> so that AI respects the marks distribution, question types, and depth of thinking.</p>
+        `,
+        "panel3-badge": "Step 3",
+        "panel3-title": "Creating the Standardised Exam",
+        "panel3-body": `
+          <p>After writing your ROSE prompt, you ask AI to build the exam itself.</p>
+          <h4>Key actions:</h4>
+          <ul>
+            <li>Select the correct <strong>blueprint or sample exam</strong> (Cambridge, SAT, ESL, or national curriculum).</li>
+            <li>Tell AI which <strong>units, skills, and learning outcomes</strong> the exam must assess.</li>
+            <li>Ask for a mix of <strong>MCQs, short-answer questions, and an extended writing task</strong> that follow the blueprint.</li>
+            <li>Ask AI to <strong>check the exam</strong> for balance in difficulty, clarity, and fairness.</li>
+          </ul>
+          <p>You can then review and refine the exam with follow-up prompts (for example: “make one reading text easier” or “add higher-order questions”).</p>
+        `,
+        "panel4-badge": "Step 4",
+        "panel4-title": "Generating the Mark Scheme with AI",
+        "panel4-body": `
+          <p>Now you turn the AI into a marking expert that knows the criteria and bands.</p>
+          <h4>Ask AI to provide:</h4>
+          <ul>
+            <li><strong>Correct answers</strong> and short explanations for MCQs.</li>
+            <li><strong>Sample answers</strong> for short-response questions.</li>
+            <li>A <strong>banded rubric</strong> for writing based on the chosen system (e.g., Cambridge criteria, SAT rubric, or ESL levels).</li>
+            <li><strong>Common errors and common strengths</strong> so you can predict where students may struggle.</li>
+          </ul>
+          <p>This mark scheme will later be used when you upload student work for automatic grading and feedback.</p>
+        `,
+        "panel5-badge": "Step 5",
+        "panel5-title": "Uploading Student Answers & Grading with AI",
+        "panel5-body": `
+          <p>Once the exam is ready and the mark scheme is clear, you can upload or paste students’ answers.</p>
+          <h4>What AI should do at this stage:</h4>
+          <ul>
+            <li><strong>Grade each response</strong> according to the mark scheme and assign a score.</li>
+            <li>Highlight <strong>strength points</strong>: good vocabulary, clear structure, strong ideas, correct grammar, etc.</li>
+            <li>Highlight <strong>weak points</strong>: missing genre features, repeated grammar errors, weak organisation, limited vocabulary, etc.</li>
+            <li>Summarise the overall performance in clear, teacher-style language.</li>
+          </ul>
+          <p>Students can compare AI marking with human marking to understand consistency and criteria.</p>
+        `,
+        "panel6-badge": "Step 6",
+        "panel6-title": "Writing a Parent Report Using AI",
+        "panel6-body": `
+          <p>After grading, AI can help you turn technical feedback into a simple, respectful parent report.</p>
+          <h4>The parent report should include:</h4>
+          <ul>
+            <li>A short <strong>overview of the assessment</strong>: what skills were tested and how many marks.</li>
+            <li>2–3 clear <strong>strengths</strong> in the student’s performance.</li>
+            <li>2–3 <strong>areas for improvement</strong>, written in positive, growth-focused language.</li>
+            <li><strong>Teacher recommendations</strong> for home practice (reading, writing, speaking, or revision activities).</li>
+          </ul>
+          <p>You can ask AI to adjust the tone (more formal or more friendly) depending on the school context.</p>
+        `,
+        "panel7-badge": "Step 7",
+        "panel7-title": "Creating a Personalised Action Plan",
+        "panel7-body": `
+          <p>After AI has <strong>analysed the whole exam</strong> (scores, strengths, and weaknesses), you can ask it to generate a personalised action plan that directly addresses the student’s needs.</p>
+          <h4>Use AI to build a SMART action plan:</h4>
+          <ul>
+            <li><strong>Specific:</strong> name the exact skill (e.g., “using past tense accurately”).</li>
+            <li><strong>Measurable:</strong> define what success looks like (e.g., “80% accuracy in the next quiz”).</li>
+            <li><strong>Achievable:</strong> realistic for the student’s level and time.</li>
+            <li><strong>Relevant:</strong> linked to the exam criteria and real needs.</li>
+            <li><strong>Time-bound:</strong> set a clear time frame (e.g., “within 4 weeks”).</li>
+          </ul>
+          <p>You can also ask AI to <strong>enrich the worksheet</strong> with extra practice that matches those needs, for example:</p>
+          <ul>
+            <li>Additional <strong>MCQs</strong> targeting specific grammar or vocabulary problems.</li>
+            <li><strong>Short-answer questions</strong> to improve reading comprehension and inference.</li>
+            <li><strong>Guided writing prompts</strong> to practise organisation, cohesion, and genre features.</li>
+            <li>Mixed-skill <strong>review tasks</strong> that bring together multiple weak areas in one mini-worksheet.</li>
+          </ul>
+          <p>AI can organise this into a small table with targets, practice ideas, and checkpoints that teachers and parents can follow.</p>
+        `,
+        "panel8-badge": "Step 8",
+        "panel8-title": "Final Student Deliverables",
+        "panel8-body": `
+          <p>By the end of the project, each student (or teacher-in-training) should be able to produce a complete AI-supported assessment package.</p>
+          <h4>Final outputs:</h4>
+          <ul>
+            <li>A strong <strong>ROSE prompt</strong> assigning AI a professional assessor role and including a sample exam as an example.</li>
+            <li>A full <strong>standardised exam</strong> based on a real blueprint or past paper.</li>
+            <li>A detailed <strong>mark scheme</strong> with bands, sample answers, and error predictions.</li>
+            <li><strong>Graded student responses</strong> with clear comments on strengths and weaknesses.</li>
+            <li>A concise <strong>parent report</strong> summarising performance.</li>
+            <li>A <strong>personalised action plan</strong> with SMART targets and extra practice questions to support future improvement.</li>
+          </ul>
+          <p>This workflow shows how AI can support professional assessment design while you stay in full control as the expert teacher.</p>
+        `,
+      },
+
+      ar: {
+        "page-title":
+          "الجلسة ٤ – إنشاء اختبار معياري باستخدام الذكاء الاصطناعي (إطار ROSE)",
+        "page-subtitle":
+          "من كتابة البرومبت إلى التصحيح، والتغذية الراجعة، وتقارير أولياء الأمور، وخطط العمل.",
+        "lang-toggle-label": "ترجمة إلى الإنجليزية",
+        "intro-text":
+          "<strong>هدف الجلسة ٤:</strong> تعلّم استخدام إطار ROSE لكتابة برومبت قوي يوجّه الذكاء الاصطناعي لإنشاء اختبار معياري، وبناء نموذج تصحيح، وتصحيح إجابات الطلاب، وإنتاج تقارير واضحة لأولياء الأمور وخطط عمل لتحسين الأداء.",
+        "panel1-badge": "الخطوة ١",
+        "panel1-title": "نظرة عامة وأهداف التعلّم",
+        "panel1-body": `
+          <p>في هذه الجلسة ستتعلّم كيف تطلب من الذكاء الاصطناعي أن يتصرّف كمقيّم محترف (كامبريدج، SAT، ESL أو المنهج الوطني) وأن يبني لك نظام تقييم متكامل.</p>
+          <h4>بنهاية الجلسة ٤ ستكون قادرًا على:</h4>
+          <ul>
+            <li>كتابة برومبت واضح باستخدام ROSE يعيّن دورًا احترافيًا للذكاء الاصطناعي.</li>
+            <li>إنشاء اختبار معياري مبني على مخطط توزيع الدرجات (Blueprint) أو اختبار معياري سابق.</li>
+            <li>طلب نموذج تصحيح تفصيلي من الذكاء الاصطناعي.</li>
+            <li>رفع إجابات الطلاب ليقوم الذكاء الاصطناعي بالتصحيح وإعطاء التغذية الراجعة.</li>
+            <li>إنتاج تقرير مبسّط لأولياء الأمور وخطة عمل لمعالجة نقاط الضعف.</li>
+          </ul>
+        `,
+        "panel2-badge": "الخطوة ٢",
+        "panel2-title": "إطار ROSE لكتابة البرومبت",
+        "panel2-body": `
+          <h4>ROSE = الدور (Role) – الهدف (Objective) – الخطوات (Steps) – الأمثلة (Examples)</h4>
+          <p>يُستخدم ROSE لتحديد وظيفة الذكاء الاصطناعي، والمهمة المطلوبة، وطريقة التنفيذ، ونموذج عملي يلتزم به.</p>
+          <ul>
+            <li><strong>R – الدور:</strong> اطلب من الذكاء الاصطناعي أن يعمل كمُقيّم محترف، مثل:
+              <div class="pill-list">
+                <span class="pill">مقيّم كتابة لمرحلة كامبريدج ٦</span>
+                <span class="pill">مصحّح امتحان SAT للإنجليزي</span>
+                <span class="pill">مختبر ESL لمستوى B1/B2</span>
+                <span class="pill">مصمّم اختبار للمنهج الوطني</span>
+              </div>
+            </li>
+            <li><strong>O – الهدف:</strong> حدّد الهدف الرئيسي بوضوح: إنشاء اختبار معياري مبني على Blueprint رسمي أو اختبار معتمد سابقًا.</li>
+            <li><strong>S – الخطوات:</strong> وضّح الوحدات التي يجب تغطيتها، وأنواع الأسئلة المطلوبة، وأن عليه أيضًا إنشاء نموذج تصحيح.</li>
+            <li><strong>E – الأمثلة:</strong> ارفع أو الصق <em>نموذجًا لاختبار أو ورقة أسئلة</em> واطلب من الذكاء الاصطناعي: “التزم بنفس البنية، والمستوى، والأسلوب عند إنشاء الاختبار الجديد، مع الالتزام بمخطط الدرجات وهذا المثال.” بذلك تضمن توافق الاختبار الجديد مع نموذج موثوق.</li>
+          </ul>
+          <p>يمكنك الجمع بين <strong>الـ Blueprint</strong> وواحد أو اثنين من <strong>الاختبارات النموذجية القوية</strong> حتى يحترم الذكاء الاصطناعي توزيع الدرجات وأنواع الأسئلة وعمق التفكير المطلوب.</p>
+        `,
+        "panel3-badge": "الخطوة ٣",
+        "panel3-title": "إنشاء الاختبار المعياري",
+        "panel3-body": `
+          <p>بعد كتابة برومبت ROSE، تطلب من الذكاء الاصطناعي أن يبني الاختبار نفسه.</p>
+          <h4>إجراءات أساسية:</h4>
+          <ul>
+            <li>اختيار <strong>الـ Blueprint أو الاختبار النموذجي</strong> المناسب (كامبريدج، SAT، ESL أو المنهج الوطني).</li>
+            <li>تحديد <strong>الوحدات، والمهارات، ونواتج التعلّم</strong> التي يجب أن يقيسها الاختبار.</li>
+            <li>طلب مزيج من <strong>أسئلة اختيار من متعدد، وأسئلة قصيرة، ومهمة كتابة ممتدة</strong> حسب المخطط.</li>
+            <li>طلب من الذكاء الاصطناعي <strong>مراجعة الاختبار</strong> من حيث مستوى الصعوبة، والوضوح، والعدالة.</li>
+          </ul>
+          <p>بعد ذلك يمكنك مراجعة الاختبار وتعديله من خلال برومبتات متابعة (مثل: “خفّف نص القراءة الأول” أو “أضف أسئلة تفكير أعلى”).</p>
+        `,
+        "panel4-badge": "الخطوة ٤",
+        "panel4-title": "إنشاء نموذج التصحيح باستخدام الذكاء الاصطناعي",
+        "panel4-body": `
+          <p>في هذه المرحلة تجعَل الذكاء الاصطناعي مقيّمًا خبيرًا يعرف المعايير ومستويات الأداء (Bands).</p>
+          <h4>اطلب من الذكاء الاصطناعي أن يوفّر:</h4>
+          <ul>
+            <li><strong>الإجابات الصحيحة</strong> مع تفسيرات قصيرة لأسئلة الاختيار من متعدد.</li>
+            <li><strong>إجابات نموذجية</strong> للأسئلة القصيرة.</li>
+            <li><strong>Rubric بمستويات درجات</strong> لمهام الكتابة حسب النظام المختار (مثلاً: معايير كامبريدج أو SAT أو ESL).</li>
+            <li><strong>أخطاء شائعة ونِقاط قوة متكررة</strong> حتى تتوقّع أين قد يواجه الطلاب صعوبة.</li>
+          </ul>
+          <p>سيُستخدم نموذج التصحيح لاحقًا عندما ترفع أعمال الطلاب ليتم تصحيحها تلقائيًا مع تقديم تغذية راجعة.</p>
+        `,
+        "panel5-badge": "الخطوة ٥",
+        "panel5-title": "رفع إجابات الطلاب والتصحيح باستخدام الذكاء الاصطناعي",
+        "panel5-body": `
+          <p>بعد تجهيز الاختبار ونموذج التصحيح، يمكنك رفع إجابات الطلاب (أو نسخها ولصقها).</p>
+          <h4>ما الذي يجب أن يفعله الذكاء الاصطناعي هنا:</h4>
+          <ul>
+            <li><strong>تصحيح كل إجابة</strong> وفق نموذج التصحيح وإعطاء درجة واضحة.</li>
+            <li>تحديد <strong>نِقاط القوة</strong> مثل: مفردات جيدة، تنظيم واضح، أفكار قوية، قواعد صحيحة، إلخ.</li>
+            <li>تحديد <strong>نِقاط الضعف</strong> مثل: غياب خصائص النوع الكتابي، أخطاء نحوية مكررة، تنظيم ضعيف، مفردات محدودة، إلخ.</li>
+            <li>تلخيص الأداء العام بلغة تشبه لغة المعلم.</li>
+          </ul>
+          <p>يمكن للطلاب مقارنة تصحيح الذكاء الاصطناعي بتصحيح المعلم لفهم المعايير وكيفية تطبيقها.</p>
+        `,
+        "panel6-badge": "الخطوة ٦",
+        "panel6-title": "كتابة تقرير لأولياء الأمور باستخدام الذكاء الاصطناعي",
+        "panel6-body": `
+          <p>بعد التصحيح، يمكن للذكاء الاصطناعي مساعدتك في تحويل التقييم الفني إلى تقرير بسيط ومحترم لأولياء الأمور.</p>
+          <h4>يُفضّل أن يشمل تقرير ولي الأمر:</h4>
+          <ul>
+            <li><strong>ملخّصًا قصيرًا عن الاختبار</strong>: المهارات التي تم قياسها وعدد الدرجات.</li>
+            <li>٢–٣ <strong>نِقاط قوة</strong> واضحة في أداء الطالب.</li>
+            <li>٢–٣ <strong>مجالات للتحسين</strong> مكتوبة بلغة إيجابية تركز على النمو.</li>
+            <li><strong>توصيات المعلّم</strong> لأنشطة يمكن تنفيذها في البيت (قراءة، كتابة، محادثة أو مراجعة).</li>
+          </ul>
+          <p>يمكنك طلب من الذكاء الاصطناعي تعديل نبرة التقرير (أكثر رسمية أو أكثر ودّية) حسب سياسة المدرسة.</p>
+        `,
+        "panel7-badge": "الخطوة ٧",
+        "panel7-title": "إنشاء خطة عمل شخصية (Action Plan)",
+        "panel7-body": `
+          <p>بعد أن يقوم الذكاء الاصطناعي <strong>بتحليل الاختبار بالكامل</strong> (الدرجات، ونِقاط القوة، ونِقاط الضعف)، يمكنك أن تطلب منه إنشاء خطة عمل شخصية تستجيب مباشرة لاحتياجات الطالب.</p>
+          <h4>استخدم الذكاء الاصطناعي لبناء خطة عمل وفق SMART:</h4>
+          <ul>
+            <li><strong>محدّد (Specific):</strong> تسمية المهارة بدقّة (مثل: “استخدام الماضي البسيط بشكل صحيح”).</li>
+            <li><strong>قابل للقياس (Measurable):</strong> تحديد شكل النجاح (مثل: “الوصول إلى ٨٠٪ في الاختبار القادم”).</li>
+            <li><strong>واقعي (Achievable):</strong> مناسب لمستوى الطالب والزمن المتاح.</li>
+            <li><strong>مرتبط (Relevant):</strong> مرتبط بمعايير الاختبار واحتياجات الطالب الفعلية.</li>
+            <li><strong>محدد بالوقت (Time-bound):</strong> وضع إطار زمني واضح (مثل: “خلال ٤ أسابيع”).</li>
+          </ul>
+          <p>يمكنك أيضًا طلب من الذكاء الاصطناعي <strong>إثراء ورقة العمل</strong> بأنشطة إضافية تتناسب مع هذه الاحتياجات، مثل:</p>
+          <ul>
+            <li><strong>أسئلة اختيار من متعدد إضافية</strong> تستهدف قواعد أو مفردات معيّنة يعاني منها الطالب.</li>
+            <li><strong>أسئلة قصيرة</strong> لتحسين الفهم القرائي والاستنتاج.</li>
+            <li><strong>مهمات كتابة موجهة</strong> للتدرّب على التنظيم، والتسلسل، وخصائص النوع الكتابي.</li>
+            <li><strong>أنشطة مراجعة مركّبة</strong> تجمع أكثر من مهارة ضعيفة في ورقة عمل قصيرة واحدة.</li>
+          </ul>
+          <p>يمكن للذكاء الاصطناعي ترتيب هذه العناصر في جدول صغير يضم الأهداف، وأفكار الممارسة، ونِقاط المتابعة للمعلم وولي الأمر.</p>
+        `,
+        "panel8-badge": "الخطوة ٨",
+        "panel8-title": "مخرجات الطالب النهائية",
+        "panel8-body": `
+          <p>بنهاية المشروع، ينبغي أن يكون كل طالب (أو متدرّب معلّم) قادرًا على إنتاج حزمة تقييم متكاملة مدعومة بالذكاء الاصطناعي.</p>
+          <h4>المخرجات النهائية:</h4>
+          <ul>
+            <li><strong>برومبت ROSE قوي</strong> يعيّن للذكاء الاصطناعي دور المقيّم المحترف ويتضمّن اختبارًا نموذجيًا كمرجع.</li>
+            <li><strong>اختبار معياري كامل</strong> مبني على Blueprint حقيقي أو امتحان سابق.</li>
+            <li><strong>نموذج تصحيح تفصيلي</strong> يحتوي على مستويات درجات، وإجابات نموذجية، وتوقّعات للأخطاء الشائعة.</li>
+            <li><strong>إجابات طلاب مصحّحة</strong> مع تعليقات واضحة على نِقاط القوة ونِقاط الضعف.</li>
+            <li><strong>تقرير موجز لأولياء الأمور</strong> يوضح مستوى الطالب.</li>
+            <li><strong>خطة عمل شخصية</strong> بأهداف SMART وأسئلة تدريب إضافية تدعم تحسّن أداء الطالب.</li>
+          </ul>
+          <p>يُظهر هذا المسار كيف يمكن للذكاء الاصطناعي أن يدعم تصميم التقييم الاحترافي، بينما تظل أنت القائد الخبير للعملية التعليمية.</p>
+        `,
+      },
+    };
+
+    let currentLang = "en";
+
+    function applyTranslations(lang) {
+      const map = translations[lang];
+      for (const id in map) {
+        const el = document.getElementById(id);
+        if (el) {
+          el.innerHTML = map[id];
+        }
+      }
+
+      if (lang === "ar") {
+        document.body.classList.add("rtl");
+      } else {
+        document.body.classList.remove("rtl");
+      }
+    }
+
+    // ---------- COLLAPSIBLE PANELS ----------
+    function setupPanels() {
+      const headers = document.querySelectorAll(".panel-header");
+      headers.forEach((header) => {
+        header.addEventListener("click", () => {
+          const content = header.nextElementSibling;
+          const isOpen = content.classList.contains("open");
+
+          // Close all
+          document
+            .querySelectorAll(".panel-content")
+            .forEach((c) => {
+              c.style.maxHeight = null;
+              c.classList.remove("open");
+            });
+          document
+            .querySelectorAll(".panel-header")
+            .forEach((h) => h.classList.remove("active"));
+
+          // Open clicked
+          if (!isOpen) {
+            content.classList.add("open");
+            header.classList.add("active");
+            content.style.maxHeight = content.scrollHeight + 20 + "px";
+          }
+        });
+      });
+
+      // Open first panel by default
+      const firstHeader = document.querySelector(".panel-header");
+      if (firstHeader) {
+        firstHeader.click();
+      }
+    }
+
+    // ---------- LANGUAGE TOGGLE ----------
+    document.addEventListener("DOMContentLoaded", () => {
+      applyTranslations(currentLang);
+      setupPanels();
+
+      const langToggleBtn = document.getElementById("lang-toggle");
+      langToggleBtn.addEventListener("click", () => {
+        currentLang = currentLang === "en" ? "ar" : "en";
+        applyTranslations(currentLang);
+      });
+    });
+  </script>
+</body>
+</html>
