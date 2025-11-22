@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Session 5 – AI Presentations</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --primary: #1e6ba8;
+      --primary-soft: #e2effb;
+      --accent: #5bc0be;
+      --card-bg: #ffffff;
+      --border: #d5dde8;
+      --text-main: #1f2933;
+      --text-muted: #6b7280;
+      --shadow-soft: 0 14px 40px rgba(15, 23, 42, 0.12);
+      --radius-lg: 18px;
+      --radius-sm: 10px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      background: radial-gradient(circle at top left, #e2f3ff 0, #f5f7fb 40%, #eef2ff 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    body.rtl {
+      font-family: "Tahoma", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+    }
+
+    body.rtl h1,
+    body.rtl h2,
+    body.rtl p,
+    body.rtl label,
+    body.rtl .badge,
+    body.rtl footer,
+    body.rtl .helper,
+    body.rtl .pill-note {
+      text-align: right;
+    }
+
+    body.rtl .chips {
+      justify-content: flex-end;
+    }
+
+    .app-shell {
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+
+    header {
+      background: linear-gradient(120deg, var(--primary), #3f83f8);
+      color: #fff;
+      border-radius: 24px;
+      padding: 22px 26px;
+      box-shadow: var(--shadow-soft);
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+
+    .header-main {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+    }
+
+    header .badge {
+      background: rgba(255, 255, 255, 0.18);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+    }
+
+    header h1 {
+      font-size: 24px;
+      margin-bottom: 4px;
+    }
+
+    header p {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    header .icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 20px;
+      background: radial-gradient(circle at 20% 20%, #fff, rgba(255,255,255,0.05));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: 18px;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 900px) {
+      main {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      padding: 18px 18px 20px;
+    }
+
+    .card h2 {
+      font-size: 18px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card h2 span.icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--primary-soft);
+      font-size: 16px;
+    }
+
+    .card p.helper {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .field {
+      margin-bottom: 10px;
+    }
+
+    .field label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      margin-bottom: 4px;
+      color: #111827;
+    }
+
+    .field label span.meta {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 7px 9px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      font-size: 13px;
+      outline: none;
+      background: #f9fbff;
+      transition: border 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      resize: vertical;
+      min-height: 0;
+    }
+
+    textarea {
+      min-height: 70px;
+      max-height: 260px;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 1px rgba(30, 107, 168, 0.2);
+      background: #ffffff;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+      margin-bottom: 8px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      border-radius: 999px;
+      padding: 4px 9px;
+      font-size: 11px;
+      border: 1px solid var(--border);
+      background: #f9fbff;
+    }
+
+    .chip input {
+      margin: 0;
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    button {
+      border-radius: 999px;
+      border: none;
+      padding: 8px 16px;
+      font-size: 13px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.15s ease;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.35);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 35px rgba(15, 23, 42, 0.38);
+    }
+
+    .btn-ghost {
+      background: #eef2ff;
+      color: var(--primary);
+    }
+
+    .btn-ghost:hover {
+      background: #e0e7ff;
+      transform: translateY(-1px);
+    }
+
+    .btn-icon {
+      font-size: 15px;
+    }
+
+    .pill-note {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    .preview-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    #finalPrompt {
+      width: 100%;
+      min-height: 290px;
+      font-size: 12px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+        "Liberation Mono", "Courier New", monospace;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      padding: 10px 10px;
+      background: #0b1220;
+      color: #e5e7eb;
+      line-height: 1.45;
+      resize: vertical;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      padding: 4px 8px;
+      background: rgba(90, 219, 179, 0.1);
+      border-radius: 999px;
+      color: #047857;
+      border: 1px solid rgba(16, 185, 129, 0.35);
+    }
+
+    .tag span.dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #10b981;
+    }
+
+    footer {
+      margin-top: 16px;
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    /* File upload styling */
+    .file-wrap {
+      border: 1px dashed var(--border);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      background: #f9fbff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .file-wrap span {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .file-wrap input[type="file"] {
+      font-size: 11px;
+      max-width: 220px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header>
+      <div class="header-main">
+        <div class="icon">🎥</div>
+        <div>
+          <div class="badge" id="badgeText">Session 5 · AI Presentations</div>
+          <h1 id="headerTitle">Interactive AI Prompt Builder for Teacher Presentations</h1>
+          <p id="headerSubtitle">
+            Fill in the fields, then generate a single, polished AI prompt you can copy into ChatGPT or any AI tool to create a
+            full presentation on your topic.
+          </p>
+        </div>
+      </div>
+      <button class="btn-ghost" type="button" id="toggleLangBtn">
+        <span class="btn-icon">🌐</span>
+        <span id="toggleLangLabel">Translate to Arabic</span>
+      </button>
+    </header>
+
+    <main>
+      <!-- LEFT: FORM -->
+      <section class="card">
+        <h2>
+          <span class="icon">📝</span>
+          <span id="teacherCardTitle">Teacher Input</span>
+        </h2>
+        <p class="helper" id="teacherHelper">
+          Complete only what you need. The app will gather everything into one ready-to-use AI prompt.
+        </p>
+
+        <div class="field">
+          <label for="teacherName">
+            <span id="lblTeacherName">Teacher name (optional)</span>
+            <span class="meta" id="metaTeacherName">For a personal tone (or leave blank)</span>
+          </label>
+          <input type="text" id="teacherName" placeholder="e.g. Ms. Abir, Mr. Ahmed" />
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="subject">
+              <span id="lblSubject">Subject</span>
+              <span class="meta" id="metaSubject">e.g. English, Science, History</span>
+            </label>
+            <input type="text" id="subject" placeholder="e.g. English" />
+          </div>
+          <div class="field">
+            <label for="grade">
+              <span id="lblGrade">Grade / Age group</span>
+              <span class="meta" id="metaGrade">e.g. Grade 7, A2, 10–12 yrs</span>
+            </label>
+            <input type="text" id="grade" placeholder="e.g. Stage 6 IGCSE" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="topic">
+            <span id="lblTopic">Topic / Title of the presentation</span>
+            <span class="meta" id="metaTopic">Main focus of the session</span>
+          </label>
+          <input type="text" id="topic" placeholder="e.g. Emotional Intelligence in the Classroom" />
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="slides">
+              <span id="lblSlides">Approx. number of slides</span>
+              <span class="meta" id="metaSlides">10–15 recommended</span>
+            </label>
+            <input type="number" id="slides" min="6" max="40" value="12" />
+          </div>
+
+          <div class="field">
+            <label for="platform">
+              <span id="lblPlatform">Platform</span>
+              <span class="meta" id="metaPlatform">Just for style hints</span>
+            </label>
+            <select id="platform">
+              <option value="Canva">Canva</option>
+              <option value="PowerPoint">PowerPoint</option>
+              <option value="Google Slides">Google Slides</option>
+              <option value="Keynote">Keynote</option>
+              <option value="generic" selected>Any slide platform</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="objectives">
+            <span id="lblObjectives">Learning objectives (optional)</span>
+            <span class="meta" id="metaObjectives">If empty, AI will create SMART objectives for you</span>
+          </label>
+          <textarea id="objectives" placeholder="- Students will be able to...
+- Students will identify...
+- Students will create..."></textarea>
+        </div>
+
+        <!-- Upload & text -->
+        <div class="field">
+          <label for="lessonContent">
+            <span id="lblUpload">Upload your lesson / text / worksheet / image / PDF (optional)</span>
+            <span class="meta" id="metaUpload">AI will design the slides around this content</span>
+          </label>
+
+          <div class="file-wrap">
+            <span id="uploadHint">Choose a picture or PDF (e.g. worksheet scan, reading text, lesson plan).</span>
+            <input type="file" id="lessonFile" accept=".pdf,image/*" />
+          </div>
+
+          <textarea id="lessonContent" placeholder="You can also paste your existing lesson, reading text, worksheet questions, or bullet notes here..."></textarea>
+        </div>
+
+        <div class="field">
+          <label>
+            <span id="lblInclude">What should the AI definitely include?</span>
+          </label>
+          <div class="chips">
+            <label class="chip">
+              <input type="checkbox" id="incWarmUp" checked />
+              <span id="chipWarmUp">Warm-up / hook</span>
+            </label>
+            <label class="chip">
+              <input type="checkbox" id="incStories" checked />
+              <span id="chipStories">Real-life examples</span>
+            </label>
+            <label class="chip">
+              <input type="checkbox" id="incActivities" checked />
+              <span id="chipActivities">Student activities</span>
+            </label>
+            <label class="chip">
+              <input type="checkbox" id="incAssessment" checked />
+              <span id="chipAssessment">Quick assessment</span>
+            </label>
+            <label class="chip">
+              <input type="checkbox" id="incExtension" checked />
+              <span id="chipExtension">Extension task</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>
+            <span id="lblTheorists">Educational theorists (optional)</span>
+            <span class="meta" id="metaTheorists">Tick if you want them referenced when relevant</span>
+          </label>
+          <div class="chips">
+            <label class="chip">
+              <input type="checkbox" class="theorist" value="Lev Vygotsky" checked />
+              <span>Vygotsky</span>
+            </label>
+            <label class="chip">
+              <input type="checkbox" class="theorist" value="Jean Piaget" />
+              <span>Piaget</span>
+            </label>
+            <label class="chip">
+              <input type="checkbox" class="theorist" value="Bloom's Taxonomy" />
+              <span>Bloom</span>
+            </label>
+            <label class="chip">
+              <input type="checkbox" class="theorist" value="Albert Bandura" />
+              <span>Bandura</span>
+            </label>
+            <label class="chip">
+              <input type="checkbox" class="theorist" value="Stephen Krashen" />
+              <span>Krashen</span>
+            </label>
+            <label class="chip">
+              <input type="checkbox" class="theorist" value="Daniel Goleman" />
+              <span>Goleman</span>
+            </label>
+          </div>
+        </div>
+
+        <p class="pill-note" id="tipText">
+          💡 Tip: You can write in any language. The AI will follow your input language when building the presentation.
+        </p>
+
+        <div class="btn-row">
+          <button class="btn-primary" id="generateBtn">
+            <span class="btn-icon">✨</span>
+            <span id="generateBtnLabel">Generate AI Prompt</span>
+          </button>
+          <button class="btn-ghost" type="button" id="resetBtn">
+            <span class="btn-icon">🧽</span>
+            <span id="resetBtnLabel">Reset fields</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- RIGHT: OUTPUT -->
+      <section class="card">
+        <div class="preview-header">
+          <h2>
+            <span class="icon">🎯</span>
+            <span id="finalCardTitle">Final AI Prompt</span>
+          </h2>
+          <div class="tag">
+            <span class="dot"></span>
+            <span id="tagReady">Ready to copy & paste</span>
+          </div>
+        </div>
+        <p class="helper" id="finalHelper">
+          This is the single, complete prompt you can paste into ChatGPT or any AI. It already includes all the structure and
+          details for your Session 5 AI Presentation.
+        </p>
+
+        <textarea id="finalPrompt" readonly placeholder="Fill in the fields on the left, then click &quot;Generate AI Prompt&quot;."></textarea>
+
+        <div class="btn-row">
+          <button class="btn-primary" id="copyBtn" type="button">
+            <span class="btn-icon">📋</span>
+            <span id="copyBtnLabel">Copy Prompt</span>
+          </button>
+          <button class="btn-ghost" type="button" id="selectBtn">
+            <span class="btn-icon">🔍</span>
+            <span id="selectBtnLabel">Select All Text</span>
+          </button>
+        </div>
+
+        <p class="pill-note" id="bottomNote">
+          ✅ Step 1: Generate the prompt &nbsp;&nbsp; ➜ &nbsp;&nbsp; ✅ Step 2: Copy & paste it into your favourite AI to get a
+          detailed slide deck.
+        </p>
+      </section>
+    </main>
+
+    <footer id="footerText">
+      Session 5 – AI Presentations · Interactive Prompt Builder for Teachers
+    </footer>
+  </div>
+
+  <script>
+    let isArabic = false;
+
+    const strings = {
+      en: {
+        badgeText: "Session 5 · AI Presentations",
+        headerTitle: "Interactive AI Prompt Builder for Teacher Presentations",
+        headerSubtitle:
+          "Fill in the fields, then generate a single, polished AI prompt you can copy into ChatGPT or any AI tool to create a full presentation on your topic.",
+        teacherCardTitle: "Teacher Input",
+        teacherHelper:
+          "Complete only what you need. The app will gather everything into one ready-to-use AI prompt.",
+        lblTeacherName: "Teacher name (optional)",
+        metaTeacherName: "For a personal tone (or leave blank)",
+        lblSubject: "Subject",
+        metaSubject: "e.g. English, Science, History",
+        lblGrade: "Grade / Age group",
+        metaGrade: "e.g. Grade 7, A2, 10–12 yrs",
+        lblTopic: "Topic / Title of the presentation",
+        metaTopic: "Main focus of the session",
+        lblSlides: "Approx. number of slides",
+        metaSlides: "10–15 recommended",
+        lblPlatform: "Platform",
+        metaPlatform: "Just for style hints",
+        lblObjectives: "Learning objectives (optional)",
+        metaObjectives: "If empty, AI will create SMART objectives for you",
+        objectivesPlaceholder:
+          "- Students will be able to...\n- Students will identify...\n- Students will create...",
+        lblUpload: "Upload your lesson / text / worksheet / image / PDF (optional)",
+        metaUpload: "AI will design the slides around this content",
+        uploadHint: "Choose a picture or PDF (e.g. worksheet scan, reading text, lesson plan).",
+        lessonPlaceholder:
+          "You can also paste your existing lesson, reading text, worksheet questions, or bullet notes here...",
+        lblInclude: "What should the AI definitely include?",
+        chipWarmUp: "Warm-up / hook",
+        chipStories: "Real-life examples",
+        chipActivities: "Student activities",
+        chipAssessment: "Quick assessment",
+        chipExtension: "Extension task",
+        lblTheorists: "Educational theorists (optional)",
+        metaTheorists: "Tick if you want them referenced when relevant",
+        tipText:
+          "💡 Tip: You can write in any language. The AI will follow your input language when building the presentation.",
+        generateBtnLabel: "Generate AI Prompt",
+        resetBtnLabel: "Reset fields",
+        finalCardTitle: "Final AI Prompt",
+        tagReady: "Ready to copy & paste",
+        finalHelper:
+          "This is the single, complete prompt you can paste into ChatGPT or any AI. It already includes all the structure and details for your Session 5 AI Presentation.",
+        finalPlaceholder:
+          "Fill in the fields on the left, then click \"Generate AI Prompt\".",
+        copyBtnLabel: "Copy Prompt",
+        selectBtnLabel: "Select All Text",
+        bottomNote:
+          "✅ Step 1: Generate the prompt   ➜   ✅ Step 2: Copy & paste it into your favourite AI to get a detailed slide deck.",
+        footerText:
+          "Session 5 – AI Presentations · Interactive Prompt Builder for Teachers",
+        toggleLabel: "Translate to Arabic"
+      },
+      ar: {
+        badgeText: "الجلسة ٥ · عروض الذكاء الاصطناعي",
+        headerTitle: "منشئ العروض التقديمية بالذكاء الاصطناعي للمعلمين",
+        headerSubtitle:
+          "املأ الحقول، ثم أنشئ أمراً واحداً مصقولاً يمكنك نسخه في ChatGPT أو أي أداة ذكاء اصطناعي لإنشاء عرضك التقديمي بالكامل.",
+        teacherCardTitle: "مدخلات المعلم",
+        teacherHelper:
+          "املأ ما تحتاجه فقط. سيجمع التطبيق كل شيء في أمر واحد جاهز للاستخدام.",
+        lblTeacherName: "اسم المعلم (اختياري)",
+        metaTeacherName: "لجعل الأسلوب شخصياً (يمكن تركه فارغاً)",
+        lblSubject: "المادة",
+        metaSubject: "مثل: اللغة الإنجليزية، العلوم، التاريخ",
+        lblGrade: "الصف / الفئة العمرية",
+        metaGrade: "مثل: الصف السابع، مستوى A2، من 10–12 سنة",
+        lblTopic: "الموضوع / عنوان العرض التقديمي",
+        metaTopic: "الفكرة الأساسية للجلسة",
+        lblSlides: "عدد الشرائح تقريباً",
+        metaSlides: "يُفضَّل من ١٠ إلى ١٥ شريحة",
+        lblPlatform: "المنصة",
+        metaPlatform: "فقط لمراعاة أسلوب التصميم",
+        lblObjectives: "الأهداف التعليمية (اختياري)",
+        metaObjectives: "إذا تُرك فارغاً، سيقوم الذكاء الاصطناعي بإنشاء أهداف ذكية SMART لك",
+        objectivesPlaceholder:
+          "- سيتمكن الطلاب من...\n- سيتعرّف الطلاب على...\n- سيُنشئ الطلاب...",
+        lblUpload: "ارفع درسك / نصك / ورقة العمل / صورة / ملف PDF (اختياري)",
+        metaUpload: "سيصمم الذكاء الاصطناعي الشرائح حول هذا المحتوى",
+        uploadHint:
+          "اختر صورة أو ملف PDF (مثل: ورقة عمل ممسوحة ضوئياً أو نص قراءة أو خطة درس).",
+        lessonPlaceholder:
+          "يمكنك أيضاً لصق الدرس المكتوب، نص القراءة، أسئلة ورقة العمل أو الملاحظات هنا...",
+        lblInclude: "ما الذي يجب أن يتضمّنه العرض بالتأكيد؟",
+        chipWarmUp: "تهيئة / نشاط افتتاحي",
+        chipStories: "أمثلة من الحياة الواقعية",
+        chipActivities: "أنشطة للطلاب",
+        chipAssessment: "تقويم سريع",
+        chipExtension: "نشاط إثرائي",
+        lblTheorists: "نظريات تربوية (اختياري)",
+        metaTheorists: "اختر إن كنت تريد الإشارة إليها عند الحاجة",
+        tipText:
+          "💡 تلميح: يمكنك الكتابة بأي لغة؛ سيتبع الذكاء الاصطناعي لغة إدخالك عند إنشاء العرض التقديمي.",
+        generateBtnLabel: "إنشاء الأمر بالذكاء الاصطناعي",
+        resetBtnLabel: "مسح الحقول",
+        finalCardTitle: "الأمر النهائي للذكاء الاصطناعي",
+        tagReady: "جاهز للنسخ واللصق",
+        finalHelper:
+          "هذا هو الأمر الكامل الذي يمكنك لصقه في ChatGPT أو أي أداة ذكاء اصطناعي. يحتوي بالفعل على جميع تفاصيل عرض الجلسة ٥.",
+        finalPlaceholder:
+          "املأ الحقول في الجهة اليسرى ثم اضغط على «إنشاء الأمر بالذكاء الاصطناعي».",
+        copyBtnLabel: "نسخ الأمر",
+        selectBtnLabel: "تحديد كل النص",
+        bottomNote:
+          "✅ الخطوة ١: أنشئ الأمر   ➜   ✅ الخطوة ٢: انسخه والصقه في أداة الذكاء الاصطناعي المفضلة لديك للحصول على عرض شرائح تفصيلي.",
+        footerText:
+          "الجلسة ٥ – عروض الذكاء الاصطناعي · منشئ الأوامر التفاعلي للمعلمين",
+        toggleLabel: "العودة إلى الإنجليزية"
+      }
+    };
+
+    function applyLanguage(lang) {
+      const s = strings[lang];
+
+      document.getElementById("badgeText").textContent = s.badgeText;
+      document.getElementById("headerTitle").textContent = s.headerTitle;
+      document.getElementById("headerSubtitle").textContent = s.headerSubtitle;
+
+      document.getElementById("teacherCardTitle").textContent = s.teacherCardTitle;
+      document.getElementById("teacherHelper").textContent = s.teacherHelper;
+
+      document.getElementById("lblTeacherName").textContent = s.lblTeacherName;
+      document.getElementById("metaTeacherName").textContent = s.metaTeacherName;
+
+      document.getElementById("lblSubject").textContent = s.lblSubject;
+      document.getElementById("metaSubject").textContent = s.metaSubject;
+
+      document.getElementById("lblGrade").textContent = s.lblGrade;
+      document.getElementById("metaGrade").textContent = s.metaGrade;
+
+      document.getElementById("lblTopic").textContent = s.lblTopic;
+      document.getElementById("metaTopic").textContent = s.metaTopic;
+
+      document.getElementById("lblSlides").textContent = s.lblSlides;
+      document.getElementById("metaSlides").textContent = s.metaSlides;
+
+      document.getElementById("lblPlatform").textContent = s.lblPlatform;
+      document.getElementById("metaPlatform").textContent = s.metaPlatform;
+
+      document.getElementById("lblObjectives").textContent = s.lblObjectives;
+      document.getElementById("metaObjectives").textContent = s.metaObjectives;
+      document.getElementById("objectives").placeholder = s.objectivesPlaceholder;
+
+      document.getElementById("lblUpload").textContent = s.lblUpload;
+      document.getElementById("metaUpload").textContent = s.metaUpload;
+      document.getElementById("uploadHint").textContent = s.uploadHint;
+      document.getElementById("lessonContent").placeholder = s.lessonPlaceholder;
+
+      document.getElementById("lblInclude").textContent = s.lblInclude;
+      document.getElementById("chipWarmUp").textContent = s.chipWarmUp;
+      document.getElementById("chipStories").textContent = s.chipStories;
+      document.getElementById("chipActivities").textContent = s.chipActivities;
+      document.getElementById("chipAssessment").textContent = s.chipAssessment;
+      document.getElementById("chipExtension").textContent = s.chipExtension;
+
+      document.getElementById("lblTheorists").textContent = s.lblTheorists;
+      document.getElementById("metaTheorists").textContent = s.metaTheorists;
+
+      document.getElementById("tipText").textContent = s.tipText;
+
+      document.getElementById("generateBtnLabel").textContent = s.generateBtnLabel;
+      document.getElementById("resetBtnLabel").textContent = s.resetBtnLabel;
+
+      document.getElementById("finalCardTitle").textContent = s.finalCardTitle;
+      document.getElementById("tagReady").textContent = s.tagReady;
+      document.getElementById("finalHelper").textContent = s.finalHelper;
+
+      if (!document.getElementById("finalPrompt").value.trim()) {
+        document.getElementById("finalPrompt").placeholder = s.finalPlaceholder;
+      }
+
+      document.getElementById("copyBtnLabel").textContent = s.copyBtnLabel;
+      document.getElementById("selectBtnLabel").textContent = s.selectBtnLabel;
+
+      document.getElementById("bottomNote").textContent = s.bottomNote;
+      document.getElementById("footerText").textContent = s.footerText;
+
+      document.getElementById("toggleLangLabel").textContent = s.toggleLabel;
+
+      if (lang === "ar") {
+        document.documentElement.lang = "ar";
+        document.documentElement.dir = "rtl";
+        document.body.classList.add("rtl");
+      } else {
+        document.documentElement.lang = "en";
+        document.documentElement.dir = "ltr";
+        document.body.classList.remove("rtl");
+      }
+    }
+
+    function buildPrompt() {
+      const teacherName = document.getElementById("teacherName").value.trim();
+      const subject = document.getElementById("subject").value.trim();
+      const grade = document.getElementById("grade").value.trim();
+      const topic = document.getElementById("topic").value.trim();
+      const slides = document.getElementById("slides").value.trim();
+      const platform = document.getElementById("platform").value;
+
+      const objectives = document.getElementById("objectives").value.trim();
+      const lessonContent = document.getElementById("lessonContent").value.trim();
+      const lessonFileInput = document.getElementById("lessonFile");
+      const lessonFile = lessonFileInput && lessonFileInput.files && lessonFileInput.files[0]
+        ? lessonFileInput.files[0]
+        : null;
+
+      const incWarmUp = document.getElementById("incWarmUp").checked;
+      const incStories = document.getElementById("incStories").checked;
+      const incActivities = document.getElementById("incActivities").checked;
+      const incAssessment = document.getElementById("incAssessment").checked;
+      const incExtension = document.getElementById("incExtension").checked;
+
+      const theoristInputs = document.querySelectorAll(".theorist");
+      const theorists = [];
+      theoristInputs.forEach((t) => {
+        if (t.checked) theorists.push(t.value);
+      });
+
+      const teacherLine = teacherName
+        ? `I am a teacher named ${teacherName}.`
+        : "I am a teacher preparing a lesson.";
+
+      const subjectLine = subject ? `The subject is ${subject}.` : "";
+      const gradeLine = grade ? `The grade/age group is: ${grade}.` : "";
+      const topicLine = topic
+        ? `The topic or title of the presentation is: "${topic}".`
+        : "You must suggest a clear, engaging title based on my content.";
+
+      const slidesLine = slides
+        ? `Create a detailed presentation of about ${slides} slides.`
+        : "Create a detailed presentation of about 10–15 slides.";
+
+      let objectivesBlock = "";
+      if (objectives) {
+        objectivesBlock = `Here are my learning objectives. Please keep them, refine them, and show them clearly on the 'Learning Objectives' slide:
+
+${objectives}
+
+`;
+      } else {
+        objectivesBlock =
+          "You must generate 3–5 SMART learning objectives that are appropriate for this level, and place them clearly on a 'Learning Objectives' slide.\n";
+      }
+
+      let contentBlock = "";
+
+      if (lessonFile && lessonContent) {
+        contentBlock = `I will also upload a file named "${lessonFile.name}" (${lessonFile.type || "file type unknown"}). Please read and use it together with the text below as the main source for key ideas, examples, and tasks. Do NOT ignore either the file or the text:
+
+${lessonContent}
+
+`;
+      } else if (lessonFile && !lessonContent) {
+        contentBlock = `I will upload a file named "${lessonFile.name}" (${lessonFile.type || "file type unknown"}). Please read and analyze this file and design the presentation around its content (worksheet, image, or PDF). If your interface supports file reading, use it as the primary source for the slides. If not, ask me to paste relevant parts.\n`;
+      } else if (!lessonFile && lessonContent) {
+        contentBlock = `Here is the lesson/text/worksheet content that the presentation must be built around. Use it as the main source for key ideas, examples, and tasks. Do NOT ignore it:
+
+${lessonContent}
+
+`;
+      } else {
+        contentBlock =
+          "I have not provided a full lesson text or file. Please design the presentation based on the topic and level only, using best educational practice.\n";
+      }
+
+      const includeBits = [];
+      if (incWarmUp) includeBits.push("an engaging warm-up / hook to activate prior knowledge");
+      if (incStories)
+        includeBits.push("real-life examples, short stories with character names, or simple case studies");
+      if (incActivities)
+        includeBits.push("at least one student-centered activity (pair work, discussion, task, experiment, project, etc.)");
+      if (incAssessment)
+        includeBits.push("a short 'Check for understanding' section with 3–5 questions");
+      if (incExtension)
+        includeBits.push("an optional extension or enrichment suggestion (homework, project, or cross-curricular link)");
+
+      const includeLine =
+        includeBits.length > 0
+          ? "You must include: " +
+            includeBits.map((b, i) => `${i + 1}) ${b}`).join("; ") +
+            "."
+          : "You can decide how to structure warm-ups, activities, and assessment as you see fit.";
+
+      const theoristsLine =
+        theorists.length > 0
+          ? `When relevant, you may make short references to well-known educational thinkers, such as: ${theorists.join(
+              ", "
+            )}. This is optional and should be natural, not forced.`
+          : "You do not need to reference specific theorists unless it is clearly helpful.";
+
+      const platformLine =
+        platform && platform !== "generic"
+          ? `Design and structure the slides so they are easy to build in ${platform} (clean layout, clear headings, minimal text per slide).`
+          : "Design the slides so they are easy to build in any slide platform (Canva, PowerPoint, Google Slides, etc.).";
+
+      const basePrompt = `You are an expert AI instructor, educator, curriculum designer, and presentation specialist.
+
+${teacherLine} ${subjectLine} ${gradeLine}
+${topicLine}
+${slidesLine}
+
+Your task:
+Create a complete, clear, and visually structured presentation that I can build for "Session 5 – AI Presentations". The presentation should be suitable for real classroom use and reflect good pedagogy.
+
+Use this structure as a guide (you may adapt slightly if it improves clarity):
+
+1) Title slide
+   - Title, subtitle, and an optional short quote or guiding question.
+2) Learning objectives slide
+   - 3–5 SMART objectives that match the subject, topic, and level.
+3) Warm-up / hook slide
+   - A quick engagement task, question, or mini-activity to activate prior knowledge.
+4) Introduction / overview slides
+   - Explain the topic in simple terms, why it matters, and provide clear context.
+5) Core content slides
+   - Break the topic into 3–5 key ideas. Use short bullet points, examples, mini visual ideas, and step-by-step explanations.
+6) Real-life application slide(s)
+   - Include stories, named characters, case studies, or classroom scenarios.
+7) Theory / research connection slide (optional if relevant)
+   - Connect the topic to appropriate educational or content-related theory in a short, accessible way.
+8) Activity / task slides
+   - Provide one or more student-centered tasks (individual, pair, or group) with clear instructions.
+9) Assessment / check for understanding slide
+   - 3–5 quick questions (MCQ, short answer, reflection) to check understanding.
+10) Summary slide
+    - Recap the key points in simple bullet points.
+11) Extension / enrichment slide (optional)
+    - Follow-up tasks, homework ideas, or deeper exploration.
+12) Closing reflection / exit ticket slide
+    - One or two reflective questions or prompts for students.
+
+${includeLine}
+
+${objectivesBlock}${contentBlock}${theoristsLine}
+
+Design and style guidelines:
+- Use clear, teacher-friendly language.
+- Keep each slide focused: short bullet points instead of long paragraphs.
+- Suggest simple visual ideas or icons for important slides (but do not generate actual images in the text).
+- Make the order very clear by numbering or titling each slide.
+- ${platformLine}
+- Present the final answer as a slide-by-slide outline. For each slide, clearly label:
+  • Slide number and slide title
+  • Bullet points for content
+  • Any example, story, or activity
+  • Optional design notes (e.g. "Use an icon of a lightbulb", "Use two columns", etc.)
+
+Now, using all of the information above, create the full, detailed slide-by-slide presentation outline.`;
+
+      return basePrompt;
+    }
+
+    document.getElementById("generateBtn").addEventListener("click", () => {
+      const prompt = buildPrompt();
+      document.getElementById("finalPrompt").value = prompt;
+    });
+
+    document.getElementById("copyBtn").addEventListener("click", () => {
+      const area = document.getElementById("finalPrompt");
+      if (!area.value.trim()) return;
+      area.select();
+      area.setSelectionRange(0, area.value.length);
+      try {
+        navigator.clipboard.writeText(area.value);
+      } catch (e) {
+        // selection already made
+      }
+    });
+
+    document.getElementById("selectBtn").addEventListener("click", () => {
+      const area = document.getElementById("finalPrompt");
+      if (!area.value.trim()) return;
+      area.focus();
+      area.select();
+    });
+
+    document.getElementById("resetBtn").addEventListener("click", () => {
+      if (!confirm("Clear all fields and start again?")) return;
+      document.querySelectorAll("input[type='text'], input[type='number'], textarea").forEach((el) => {
+        if (el.id === "slides") {
+          el.value = "12";
+        } else {
+          el.value = "";
+        }
+      });
+
+      const lessonFileInput = document.getElementById("lessonFile");
+      if (lessonFileInput) {
+        lessonFileInput.value = "";
+      }
+
+      document.getElementById("platform").value = "generic";
+
+      document.getElementById("incWarmUp").checked = true;
+      document.getElementById("incStories").checked = true;
+      document.getElementById("incActivities").checked = true;
+      document.getElementById("incAssessment").checked = true;
+      document.getElementById("incExtension").checked = true;
+
+      document.querySelectorAll(".theorist").forEach((t) => {
+        t.checked = t.value === "Lev Vygotsky";
+      });
+
+      document.getElementById("finalPrompt").value = "";
+    });
+
+    document.getElementById("toggleLangBtn").addEventListener("click", () => {
+      isArabic = !isArabic;
+      applyLanguage(isArabic ? "ar" : "en");
+    });
+
+    // initial placeholders in English
+    applyLanguage("en");
+  </script>
+</body>
+</html>
