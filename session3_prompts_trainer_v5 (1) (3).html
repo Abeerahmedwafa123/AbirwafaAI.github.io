@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Session 3 — Writing Prompts Trainer (v4)</title>
+<style>
+:root{--bg:#F7FAFC;--card:#fff;--border:#E6EEF5;--text:#1F2937;--muted:#5B6B7A;--blue:#1E6BA8;--teal:#5BC0BE;--mint:#D6FFF2;--lav:#EFE8FF;--peach:#FFE9D6;--shadow:0 12px 28px rgba(15,23,42,.08);--r:18px}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,system-ui,Segoe UI,Roboto,'Noto Kufi Arabic','Amiri',sans-serif;line-height:1.55}
+.container{max-width:1100px;margin:24px auto;padding:12px}
+.header{background:linear-gradient(135deg,var(--teal),var(--mint));border-radius:var(--r);box-shadow:var(--shadow);padding:18px 16px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+h1{margin:0;font-size:clamp(20px,3vw,28px)} .subtitle{margin:2px 0 0;color:#0b1f2a;font-weight:600;opacity:.85}
+.btn{border:0;border-radius:12px;padding:10px 14px;background:var(--card);color:var(--text);box-shadow:var(--shadow);cursor:pointer;font-weight:700}
+.btn.primary{background:#FFE6F3}
+details{border-radius:16px;border:1px solid var(--border);background:var(--card);box-shadow:var(--shadow);margin:12px 0;overflow:hidden}
+summary{list-style:none;display:flex;justify-content:space-between;align-items:center;cursor:pointer;padding:14px 16px;background:linear-gradient(120deg,var(--peach),var(--lav));font-weight:800;color:#1f364d}
+summary::marker{display:none}
+.panel-tools{display:flex;gap:8px;flex-wrap:wrap;margin:8px 16px 0 16px}
+.content{padding:12px 16px;border-top:1px solid var(--border)}
+.editable{outline:0;padding:12px;border:1px dashed var(--blue);border-radius:12px;background:#FAFDFF;min-height:120px}
+.en{direction:ltr;text-align:left}
+.ar{direction:rtl;text-align:right}
+.editable ul{margin:0 0 0 1rem;padding:0} .editable li{margin:.3rem 0}
+.footer{color:#5B6B7A;text-align:center;margin:18px 0}
+@media print{.header .btn, .panel-tools{display:none} body{background:#fff}}
+</style>
+</head>
+<body>
+  <div class="header">
+    <div>
+      <h1>Session 3 — Interactive Worksheet and Feedback</h1>
+      <div class="subtitle">Arabic right-aligned bullets · English left-aligned bullets · Print to PDF</div>
+    </div>
+    <button class="btn primary" id="printBtn">Print / Save PDF</button>
+  </div>
+  <div class="container">
+
+    <details open>
+      <summary>🧭 أمر لعمل ورقة عمل ثنائية اللغة</summary>
+      <div class="panel-tools">
+        <button class="btn" data-target="p1" data-action="copy">Copy</button>
+        <button class="btn" data-target="p1" data-action="reset">Reset</button>
+      </div>
+      <div class="content">
+        <div class="editable en" id="p1" contenteditable="true"><ul><li class='en'>Role: You are a professional worksheet designer specialized in bilingual (Arabic–English) ESL materials.</li><li class='en'>Goal: Convert any existing worksheet into a clean bilingual version (AR/EN) with RTL for Arabic and LTR for English.</li><li class='en'>A4 portrait, 2 cm margins, white background. Arial for Arabic (bold), Calibri for English.</li><li class='en'>Header: Deep blue bar (#1E6BA8) with centered white title in both languages.</li><li class='en'>Name/Date/Class row: light blue cells (#EEF5FB), bold labels. Arabic right, English left.</li><li class='en'>Mirror sections: Arabic on right (Eastern numerals ٠١٢٣٤٥٦٧٨٩), English on left (0–9).</li><li class='en'>Sections: (A) Multiple Choice x10, (B) Correct the Mistake x10, (C) Short Writing Prompt x1.</li><li class='en'>Footer: Gray center text (#666): Edulixa Bilingual Grammar — Page 1 of 1.</li><li class='en'>Export: DOCX + PDF (300 DPI, print-ready).</li></ul></div>
+      </div>
+    </details>
+
+    <details>
+      <summary>📘 أمر لعمل ورقة عمل باللغة العربية</summary>
+      <div class="panel-tools">
+        <button class="btn" data-target="p2" data-action="copy">Copy</button>
+        <button class="btn" data-target="p2" data-action="reset">Reset</button>
+      </div>
+      <div class="content">
+        <div class="editable ar" id="p2" contenteditable="true"><ul><li class='ar'>لدور:</li><li class='ar'>أنت مصمّم أوراق عمل محترف. قم بإنشاء ورقة عمل منسّقة بالكامل باللغة العربية، بخط Arial أسود عريض، وباتجاه RTL، مع استخدام الأرقام العربية الشرقية （٠١٢٣٤٥٦٧٨٩）.</li><li class='ar'>العنوان: المضارع البسيط والمضارع المستمر</li><li class='ar'>المتطلبات: A4 عمودي، هوامش 2 سم، إطار أزرق #1E6BA8، ترويسة بعنوان أبيض، جدول الاسم/التاريخ/الصف بخلفية #EEF5FB.</li><li class='ar'>القسم الأول: اختر الإجابة الصحيحة (١٠ أسئلة) — صِغ ١٠ جمل تميّز بين الزمنين.</li><li class='ar'>القسم الثاني: صحّح الخطأ (١٠ جمل) — سطران للإجابة أسفل كل جملة.</li><li class='ar'>التذييل: سلسلة قواعد Edulixa | المضارع البسيط والمستمر | الصفحة ١ (رمادي #666).</li></ul></div>
+      </div>
+    </details>
+
+    <details>
+      <summary>📗 English Prompt</summary>
+      <div class="panel-tools">
+        <button class="btn" data-target="p3" data-action="copy">Copy</button>
+        <button class="btn" data-target="p3" data-action="reset">Reset</button>
+      </div>
+      <div class="content">
+        <div class="editable en" id="p3" contenteditable="true"><ul><li class='en'>Role: Professional ESL worksheet designer.</li><li class='en'>Goal: Produce an A4 worksheet titled “Present Simple vs. Present Continuous” in Edulixa style.</li><li class='en'>Page &amp; Fonts: A4 portrait, 2 cm margins, white; Calibri 11 pt body, 22 pt title, 14 pt subtitle.</li><li class='en'>Colors: Primary #1E6BA8 (deep blue), Accent #5BC0BE (teal).</li><li class='en'>Header: Full-width deep blue banner with centered white title; subtitle “Grammar Practice Worksheet” in teal.</li><li class='en'>Top Row: Single-row table for Name / Date / Class; outline #1E6BA8, fill #EEF5FB, bold labels.</li><li class='en'>Section A (10): Choose the correct answer. Example: She usually ___ (go / goes / is going) to work at 8 a.m.; Listen! The baby ___ (cry / cries / is crying) now; …</li><li class='en'>Section B (10): Correct the mistake. Provide two aligned ruled lines below each item. Example: He is go to school every morning.</li><li class='en'>RTF Styles: TitleStyle 22 pt white centered (#1E6BA8); SubtitleStyle 14 pt #5BC0BE centered; SectionHeader 13 pt bold #1E6BA8; QuestionStyle 12 pt, 1.2 spacing.</li><li class='en'>Rendering: Use shapes for lines/tables; avoid text overlap or floating dashes.</li><li class='en'>Footer: Gray 10 pt — Edulixa Grammar Series | Present Simple &amp; Continuous | Page 1 of 1.</li><li class='en'>Export: Output DOCX (styles preserved) + PDF (300 DPI) identical to RTF layout.</li></ul></div>
+      </div>
+    </details>
+
+    <details>
+      <summary>💻 لتحويل ورقة العمل لتفاعلية</summary>
+      <div class="panel-tools">
+        <button class="btn" data-target="p4" data-action="copy">Copy</button>
+        <button class="btn" data-target="p4" data-action="reset">Reset</button>
+      </div>
+      <div class="content">
+        <div class="editable" id="p4" contenteditable="true"><ul><li class='en'>turn this worksheet into an interactive Html +Css+ js ( ChatGpt)</li>
+<li class='ar'>حوّل هذه الورقة إلى صفحة تفاعلية HTML + CSS + JS (شات جي بي تي)</li>
+<li class='ar'>حقول تفاعلية: الاسم، التاريخ، الصف.</li>
+<li class='ar'>تصحيح تلقائي، درجة نهائية، وتعليقات فورية تحت كل سؤال.</li>
+<li class='ar'>أزرار: تصحيح، إعادة المحاولة، طباعة/حفظ PDF.</li>
+<li class='ar'>تخطيط متجاوب للهاتف والتابلت.</li>
+<li class='ar'>احتفظ بنفس محتوى الأسئلة، واجعلها تفاعلية فقط.</li></ul></div>
+      </div>
+    </details>
+
+    <div class="footer">Edulixa · Prompt Studio · Session 3</div>
+  </div>
+
+  <div id="toast" style="position:fixed;inset-inline-start:50%;transform:translateX(-50%);bottom:18px;background:#111827;color:#fff;border-radius:12px;padding:8px 12px;opacity:0;transition:opacity .3s">Copied!</div>
+
+<script>
+(function(){{
+  document.getElementById('printBtn').addEventListener('click', function(){{ window.print(); }});
+  var defaults = {{
+    p1: `{html.escape("\n".join(panel1_points)).replace("`","\`")}`,
+    p2: `{panel2_ar.replace("`","\`")}`,
+    p3: `{panel3_en.replace("`","\`")}`,
+    p4: `{panel4_ar_interactive.replace("`","\`")}`
+  }};
+  function toast(){{var t=document.getElementById('toast');t.style.opacity='1';setTimeout(function(){{t.style.opacity='0';}},900);}}
+  document.querySelectorAll('.panel-tools .btn').forEach(function(btn){{
+    btn.addEventListener('click', function(){{
+      var id=btn.getAttribute('data-target'); var action=btn.getAttribute('data-action'); var box=document.getElementById(id);
+      if(!box) return;
+      if(action==='copy'){{ var r=document.createRange(); r.selectNodeContents(box); var s=window.getSelection(); s.removeAllRanges(); s.addRange(r); try{{document.execCommand('copy');toast();}}catch(e){{}} s.removeAllRanges(); }}
+      else if(action==='reset'){{ box.innerText = defaults[id] || ''; }}
+    }});
+  }});
+}})();
+</script>
+</body>
+</html>

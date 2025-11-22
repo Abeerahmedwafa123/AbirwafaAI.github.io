@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Session 10 – CapCut Study Guide</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --primary: #2160a8;
+      --primary-soft: #e2ecff;
+      --border: #d5dbe8;
+      --text-main: #1f2430;
+      --text-muted: #606675;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text-main);
+      padding: 24px;
+      direction: ltr;
+    }
+
+    .page {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Top bar with logo + toggle */
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      gap: 16px;
+    }
+
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo-wrap img {
+      height: 42px;
+      width: auto;
+      border-radius: 6px;
+      background: #ffffff;
+      padding: 4px;
+      border: 1px solid var(--border);
+    }
+
+    .toggle-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    /* Slider switch */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 52px;
+      height: 26px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: 0.3s;
+      border-radius: 34px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 4px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.3s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: var(--primary);
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(24px);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 4px;
+      font-size: 1.9rem;
+      color: var(--primary);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 4px;
+      font-size: 1.3rem;
+      color: var(--text-main);
+    }
+
+    .subtitle {
+      text-align: center;
+      margin-bottom: 24px;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* Accordion container */
+    .accordion {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .accordion-item {
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--card);
+      box-shadow: 0 2px 6px rgba(25, 40, 80, 0.08);
+    }
+
+    .accordion-header {
+      width: 100%;
+      background: linear-gradient(90deg, var(--primary-soft), #ffffff);
+      border: none;
+      text-align: left;
+      padding: 14px 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .accordion-header span.title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge {
+      background: var(--primary);
+      color: #ffffff;
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+
+    .accordion-header .icon {
+      font-size: 1.2rem;
+      transition: transform 0.2s ease;
+    }
+
+    .accordion-header.active .icon {
+      transform: rotate(90deg);
+    }
+
+    .accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.25s ease;
+      padding: 0 18px;
+      background: #ffffff;
+    }
+
+    .accordion-body-inner {
+      padding: 12px 0 16px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .accordion-body p {
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .accordion-body ul {
+      margin-left: 18px;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .accordion-body li {
+      margin-bottom: 4px;
+    }
+
+    .tagline {
+      margin-top: 18px;
+      font-size: 0.9rem;
+      text-align: center;
+      color: var(--text-muted);
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 16px;
+      }
+      h1 {
+        font-size: 1.5rem;
+      }
+      .top-bar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <!-- Top bar with logo + language slider -->
+    <div class="top-bar">
+      <div class="logo-wrap">
+        <!-- RAW GitHub URL so the logo actually loads -->
+        <img src="https://raw.githubusercontent.com/Abeerahmedwafa123/Mental-Math-/main/Edu-Logo%20(1).png" alt="Company Logo">
+      </div>
+      <div class="toggle-wrap">
+        <span data-i18n="toggleLabel">Translate to Arabic</span>
+        <label class="switch">
+          <input type="checkbox" id="langToggle">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <h2 data-i18n="sessionLabel">Session 10</h2>
+    <h1 data-i18n="title">CapCut Study Guide</h1>
+    <p class="subtitle" data-i18n="subtitle">
+      Click on each section to reveal the key steps and tips.
+    </p>
+
+    <div class="accordion">
+
+      <!-- 1. Getting Started -->
+      <div class="accordion-item">
+        <button class="accordion-header">
+          <span class="title">
+            <span class="badge" data-i18n="badge1">1</span>
+            <span data-i18n="sec1Title">1️⃣ Getting Started</span>
+          </span>
+          <span class="icon">▶</span>
+        </button>
+        <div class="accordion-body">
+          <div class="accordion-body-inner" data-i18n="sec1Body">
+            <p><strong>Workspace Overview</strong></p>
+            <ul>
+              <li><strong>Timeline (bottom):</strong> Where you arrange, cut, and edit your clips.</li>
+              <li><strong>Preview window (center):</strong> Shows how your video looks.</li>
+              <li><strong>Media panel (left):</strong> Upload videos, images, and audio.</li>
+              <li><strong>Toolbar (top):</strong> Undo, redo, zoom, export, speed, and more.</li>
+            </ul>
+
+            <p><strong>Uploading Media</strong></p>
+            <ul>
+              <li>Click <strong>Upload</strong> or drag files into the center of the screen.</li>
+              <li>You can upload from:
+                <ul>
+                  <li>Your device</li>
+                  <li>Google Drive</li>
+                  <li>Dropbox</li>
+                  <li>Auto-upload folders</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Adding and Managing Clips -->
+      <div class="accordion-item">
+        <button class="accordion-header">
+          <span class="title">
+            <span class="badge" data-i18n="badge2">2</span>
+            <span data-i18n="sec2Title">2️⃣ Adding and Managing Clips</span>
+          </span>
+          <span class="icon">▶</span>
+        </button>
+        <div class="accordion-body">
+          <div class="accordion-body-inner" data-i18n="sec2Body">
+            <p><strong>Inserting Clips</strong></p>
+            <ul>
+              <li>Drag any video, image, or audio file from the left panel into the timeline.</li>
+              <li>Reorder clips by dragging them left or right along the timeline.</li>
+            </ul>
+
+            <p><strong>Cutting &amp; Trimming</strong></p>
+            <ul>
+              <li>Click on a clip and drag its edges to trim the beginning or end.</li>
+              <li>Use the <strong>Split</strong> tool (scissors icon) to cut a clip into segments.</li>
+            </ul>
+
+            <p><strong>Adjusting Ratio</strong></p>
+            <ul>
+              <li>Use the ratio icon to choose the aspect ratio (e.g. <strong>16:9</strong>, <strong>9:16</strong>, <strong>1:1</strong>).</li>
+              <li>Pick the ratio that matches your final platform (YouTube, TikTok, Instagram, etc.).</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Enhancing Your Video -->
+      <div class="accordion-item">
+        <button class="accordion-header">
+          <span class="title">
+            <span class="badge" data-i18n="badge3">3</span>
+            <span data-i18n="sec3Title">3️⃣ Enhancing Your Video</span>
+          </span>
+          <span class="icon">▶</span>
+        </button>
+        <div class="accordion-body">
+          <div class="accordion-body-inner" data-i18n="sec3Body">
+            <p><strong>Adding Audio</strong></p>
+            <ul>
+              <li>Go to the <strong>Audio</strong> tab to upload music or choose audio from CapCut’s library.</li>
+              <li>Place audio on the timeline under your video clips.</li>
+              <li>Adjust:
+                <ul>
+                  <li><strong>Volume</strong> – make narration clear and music softer.</li>
+                  <li><strong>Fade in/out</strong> – smooth starts and endings.</li>
+                  <li><strong>Speed</strong> – slow down or speed up special effects.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <p><strong>Adding Text</strong></p>
+            <ul>
+              <li>Click <strong>Text</strong> and choose a style (basic text, titles, subtitles).</li>
+              <li>Type your message in the preview window.</li>
+              <li>Customize:
+                <ul>
+                  <li>Font, size, and color</li>
+                  <li>Position on the screen</li>
+                  <li>Text animation (e.g. fade, slide, typewriter)</li>
+                </ul>
+              </li>
+            </ul>
+
+            <p><strong>Adding Elements</strong></p>
+            <ul>
+              <li>Use the <strong>Elements</strong> tab to add icons, stickers, shapes, and emojis.</li>
+              <li>Drag elements onto the timeline and resize or move them in the preview window.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Captions -->
+      <div class="accordion-item">
+        <button class="accordion-header">
+          <span class="title">
+            <span class="badge" data-i18n="badge4">4</span>
+            <span data-i18n="sec4Title">4️⃣ Captions</span>
+          </span>
+          <span class="icon">▶</span>
+        </button>
+        <div class="accordion-body">
+          <div class="accordion-body-inner" data-i18n="sec4Body">
+            <p><strong>Working with Captions</strong></p>
+            <ul>
+              <li>Open the <strong>Captions</strong> section to add subtitles to your video.</li>
+              <li>Type each caption in the timeline track where it should appear.</li>
+              <li>Adjust the timing by dragging the edges of the caption blocks.</li>
+              <li>Style your captions (font, size, color, and position) for clear reading.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. Effects & Filters -->
+      <div class="accordion-item">
+        <button class="accordion-header">
+          <span class="title">
+            <span class="badge" data-i18n="badge5">5</span>
+            <span data-i18n="sec5Title">5️⃣ Effects &amp; Filters</span>
+          </span>
+          <span class="icon">▶</span>
+        </button>
+        <div class="accordion-body">
+          <div class="accordion-body-inner" data-i18n="sec5Body">
+            <p><strong>Video Effects</strong></p>
+            <ul>
+              <li>Click <strong>Effects</strong> to browse visual effects such as glitch, blur, motion, or cinematic looks.</li>
+              <li>Drag an effect onto the timeline above the clip you want to modify.</li>
+              <li>Adjust the duration and intensity of the effect for the best result.</li>
+            </ul>
+
+            <p><strong>Filters</strong></p>
+            <ul>
+              <li>Use <strong>Filters</strong> to change the overall color and mood of your video.</li>
+              <li>Apply a filter to one clip or to the entire sequence for consistency.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. Transitions -->
+      <div class="accordion-item">
+        <button class="accordion-header">
+          <span class="title">
+            <span class="badge" data-i18n="badge6">6</span>
+            <span data-i18n="sec6Title">6️⃣ Transitions</span>
+          </span>
+          <span class="icon">▶</span>
+        </button>
+        <div class="accordion-body">
+          <div class="accordion-body-inner" data-i18n="sec6Body">
+            <p><strong>Adding Transitions Between Clips</strong></p>
+            <ul>
+              <li>Click the small transition icon between two clips on the timeline.</li>
+              <li>Choose a transition style such as:
+                <ul>
+                  <li><strong>Fade</strong></li>
+                  <li><strong>Zoom</strong></li>
+                  <li><strong>Flash</strong></li>
+                  <li><strong>Swipe</strong></li>
+                </ul>
+              </li>
+              <li>Set the transition duration for a smoother or faster change.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7. Exporting Your Video -->
+      <div class="accordion-item">
+        <button class="accordion-header">
+          <span class="title">
+            <span class="badge" data-i18n="badge7">7</span>
+            <span data-i18n="sec7Title">7️⃣ Exporting Your Video</span>
+          </span>
+          <span class="icon">▶</span>
+        </button>
+        <div class="accordion-body">
+          <div class="accordion-body-inner" data-i18n="sec7Body">
+            <p><strong>Export Settings</strong></p>
+            <ul>
+              <li>When you finish editing, click <strong>Export</strong> in the top-right corner.</li>
+              <li>Choose:
+                <ul>
+                  <li><strong>Resolution</strong> – 1080p is a good standard for lessons.</li>
+                  <li><strong>Frame rate</strong> – usually 25 or 30 fps.</li>
+                  <li><strong>File format</strong> – MP4 is widely compatible.</li>
+                </ul>
+              </li>
+              <li>Click <strong>Export</strong> again to render and save your video to your device.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8. Bonus Tips -->
+      <div class="accordion-item">
+        <button class="accordion-header">
+          <span class="title">
+            <span class="badge" data-i18n="badge8">8</span>
+            <span data-i18n="sec8Title">🔍 Bonus Tips for Teachers</span>
+          </span>
+          <span class="icon">▶</span>
+        </button>
+        <div class="accordion-body">
+          <div class="accordion-body-inner" data-i18n="sec8Body">
+            <ul>
+              <li>Use captions to support learners who need extra reading or listening support.</li>
+              <li>Add images of worksheets or slides to explain key ideas clearly.</li>
+              <li>Record voiceovers to guide students step by step.</li>
+              <li>Reuse your project as a template for similar lessons.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <p class="tagline" data-i18n="tagline">
+      Tip: Ask students to create a short CapCut video as a project to demonstrate their understanding.
+    </p>
+  </div>
+
+  <script>
+    // Store English text from DOM and define Arabic translations
+    const englishTexts = {};
+    const arabicTexts = {
+      toggleLabel: "ترجمة إلى العربية",
+      sessionLabel: "الجلسة ١٠",
+      title: "دليل استخدام كاب كت",
+      subtitle: "اضغط على كل قسم لعرض الخطوات والنصائح الأساسية.",
+      badge1: "١",
+      badge2: "٢",
+      badge3: "٣",
+      badge4: "٤",
+      badge5: "٥",
+      badge6: "٦",
+      badge7: "٧",
+      badge8: "٨",
+      sec1Title: "١️⃣ البدء في استخدام كاب كت",
+      sec2Title: "٢️⃣ إضافة المقاطع وإدارتها",
+      sec3Title: "٣️⃣ تحسين الفيديو",
+      sec4Title: "٤️⃣ العناوين الفرعية (الترجمة النصية)",
+      sec5Title: "٥️⃣ المؤثرات والفلاتر",
+      sec6Title: "٦️⃣ الانتقالات بين المقاطع",
+      sec7Title: "٧️⃣ تصدير الفيديو",
+      sec8Title: "🔍 نصائح إضافية للمعلمين",
+      sec1Body: `
+        <p><strong>نظرة عامة على مساحة العمل</strong></p>
+        <ul>
+          <li><strong>شريط الزمن (أسفل):</strong> المكان الذي ترتب فيه المقاطع، وتقصها، وتعدلها.</li>
+          <li><strong>نافذة المعاينة (في الوسط):</strong> تعرض شكل الفيديو أثناء العمل.</li>
+          <li><strong>لوحة الوسائط (يسار):</strong> لرفع الفيديوهات والصور والملفات الصوتية.</li>
+          <li><strong>شريط الأدوات (أعلى):</strong> يحتوي على التراجع، الإعادة، التكبير، التصدير، السرعة، وغيرها.</li>
+        </ul>
+        <p><strong>رفع الوسائط</strong></p>
+        <ul>
+          <li>اضغط على <strong>Upload</strong> أو اسحب الملفات إلى منتصف الشاشة.</li>
+          <li>يمكنك الرفع من:
+            <ul>
+              <li>جهازك الشخصي</li>
+              <li>Google Drive</li>
+              <li>Dropbox</li>
+              <li>مجلدات الرفع التلقائي (Auto-upload)</li>
+            </ul>
+          </li>
+        </ul>
+      `,
+      sec2Body: `
+        <p><strong>إدراج المقاطع</strong></p>
+        <ul>
+          <li>اسحب أي فيديو أو صورة أو ملف صوتي من اللوحة اليسرى إلى شريط الزمن.</li>
+          <li>أعد ترتيب المقاطع بسحبها يمينًا أو يسارًا.</li>
+        </ul>
+        <p><strong>القص والتقليم</strong></p>
+        <ul>
+          <li>اضغط على المقطع ثم اسحب حوافه لقص البداية أو النهاية.</li>
+          <li>استخدم أداة <strong>Split</strong> (أيقونة المقص) لتقسيم المقطع إلى أجزاء.</li>
+        </ul>
+        <p><strong>تغيير نسبة العرض إلى الارتفاع</strong></p>
+        <ul>
+          <li>استخدم أيقونة النسبة لاختيار الشكل المناسب مثل <strong>16:9</strong> أو <strong>9:16</strong> أو <strong>1:1</strong>.</li>
+          <li>اختر النسبة التي تناسب المنصة النهائية (يوتيوب، تيك توك، إنستجرام، إلخ).</li>
+        </ul>
+      `,
+      sec3Body: `
+        <p><strong>إضافة الصوت</strong></p>
+        <ul>
+          <li>من تبويب <strong>Audio</strong> يمكنك رفع موسيقى أو اختيار صوت من مكتبة كاب كت.</li>
+          <li>ضع المسار الصوتي في شريط الزمن أسفل الفيديو.</li>
+          <li>عدّل:
+            <ul>
+              <li><strong>مستوى الصوت</strong> لجعل التعليق واضحًا والموسيقى هادئة.</li>
+              <li><strong>التلاشي (Fade in/out)</strong> لبداية ونهاية سلسة للصوت.</li>
+              <li><strong>السرعة</strong> لإبطاء أو تسريع بعض المؤثرات.</li>
+            </ul>
+          </li>
+        </ul>
+        <p><strong>إضافة النصوص</strong></p>
+        <ul>
+          <li>اضغط على <strong>Text</strong> واختر شكل العنوان أو النص.</li>
+          <li>اكتب الجملة في نافذة المعاينة.</li>
+          <li>يمكنك التحكم في:
+            <ul>
+              <li>الخط والحجم واللون</li>
+              <li>مكان ظهور النص على الشاشة</li>
+              <li>حركة النص (مثل الظهور التدريجي أو الانزلاق)</li>
+            </ul>
+          </li>
+        </ul>
+        <p><strong>إضافة العناصر (Elements)</strong></p>
+        <ul>
+          <li>من تبويب <strong>Elements</strong> أضف أيقونات، ملصقات، أشكال، أو رموز تعبيرية.</li>
+          <li>اسحب العنصر إلى شريط الزمن ثم عدّل حجمه ومكانه من نافذة المعاينة.</li>
+        </ul>
+      `,
+      sec4Body: `
+        <p><strong>استخدام العناوين الفرعية</strong></p>
+        <ul>
+          <li>افتح قسم <strong>Captions</strong> لإضافة نصوص مترجمة على الفيديو.</li>
+          <li>اكتب كل جملة في المسار الخاص بالعناوين في شريط الزمن.</li>
+          <li>اضبط توقيت ظهور العناوين بسحب أطراف كل صندوق نصي.</li>
+          <li>غيّر شكل العناوين من حيث الخط والحجم واللون ومكان الظهور لتكون سهلة القراءة.</li>
+        </ul>
+      `,
+      sec5Body: `
+        <p><strong>المؤثرات البصرية</strong></p>
+        <ul>
+          <li>اضغط على <strong>Effects</strong> لاستعراض المؤثرات مثل التشويش (Glitch) أو الضبابية (Blur) أو الحركة (Motion) أو الشكل السينمائي.</li>
+          <li>اسحب المؤثر فوق المقطع الذي تريد تعديله في شريط الزمن.</li>
+          <li>اضبط مدة المؤثر وقوته للحصول على أفضل نتيجة.</li>
+        </ul>
+        <p><strong>الفلاتر</strong></p>
+        <ul>
+          <li>استخدم <strong>Filters</strong> لتغيير ألوان الفيديو وجوّه العام.</li>
+          <li>يمكنك تطبيق الفلتر على مقطع واحد أو على الفيديو بالكامل للمحافظة على نفس الأسلوب.</li>
+        </ul>
+      `,
+      sec6Body: `
+        <p><strong>إضافة الانتقالات بين المقاطع</strong></p>
+        <ul>
+          <li>اضغط على أيقونة الانتقال الصغيرة بين مقطعين في شريط الزمن.</li>
+          <li>اختر نوع الانتقال مثل:
+            <ul>
+              <li><strong>Fade</strong> (تلاشي)</li>
+              <li><strong>Zoom</strong> (تكبير/تصغير)</li>
+              <li><strong>Flash</strong> (وميض)</li>
+              <li><strong>Swipe</strong> (سحب أو انزلاق)</li>
+            </ul>
+          </li>
+          <li>حدد مدة الانتقال للحصول على حركة سلسة أو سريعة حسب الحاجة.</li>
+        </ul>
+      `,
+      sec7Body: `
+        <p><strong>إعدادات التصدير</strong></p>
+        <ul>
+          <li>بعد الانتهاء من التعديل اضغط على <strong>Export</strong> في أعلى اليمين.</li>
+          <li>اختر:
+            <ul>
+              <li><strong>الدقة (Resolution)</strong> – دقة 1080p مناسبة لمعظم الدروس.</li>
+              <li><strong>معدل الإطارات (Frame rate)</strong> – غالبًا 25 أو 30 إطارًا في الثانية.</li>
+              <li><strong>صيغة الملف</strong> – يعتبر MP4 خيارًا متوافقًا مع معظم المنصات.</li>
+            </ul>
+          </li>
+          <li>اضغط على <strong>Export</strong> مرة أخرى لحفظ الفيديو على جهازك.</li>
+        </ul>
+      `,
+      sec8Body: `
+        <ul>
+          <li>استخدم العناوين الفرعية لدعم الطلاب الذين يحتاجون إلى مساعدة في القراءة أو الاستماع.</li>
+          <li>أضف صورًا لبطاقات العمل أو الشرائح لشرح الأفكار الأساسية بوضوح.</li>
+          <li>سجّل تعليقًا صوتيًا يوجّه الطلاب خطوة بخطوة أثناء مشاهدة الفيديو.</li>
+          <li>احفظ المشروع كقالب لتستخدمه في دروس مشابهة لاحقًا.</li>
+        </ul>
+      `,
+      tagline: "نصيحة: اطلب من الطلاب إنشاء فيديو قصير على كاب كت كمشروع يوضح مدى فهمهم للدرس."
+    };
+
+    // Save English text from DOM on load
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+      const key = el.getAttribute("data-i18n");
+      englishTexts[key] = el.innerHTML;
+    });
+
+    function setLanguage(lang) {
+      const isArabic = lang === "ar";
+      document.body.style.direction = isArabic ? "rtl" : "ltr";
+      document.body.style.textAlign = isArabic ? "right" : "left";
+
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        if (isArabic && arabicTexts[key]) {
+          el.innerHTML = arabicTexts[key];
+        } else if (englishTexts[key]) {
+          el.innerHTML = englishTexts[key];
+        }
+      });
+    }
+
+    // Handle toggle switch
+    document.getElementById("langToggle").addEventListener("change", function () {
+      if (this.checked) {
+        setLanguage("ar");
+      } else {
+        setLanguage("en");
+      }
+    });
+
+    // Accordion logic
+    document.querySelectorAll(".accordion-header").forEach(header => {
+      header.addEventListener("click", () => {
+        const body = header.nextElementSibling;
+        const isOpen = header.classList.contains("active");
+
+        // Close all panels
+        document.querySelectorAll(".accordion-header").forEach(h => h.classList.remove("active"));
+        document.querySelectorAll(".accordion-body").forEach(b => b.style.maxHeight = null);
+
+        // Toggle clicked
+        if (!isOpen) {
+          header.classList.add("active");
+          body.style.maxHeight = body.scrollHeight + "px";
+        }
+      });
+    });
+
+    // Open the first panel by default
+    const firstHeader = document.querySelector(".accordion-header");
+    if (firstHeader) firstHeader.click();
+  </script>
+</body>
+</html>

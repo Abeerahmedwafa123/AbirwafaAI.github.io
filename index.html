@@ -2,1008 +2,678 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Session 5 – AI Presentations</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <style>
-    :root {
-      --bg: #f5f7fb;
-      --primary: #1e6ba8;
-      --primary-soft: #e2effb;
-      --accent: #5bc0be;
-      --card-bg: #ffffff;
-      --border: #d5dde8;
-      --text-main: #1f2933;
-      --text-muted: #6b7280;
-      --shadow-soft: 0 14px 40px rgba(15, 23, 42, 0.12);
-      --radius-lg: 18px;
-      --radius-sm: 10px;
-    }
+  <title>Edulixa AI Course – Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+  <style>
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, Helvetica, Arial, sans-serif;
     }
 
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-        sans-serif;
-      background: radial-gradient(circle at top left, #e2f3ff 0, #f5f7fb 40%, #eef2ff 100%);
-      color: var(--text-main);
       min-height: 100vh;
-      padding: 24px;
-    }
-
-    body.rtl {
-      font-family: "Tahoma", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-        sans-serif;
-    }
-
-    body.rtl h1,
-    body.rtl h2,
-    body.rtl p,
-    body.rtl label,
-    body.rtl .badge,
-    body.rtl footer,
-    body.rtl .helper,
-    body.rtl .pill-note {
-      text-align: right;
-    }
-
-    body.rtl .chips {
-      justify-content: flex-end;
-    }
-
-    .app-shell {
-      max-width: 1180px;
-      margin: 0 auto;
+      background: linear-gradient(135deg, #0f4c75, #1b262c);
+      color: #1a2634;
+      display: flex;
+      flex-direction: column;
     }
 
     header {
-      background: linear-gradient(120deg, var(--primary), #3f83f8);
-      color: #fff;
-      border-radius: 24px;
-      padding: 22px 26px;
-      box-shadow: var(--shadow-soft);
+      padding: 20px 8%;
       display: flex;
       justify-content: space-between;
-      gap: 18px;
       align-items: center;
-      margin-bottom: 22px;
+      background: rgba(15, 76, 117, 0.9);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      color: #f5f9ff;
     }
 
-    .header-main {
+    .logo-container {
       display: flex;
-      gap: 18px;
       align-items: center;
     }
 
-    header .badge {
-      background: rgba(255, 255, 255, 0.18);
-      padding: 6px 12px;
+    .logo-img {
+      height: 55px;
+      width: auto;
+      filter: brightness(1.1);
+    }
+
+    .translate-btn {
+      border: 1px solid rgba(130, 230, 255, 0.9);
+      background: rgba(130, 230, 255, 0.15);
+      color: #e7f8ff;
+      padding: 7px 14px;
       border-radius: 999px;
-      font-size: 12px;
-      letter-spacing: 0.09em;
-      text-transform: uppercase;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: background 0.2s ease, color 0.2s ease,
+        transform 0.15s ease;
     }
 
-    header h1 {
-      font-size: 24px;
-      margin-bottom: 4px;
-    }
-
-    header p {
-      font-size: 14px;
-      opacity: 0.9;
-    }
-
-    header .icon {
-      width: 60px;
-      height: 60px;
-      border-radius: 20px;
-      background: radial-gradient(circle at 20% 20%, #fff, rgba(255,255,255,0.05));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 30px;
+    .translate-btn:hover {
+      background: rgba(130, 230, 255, 0.9);
+      color: #053042;
+      transform: translateY(-1px);
     }
 
     main {
-      display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-      gap: 18px;
-      align-items: flex-start;
+      flex: 1;
+      padding: 30px 8% 40px;
+      color: #1a2634;
     }
 
-    @media (max-width: 900px) {
-      main {
-        grid-template-columns: minmax(0, 1fr);
-      }
+    .hero {
+      margin-bottom: 30px;
+      max-width: 900px;
+    }
 
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
+    .hero h1 {
+      font-size: 2.4rem;
+      margin-bottom: 10px;
+      font-weight: 800;
+      color: #fdfdfd;
+    }
+
+    .hero p {
+      font-size: 1rem;
+      line-height: 1.6;
+      opacity: 0.95;
+      font-weight: 600;
+      color: #e8f4ff;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
     }
 
     .card {
-      background: var(--card-bg);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-soft);
-      border: 1px solid rgba(148, 163, 184, 0.2);
-      padding: 18px 18px 20px;
+      border-radius: 14px;
+      padding: 18px 18px 16px;
+      border: 1px solid rgba(0, 0, 0, 0.07);
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.16);
+      transition: transform 0.2s ease, box-shadow 0.2s ease,
+        border-color 0.2s ease, background 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      color: #1a2634;
+    }
+
+    /* Pastel backgrounds for each session card */
+    .card:nth-of-type(1) { background: #ffe6f2; }   /* soft pink */
+    .card:nth-of-type(2) { background: #ffeede; }   /* peach */
+    .card:nth-of-type(3) { background: #e7f8ff; }   /* baby blue */
+    .card:nth-of-type(4) { background: #e8ffe7; }   /* mint */
+    .card:nth-of-type(5) { background: #f1e7ff; }   /* lavender */
+    .card:nth-of-type(6) { background: #fff4e8; }   /* warm cream */
+    .card:nth-of-type(7) { background: #e9f6ff; }   /* sky */
+    .card:nth-of-type(8) { background: #fff0f0; }   /* blush */
+    .card:nth-of-type(9) { background: #e9fff7; }   /* aqua mint */
+    .card:nth-of-type(10){ background: #f9e9ff; }   /* lilac */
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.25);
+      border-color: rgba(15, 76, 117, 0.45);
     }
 
     .card h2 {
-      font-size: 18px;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .card h2 span.icon {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: var(--primary-soft);
-      font-size: 16px;
-    }
-
-    .card p.helper {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-bottom: 12px;
-    }
-
-    .grid-2 {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-    }
-
-    .field {
-      margin-bottom: 10px;
-    }
-
-    .field label {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 13px;
-      margin-bottom: 4px;
-      color: #111827;
-    }
-
-    .field label span.meta {
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    input[type="text"],
-    input[type="number"],
-    select,
-    textarea {
-      width: 100%;
-      padding: 7px 9px;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border);
-      font-size: 13px;
-      outline: none;
-      background: #f9fbff;
-      transition: border 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
-      resize: vertical;
-      min-height: 0;
-    }
-
-    textarea {
-      min-height: 70px;
-      max-height: 260px;
-    }
-
-    input:focus,
-    select:focus,
-    textarea:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 1px rgba(30, 107, 168, 0.2);
-      background: #ffffff;
-    }
-
-    .chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 4px;
-      margin-bottom: 8px;
-    }
-
-    .chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      border-radius: 999px;
-      padding: 4px 9px;
-      font-size: 11px;
-      border: 1px solid var(--border);
-      background: #f9fbff;
-    }
-
-    .chip input {
-      margin: 0;
-    }
-
-    .btn-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 12px;
-    }
-
-    button {
-      border-radius: 999px;
-      border: none;
-      padding: 8px 16px;
-      font-size: 13px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.15s ease;
-    }
-
-    .btn-primary {
-      background: var(--primary);
-      color: #fff;
-      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.35);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 14px 35px rgba(15, 23, 42, 0.38);
-    }
-
-    .btn-ghost {
-      background: #eef2ff;
-      color: var(--primary);
-    }
-
-    .btn-ghost:hover {
-      background: #e0e7ff;
-      transform: translateY(-1px);
-    }
-
-    .btn-icon {
-      font-size: 15px;
-    }
-
-    .pill-note {
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 6px;
-    }
-
-    .preview-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      font-size: 1.1rem;
       margin-bottom: 6px;
+      font-weight: 800;
     }
 
-    #finalPrompt {
-      width: 100%;
-      min-height: 290px;
-      font-size: 12px;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-        "Liberation Mono", "Courier New", monospace;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border);
-      padding: 10px 10px;
-      background: #0b1220;
-      color: #e5e7eb;
-      line-height: 1.45;
-      resize: vertical;
-    }
-
-    .tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 11px;
-      padding: 4px 8px;
-      background: rgba(90, 219, 179, 0.1);
+    .session-tag {
+      display: inline-block;
+      font-size: 0.8rem;
+      padding: 4px 10px;
       border-radius: 999px;
-      color: #047857;
-      border: 1px solid rgba(16, 185, 129, 0.35);
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(15, 76, 117, 0.25);
+      margin-bottom: 8px;
+      font-weight: 800;
     }
 
-    .tag span.dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #10b981;
+    .session-logo {
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+      opacity: 0.95;
+      font-weight: 800;
+    }
+
+    .card p {
+      font-size: 0.92rem;
+      line-height: 1.5;
+      opacity: 0.95;
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+
+    .card a.session-link {
+      align-self: flex-start;
+      margin-top: auto;
+      font-size: 0.9rem;
+      text-decoration: none;
+      padding: 7px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(15, 76, 117, 0.7);
+      color: #0b2a3f;
+      background: rgba(255, 255, 255, 0.9);
+      font-weight: 800;
+      transition: background 0.2s ease, color 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .card a.session-link:hover {
+      background: #0f4c75;
+      color: #f5f9ff;
+      border-color: #0f4c75;
     }
 
     footer {
-      margin-top: 16px;
-      font-size: 11px;
-      color: var(--text-muted);
       text-align: center;
+      padding: 14px 8%;
+      font-size: 0.8rem;
+      opacity: 0.9;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(5, 22, 33, 0.95);
+      color: #f5f9ff;
+      font-weight: 600;
     }
 
-    /* File upload styling */
-    .file-wrap {
-      border: 1px dashed var(--border);
-      border-radius: var(--radius-sm);
-      padding: 8px 10px;
-      background: #f9fbff;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 6px;
-    }
-
-    .file-wrap span {
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
-    .file-wrap input[type="file"] {
-      font-size: 11px;
-      max-width: 220px;
+    @media (max-width: 600px) {
+      .hero h1 {
+        font-size: 1.8rem;
+      }
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+      .translate-btn {
+        align-self: flex-end;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="app-shell">
-    <header>
-      <div class="header-main">
-        <div class="icon">🎥</div>
-        <div>
-          <div class="badge" id="badgeText">Session 5 · AI Presentations</div>
-          <h1 id="headerTitle">Interactive AI Prompt Builder for Teacher Presentations</h1>
-          <p id="headerSubtitle">
-            Fill in the fields, then generate a single, polished AI prompt you can copy into ChatGPT or any AI tool to create a
-            full presentation on your topic.
-          </p>
-        </div>
-      </div>
-      <button class="btn-ghost" type="button" id="toggleLangBtn">
-        <span class="btn-icon">🌐</span>
-        <span id="toggleLangLabel">Translate to Arabic</span>
-      </button>
-    </header>
+  <header>
+    <div class="logo-container">
+      <img
+        src="https://github.com/Abeerahmedwafa123/Mental-Math-/blob/main/Edu%20Logo%20White.png?raw=1"
+        alt="Edulixa Logo"
+        class="logo-img"
+      >
+    </div>
+    <button id="translateToggle" class="translate-btn">عربي</button>
+  </header>
 
-    <main>
-      <!-- LEFT: FORM -->
-      <section class="card">
-        <h2>
-          <span class="icon">📝</span>
-          <span id="teacherCardTitle">Teacher Input</span>
-        </h2>
-        <p class="helper" id="teacherHelper">
-          Complete only what you need. The app will gather everything into one ready-to-use AI prompt.
-        </p>
+  <main>
+    <section class="hero">
+      <h1
+        data-en="Teach. Design. Transform – with AI that works for you."
+        data-ar="علِّم، صمِّم، وغيِّر – مع ذكاء اصطناعي يعمل لأجلك."
+      >
+        Teach. Design. Transform – with AI that works for you.
+      </h1>
+      <p
+        data-en="Welcome to the Edulixa AI Course: ten power-packed sessions where you discover how to prompt, plan, design, record, and edit with AI. Move from curiosity to confidence as you build real tools for your classroom."
+        data-ar="مرحبًا بك في دورة إدوليكسا للذكاء الاصطناعي: عشر جلسات مكثفة تكتشف فيها كيف تُحاور نماذج الذكاء الاصطناعي، وتخطط للدروس، وتصمم الأنشطة، وتسجل وتحرر الفيديوهات. انتقل من الفضول إلى الثقة وأنت تبني أدوات حقيقية لفصلك."
+      >
+        Welcome to the Edulixa AI Course: ten power-packed sessions where you
+        discover how to prompt, plan, design, record, and edit with AI. Move
+        from curiosity to confidence as you build real tools for your classroom.
+      </p>
+    </section>
 
-        <div class="field">
-          <label for="teacherName">
-            <span id="lblTeacherName">Teacher name (optional)</span>
-            <span class="meta" id="metaTeacherName">For a personal tone (or leave blank)</span>
-          </label>
-          <input type="text" id="teacherName" placeholder="e.g. Ms. Abir, Mr. Ahmed" />
-        </div>
-
-        <div class="grid-2">
-          <div class="field">
-            <label for="subject">
-              <span id="lblSubject">Subject</span>
-              <span class="meta" id="metaSubject">e.g. English, Science, History</span>
-            </label>
-            <input type="text" id="subject" placeholder="e.g. English" />
+    <section id="sessions">
+      <div class="grid">
+        <!-- SESSION 1 -->
+        <article class="card">
+          <span
+            class="session-tag"
+            data-en="Session 1 – Prompt Engineering & ChatGPT/Gemini"
+            data-ar="الجلسة 1 – هندسة التعليمات مع شات جي بي تي/جيميني"
+          >
+            Session 1 – Prompt Engineering & ChatGPT/Gemini
+          </span>
+          <div
+            class="session-logo"
+            data-en="Explore. Experiment. Engage."
+            data-ar="استكشف، جرِّب، وتفاعل."
+          >
+            Explore. Experiment. Engage.
           </div>
-          <div class="field">
-            <label for="grade">
-              <span id="lblGrade">Grade / Age group</span>
-              <span class="meta" id="metaGrade">e.g. Grade 7, A2, 10–12 yrs</span>
-            </label>
-            <input type="text" id="grade" placeholder="e.g. Stage 6 IGCSE" />
-          </div>
-        </div>
-
-        <div class="field">
-          <label for="topic">
-            <span id="lblTopic">Topic / Title of the presentation</span>
-            <span class="meta" id="metaTopic">Main focus of the session</span>
-          </label>
-          <input type="text" id="topic" placeholder="e.g. Emotional Intelligence in the Classroom" />
-        </div>
-
-        <div class="grid-2">
-          <div class="field">
-            <label for="slides">
-              <span id="lblSlides">Approx. number of slides</span>
-              <span class="meta" id="metaSlides">10–15 recommended</span>
-            </label>
-            <input type="number" id="slides" min="6" max="40" value="12" />
-          </div>
-
-          <div class="field">
-            <label for="platform">
-              <span id="lblPlatform">Platform</span>
-              <span class="meta" id="metaPlatform">Just for style hints</span>
-            </label>
-            <select id="platform">
-              <option value="Canva">Canva</option>
-              <option value="PowerPoint">PowerPoint</option>
-              <option value="Google Slides">Google Slides</option>
-              <option value="Keynote">Keynote</option>
-              <option value="generic" selected>Any slide platform</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="field">
-          <label for="objectives">
-            <span id="lblObjectives">Learning objectives (optional)</span>
-            <span class="meta" id="metaObjectives">If empty, AI will create SMART objectives for you</span>
-          </label>
-          <textarea id="objectives" placeholder="- Students will be able to...
-- Students will identify...
-- Students will create..."></textarea>
-        </div>
-
-        <!-- Upload & text -->
-        <div class="field">
-          <label for="lessonContent">
-            <span id="lblUpload">Upload your lesson / text / worksheet / image / PDF (optional)</span>
-            <span class="meta" id="metaUpload">AI will design the slides around this content</span>
-          </label>
-
-          <div class="file-wrap">
-            <span id="uploadHint">Choose a picture or PDF (e.g. worksheet scan, reading text, lesson plan).</span>
-            <input type="file" id="lessonFile" accept=".pdf,image/*" />
-          </div>
-
-          <textarea id="lessonContent" placeholder="You can also paste your existing lesson, reading text, worksheet questions, or bullet notes here..."></textarea>
-        </div>
-
-        <div class="field">
-          <label>
-            <span id="lblInclude">What should the AI definitely include?</span>
-          </label>
-          <div class="chips">
-            <label class="chip">
-              <input type="checkbox" id="incWarmUp" checked />
-              <span id="chipWarmUp">Warm-up / hook</span>
-            </label>
-            <label class="chip">
-              <input type="checkbox" id="incStories" checked />
-              <span id="chipStories">Real-life examples</span>
-            </label>
-            <label class="chip">
-              <input type="checkbox" id="incActivities" checked />
-              <span id="chipActivities">Student activities</span>
-            </label>
-            <label class="chip">
-              <input type="checkbox" id="incAssessment" checked />
-              <span id="chipAssessment">Quick assessment</span>
-            </label>
-            <label class="chip">
-              <input type="checkbox" id="incExtension" checked />
-              <span id="chipExtension">Extension task</span>
-            </label>
-          </div>
-        </div>
-
-        <div class="field">
-          <label>
-            <span id="lblTheorists">Educational theorists (optional)</span>
-            <span class="meta" id="metaTheorists">Tick if you want them referenced when relevant</span>
-          </label>
-          <div class="chips">
-            <label class="chip">
-              <input type="checkbox" class="theorist" value="Lev Vygotsky" checked />
-              <span>Vygotsky</span>
-            </label>
-            <label class="chip">
-              <input type="checkbox" class="theorist" value="Jean Piaget" />
-              <span>Piaget</span>
-            </label>
-            <label class="chip">
-              <input type="checkbox" class="theorist" value="Bloom's Taxonomy" />
-              <span>Bloom</span>
-            </label>
-            <label class="chip">
-              <input type="checkbox" class="theorist" value="Albert Bandura" />
-              <span>Bandura</span>
-            </label>
-            <label class="chip">
-              <input type="checkbox" class="theorist" value="Stephen Krashen" />
-              <span>Krashen</span>
-            </label>
-            <label class="chip">
-              <input type="checkbox" class="theorist" value="Daniel Goleman" />
-              <span>Goleman</span>
-            </label>
-          </div>
-        </div>
-
-        <p class="pill-note" id="tipText">
-          💡 Tip: You can write in any language. The AI will follow your input language when building the presentation.
-        </p>
-
-        <div class="btn-row">
-          <button class="btn-primary" id="generateBtn">
-            <span class="btn-icon">✨</span>
-            <span id="generateBtnLabel">Generate AI Prompt</span>
-          </button>
-          <button class="btn-ghost" type="button" id="resetBtn">
-            <span class="btn-icon">🧽</span>
-            <span id="resetBtnLabel">Reset fields</span>
-          </button>
-        </div>
-      </section>
-
-      <!-- RIGHT: OUTPUT -->
-      <section class="card">
-        <div class="preview-header">
-          <h2>
-            <span class="icon">🎯</span>
-            <span id="finalCardTitle">Final AI Prompt</span>
+          <h2
+            data-en="ChatGPT Guide – Main Screen & Smart Prompts"
+            data-ar="دليل شات جي بي تي – الواجهة الرئيسية والتعليمات الذكية"
+          >
+            ChatGPT Guide – Main Screen & Smart Prompts
           </h2>
-          <div class="tag">
-            <span class="dot"></span>
-            <span id="tagReady">Ready to copy & paste</span>
+          <p
+            data-en="Discover the main buttons of ChatGPT and Gemini, learn how to structure powerful prompts, and practise turning vague ideas into clear, classroom-ready requests."
+            data-ar="تتعرف في هذه الجلسة على أزرار واجهة شات جي بي تي وجيميني، وتتعلم كيف تبني تعليمات قوية، وتحوِّل الأفكار العامة إلى طلبات واضحة جاهزة للاستخدام في الفصل."
+          >
+            Discover the main buttons of ChatGPT and Gemini, learn how to
+            structure powerful prompts, and practise turning vague ideas into
+            clear, classroom-ready requests.
+          </p>
+          <!-- ChatGPT canvas link -->
+          <a
+            class="session-link"
+            href="https://chatgpt.com/canvas/shared/690f8f4461988191ad0d88e1ebf5b5af"
+            target="_blank"
+            data-en="Open Session 1"
+            data-ar="افتح الجلسة 1"
+          >
+            Open Session 1
+          </a>
+        </article>
+
+        <!-- SESSION 2 -->
+        <article class="card">
+          <span
+            class="session-tag"
+            data-en="Session 2 – Hyper-Personalised Lesson Plans"
+            data-ar="الجلسة 2 – خطط دروس شديدة التخصيص"
+          >
+            Session 2 – Hyper-Personalised Lesson Plans
+          </span>
+          <div
+            class="session-logo"
+            data-en="Plan. Personalise. Perfect."
+            data-ar="خطِّط، خصِّص، وأتقِن."
+          >
+            Plan. Personalise. Perfect.
           </div>
-        </div>
-        <p class="helper" id="finalHelper">
-          This is the single, complete prompt you can paste into ChatGPT or any AI. It already includes all the structure and
-          details for your Session 5 AI Presentation.
-        </p>
+          <h2
+            data-en="Lesson Plans Like an Expert"
+            data-ar="خطط دروس كالمحترفين"
+          >
+            Lesson Plans Like an Expert
+          </h2>
+          <p
+            data-en="Use ChatGPT as your planning partner to design extremely personalised lesson plans on sustainable tourism, aligned with objectives, stages, and differentiated tasks for every learner."
+            data-ar="استخدم شات جي بي تي كشريك في التخطيط لتصميم خطط دروس شديدة التخصيص حول السياحة المستدامة، مع أهداف واضحة ومراحل منظمة وأنشطة مراعية للفروق الفردية لجميع المتعلمين."
+          >
+            Use ChatGPT as your planning partner to design extremely
+            personalised lesson plans on sustainable tourism, aligned with
+            objectives, stages, and differentiated tasks for every learner.
+          </p>
+          <!-- ChatGPT canvas link -->
+          <a
+            class="session-link"
+            href="https://chatgpt.com/canvas/shared/69109e5837d08191aa07b2003f2f1ba7"
+            target="_blank"
+            data-en="Open Session 2"
+            data-ar="افتح الجلسة 2"
+          >
+            Open Session 2
+          </a>
+        </article>
 
-        <textarea id="finalPrompt" readonly placeholder="Fill in the fields on the left, then click &quot;Generate AI Prompt&quot;."></textarea>
+        <!-- SESSION 3 (no link, as requested) -->
+        <article class="card">
+          <span
+            class="session-tag"
+            data-en="Session 3 – Interactive Worksheets with Canva & ChatGPT"
+            data-ar="الجلسة 3 – أوراق عمل تفاعلية باستخدام كانفا وشات جي بي تي"
+          >
+            Session 3 – Interactive Worksheets with Canva & ChatGPT
+          </span>
+          <div
+            class="session-logo"
+            data-en="Click. Play. Practise."
+            data-ar="انقر، العب، وتدرّب."
+          >
+            Click. Play. Practise.
+          </div>
+          <h2
+            data-en="Interactive Worksheets on Canva"
+            data-ar="أوراق عمل تفاعلية على كانفا"
+          >
+            Interactive Worksheets on Canva
+          </h2>
+          <p
+            data-en="Design interactive grammar worksheets where students practise verbs, receive instant feedback, and enjoy game-like practice powered by Canva and ChatGPT."
+            data-ar="صمِّم أوراق عمل تفاعلية في القواعد اللغوية يتدرّب فيها الطلاب على الأفعال، ويحصلون على تغذية راجعة فورية، ويستمتعون بممارسة تشبه الألعاب باستخدام كانفا وشات جي بي تي."
+          >
+            Design interactive grammar worksheets where students practise verbs,
+            receive instant feedback, and enjoy game-like practice powered by
+            Canva and ChatGPT.
+          </p>
+          <!-- No external link for Session 3 on purpose -->
+        </article>
 
-        <div class="btn-row">
-          <button class="btn-primary" id="copyBtn" type="button">
-            <span class="btn-icon">📋</span>
-            <span id="copyBtnLabel">Copy Prompt</span>
-          </button>
-          <button class="btn-ghost" type="button" id="selectBtn">
-            <span class="btn-icon">🔍</span>
-            <span id="selectBtnLabel">Select All Text</span>
-          </button>
-        </div>
+        <!-- SESSION 4 -->
+        <article class="card">
+          <span
+            class="session-tag"
+            data-en="Session 4 – Standardised Exams & AI Feedback"
+            data-ar="الجلسة 4 – اختبارات معيارية وتغذية راجعة بالذكاء الاصطناعي"
+          >
+            Session 4 – Standardised Exams & AI Feedback
+          </span>
+          <div
+            class="session-logo"
+            data-en="Assess. Analyse. Act."
+            data-ar="قَيِّم، حَلِّل، واتَّخِذ إجراء."
+          >
+            Assess. Analyse. Act.
+          </div>
+          <h2
+            data-en="Exams, Parent Cards & Action Plans"
+            data-ar="الاختبارات وبطاقات أولياء الأمور وخطط العمل"
+          >
+            Exams, Parent Cards & Action Plans
+          </h2>
+          <p
+            data-en="Craft standardised exams with accurate correction, generate parent-friendly progress cards, and build AI-powered action plans based on students’ points of weakness."
+            data-ar="تُنشئ في هذه الجلسة اختبارات معيارية بتصحيح دقيق، وتولِّد بطاقات تقدم مميزة لأولياء الأمور، وتبني خطط عمل مدعومة بالذكاء الاصطناعي بناءً على نقاط الضعف لدى الطلاب."
+          >
+            Craft standardised exams with accurate correction, generate
+            parent-friendly progress cards, and build AI-powered action plans
+            based on students’ points of weakness.
+          </p>
+          <a
+            class="session-link"
+            href="session4n.html"
+            data-en="Open Session 4"
+            data-ar="افتح الجلسة 4"
+          >
+            Open Session 4
+          </a>
+        </article>
 
-        <p class="pill-note" id="bottomNote">
-          ✅ Step 1: Generate the prompt &nbsp;&nbsp; ➜ &nbsp;&nbsp; ✅ Step 2: Copy & paste it into your favourite AI to get a
-          detailed slide deck.
-        </p>
-      </section>
-    </main>
+        <!-- SESSION 5 -->
+        <article class="card">
+          <span
+            class="session-tag"
+            data-en="Session 5 – Gamma AI Presentations"
+            data-ar="الجلسة 5 – عروض تقديمية باستخدام Gamma AI"
+          >
+            Session 5 – Gamma AI Presentations
+          </span>
+          <div
+            class="session-logo"
+            data-en="Present. Persuade. Impress."
+            data-ar="اعرض، أقنِع، وأبهِر."
+          >
+            Present. Persuade. Impress.
+          </div>
+          <h2
+            data-en="Personalised, Accurate Slide Decks"
+            data-ar="عروض شرائح دقيقة وشخصية"
+          >
+            Personalised, Accurate Slide Decks
+          </h2>
+          <p
+            data-en="Create beautiful, data-accurate presentations with Gamma AI that speak directly to your learners, saving hours of design time while keeping your message crystal clear."
+            data-ar="أنشئ عروضًا تقديمية جميلة ودقيقة بالمعلومات باستخدام Gamma AI تتحدث مباشرة إلى طلابك، وتوفر عليك ساعات من التصميم مع الحفاظ على وضوح رسالتك."
+          >
+            Create beautiful, data-accurate presentations with Gamma AI that
+            speak directly to your learners, saving hours of design time while
+            keeping your message crystal clear.
+          </p>
+          <a
+            class="session-link"
+            href="Session5.html"
+            data-en="Open Session 5"
+            data-ar="افتح الجلسة 5"
+          >
+            Open Session 5
+          </a>
+        </article>
 
-    <footer id="footerText">
-      Session 5 – AI Presentations · Interactive Prompt Builder for Teachers
-    </footer>
-  </div>
+        <!-- SESSION 6 -->
+        <article class="card">
+          <span
+            class="session-tag"
+            data-en="Session 6 – Canva AI Certificates & Games"
+            data-ar="الجلسة 6 – الشهادات والألعاب باستخدام كانفا AI"
+          >
+            Session 6 – Canva AI Certificates & Games
+          </span>
+          <div
+            class="session-logo"
+            data-en="Reward. Gamify. Celebrate."
+            data-ar="كافِئ، لعْبِن، واحتفِل."
+          >
+            Reward. Gamify. Celebrate.
+          </div>
+          <h2
+            data-en="Designing Smart Certificates & Mini-Games"
+            data-ar="تصميم شهادات ذكية وألعاب تعليمية صغيرة"
+          >
+            Designing Smart Certificates & Mini-Games
+          </h2>
+          <p
+            data-en="Use Canva AI to design motivational certificates and simple classroom games that make progress visible and learning joyful."
+            data-ar="تستخدم كانفا AI لتصميم شهادات تحفيزية وألعاب صفية بسيطة تجعل التقدم واضحًا والتعلُّم ممتعًا."
+          >
+            Use Canva AI to design motivational certificates and simple
+            classroom games that make progress visible and learning joyful.
+          </p>
+          <a
+            class="session-link"
+            href="session%206%20Canva%20AI.html"
+            data-en="Open Session 6"
+            data-ar="افتح الجلسة 6"
+          >
+            Open Session 6
+          </a>
+        </article>
+
+        <!-- SESSION 7 -->
+        <article class="card">
+          <span
+            class="session-tag"
+            data-en="Session 7 – Audio, Podcasts & Video Analysis"
+            data-ar="الجلسة 7 – الصوتيات والبودكاست وتحليل الفيديو"
+          >
+            Session 7 – Audio, Podcasts & Video Analysis
+          </span>
+          <div
+            class="session-logo"
+            data-en="Listen. Speak. Reflect."
+            data-ar="استمع، تحدَّث، وتأمَّل."
+          >
+            Listen. Speak. Reflect.
+          </div>
+          <h2
+            data-en="Creating Classroom Podcasts & Audio Tasks"
+            data-ar="إنشاء بودكاست وأنشطة صوتية للفصل"
+          >
+            Creating Classroom Podcasts & Audio Tasks
+          </h2>
+          <p
+            data-en="Learn how to script, record, and analyse audio and podcast-style tasks so that your students build real speaking and listening skills."
+            data-ar="تتعلم كيف تكتب النصوص، وتسجل، وتحلِّل أنشطة الصوت والبودكاست ليطوِّر طلابك مهارات حقيقية في التحدث والاستماع."
+          >
+            Learn how to script, record, and analyse audio and podcast-style
+            tasks so that your students build real speaking and listening
+            skills.
+          </p>
+          <a
+            class="session-link"
+            href="session%207.html"
+            data-en="Open Session 7"
+            data-ar="افتح الجلسة 7"
+          >
+            Open Session 7
+          </a>
+        </article>
+
+        <!-- SESSION 8 -->
+        <article class="card">
+          <span
+            class="session-tag"
+            data-en="Session 8 – Fixed-Seed Pictures & Story Worlds"
+            data-ar="الجلسة 8 – صور ثابتة البذرة وعوالم قصصية"
+          >
+            Session 8 – Fixed-Seed Pictures & Story Worlds
+          </span>
+          <div
+            class="session-logo"
+            data-en="Imagine. Illustrate. Inspire."
+            data-ar="تخيَّل، صوِّر، وألهِم."
+          >
+            Imagine. Illustrate. Inspire.
+          </div>
+          <h2
+            data-en="Creating Consistent Characters & Narratives"
+            data-ar="إنشاء شخصيات وقصص متسقة"
+          >
+            Creating Consistent Characters & Narratives
+          </h2>
+          <p
+            data-en="Build fixed-seed Pixar-style characters and story prompts so your visuals stay consistent across episodes, worksheets, and animated tales."
+            data-ar="تُنشئ شخصيات بأسلوب بيكسار وتعليمات ثابتة (Fixed Seed) حتى تبقى صورك متسقة عبر الحلقات وأوراق العمل والقصص المتحركة."
+          >
+            Build fixed-seed Pixar-style characters and story prompts so your
+            visuals stay consistent across episodes, worksheets, and animated
+            tales.
+          </p>
+          <a
+            class="session-link"
+            href="character%20creation%20(2).html"
+            data-en="Open Session 8"
+            data-ar="افتح الجلسة 8"
+          >
+            Open Session 8
+          </a>
+        </article>
+
+        <!-- SESSION 9 -->
+        <article class="card">
+          <span
+            class="session-tag"
+            data-en="Session 9 – Videos & Animated Avatars"
+            data-ar="الجلسة 9 – الفيديوهات والصور الرمزية المتحركة"
+          >
+            Session 9 – Videos & Animated Avatars
+          </span>
+          <div
+            class="session-logo"
+            data-en="Move. Animate. Engage."
+            data-ar="حرِّك، أنشِط، واجذِب الانتباه."
+          >
+            Move. Animate. Engage.
+          </div>
+          <h2
+            data-en="From Talking Heads to Storytelling Avatars"
+            data-ar="من وجوه متحدثة إلى صور رمزية راوية للقصص"
+          >
+            From Talking Heads to Storytelling Avatars
+          </h2>
+          <p
+            data-en="Generate explainer videos and animated avatars that deliver instructions, stories, and feedback while keeping students focused and curious."
+            data-ar="تُنتج فيديوهات توضيحية وصورًا رمزية متحركة تقدِّم التعليمات والقصص والتغذية الراجعة بطريقة تشد انتباه الطلاب وتحفِّز فضولهم."
+          >
+            Generate explainer videos and animated avatars that deliver
+            instructions, stories, and feedback while keeping students focused
+            and curious.
+          </p>
+          <a
+            class="session-link"
+            href="Session9.html"
+            data-en="Open Session 9"
+            data-ar="افتح الجلسة 9"
+          >
+            Open Session 9
+          </a>
+        </article>
+
+        <!-- SESSION 10 -->
+        <article class="card">
+          <span
+            class="session-tag"
+            data-en="Session 10 – Smart Video Editing"
+            data-ar="الجلسة 10 – المونتاج الذكي للفيديو"
+          >
+            Session 10 – Smart Video Editing
+          </span>
+          <div
+            class="session-logo"
+            data-en="Cut. Polish. Publish."
+            data-ar="اقطع، حسِّن، وانشُر."
+          >
+            Cut. Polish. Publish.
+          </div>
+          <h2
+            data-en="Turn Raw Clips into Ready-to-Share Lessons"
+            data-ar="حوِّل المقاطع الخام إلى دروس جاهزة للنشر"
+          >
+            Turn Raw Clips into Ready-to-Share Lessons
+          </h2>
+          <p
+            data-en="Use CapCut for editing and adding effects to deliver a flawless video."
+            data-ar="استخدم CapCut لتحرير الفيديو وإضافة التأثيرات لإنتاج فيديو مثالي."
+          >
+            Use CapCut for editing and adding effects to deliver a flawless video.
+          </p>
+          <a
+            class="session-link"
+            href="Session10.html"
+            data-en="Open Session 10"
+            data-ar="افتح الجلسة 10"
+          >
+            Open Session 10
+          </a>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span
+      data-en="&copy; YEAR Edulixa AI Course – Teach. Design. Transform."
+      data-ar="&copy; YEAR دورة إدوليكسا للذكاء الاصطناعي – علِّم، صمِّم، وغيِّر."
+    >
+      &copy; YEAR Edulixa AI Course – Teach. Design. Transform.
+    </span>
+  </footer>
 
   <script>
-    let isArabic = false;
-
-    const strings = {
-      en: {
-        badgeText: "Session 5 · AI Presentations",
-        headerTitle: "Interactive AI Prompt Builder for Teacher Presentations",
-        headerSubtitle:
-          "Fill in the fields, then generate a single, polished AI prompt you can copy into ChatGPT or any AI tool to create a full presentation on your topic.",
-        teacherCardTitle: "Teacher Input",
-        teacherHelper:
-          "Complete only what you need. The app will gather everything into one ready-to-use AI prompt.",
-        lblTeacherName: "Teacher name (optional)",
-        metaTeacherName: "For a personal tone (or leave blank)",
-        lblSubject: "Subject",
-        metaSubject: "e.g. English, Science, History",
-        lblGrade: "Grade / Age group",
-        metaGrade: "e.g. Grade 7, A2, 10–12 yrs",
-        lblTopic: "Topic / Title of the presentation",
-        metaTopic: "Main focus of the session",
-        lblSlides: "Approx. number of slides",
-        metaSlides: "10–15 recommended",
-        lblPlatform: "Platform",
-        metaPlatform: "Just for style hints",
-        lblObjectives: "Learning objectives (optional)",
-        metaObjectives: "If empty, AI will create SMART objectives for you",
-        objectivesPlaceholder:
-          "- Students will be able to...\n- Students will identify...\n- Students will create...",
-        lblUpload: "Upload your lesson / text / worksheet / image / PDF (optional)",
-        metaUpload: "AI will design the slides around this content",
-        uploadHint: "Choose a picture or PDF (e.g. worksheet scan, reading text, lesson plan).",
-        lessonPlaceholder:
-          "You can also paste your existing lesson, reading text, worksheet questions, or bullet notes here...",
-        lblInclude: "What should the AI definitely include?",
-        chipWarmUp: "Warm-up / hook",
-        chipStories: "Real-life examples",
-        chipActivities: "Student activities",
-        chipAssessment: "Quick assessment",
-        chipExtension: "Extension task",
-        lblTheorists: "Educational theorists (optional)",
-        metaTheorists: "Tick if you want them referenced when relevant",
-        tipText:
-          "💡 Tip: You can write in any language. The AI will follow your input language when building the presentation.",
-        generateBtnLabel: "Generate AI Prompt",
-        resetBtnLabel: "Reset fields",
-        finalCardTitle: "Final AI Prompt",
-        tagReady: "Ready to copy & paste",
-        finalHelper:
-          "This is the single, complete prompt you can paste into ChatGPT or any AI. It already includes all the structure and details for your Session 5 AI Presentation.",
-        finalPlaceholder:
-          "Fill in the fields on the left, then click \"Generate AI Prompt\".",
-        copyBtnLabel: "Copy Prompt",
-        selectBtnLabel: "Select All Text",
-        bottomNote:
-          "✅ Step 1: Generate the prompt   ➜   ✅ Step 2: Copy & paste it into your favourite AI to get a detailed slide deck.",
-        footerText:
-          "Session 5 – AI Presentations · Interactive Prompt Builder for Teachers",
-        toggleLabel: "Translate to Arabic"
-      },
-      ar: {
-        badgeText: "الجلسة ٥ · عروض الذكاء الاصطناعي",
-        headerTitle: "منشئ العروض التقديمية بالذكاء الاصطناعي للمعلمين",
-        headerSubtitle:
-          "املأ الحقول، ثم أنشئ أمراً واحداً مصقولاً يمكنك نسخه في ChatGPT أو أي أداة ذكاء اصطناعي لإنشاء عرضك التقديمي بالكامل.",
-        teacherCardTitle: "مدخلات المعلم",
-        teacherHelper:
-          "املأ ما تحتاجه فقط. سيجمع التطبيق كل شيء في أمر واحد جاهز للاستخدام.",
-        lblTeacherName: "اسم المعلم (اختياري)",
-        metaTeacherName: "لجعل الأسلوب شخصياً (يمكن تركه فارغاً)",
-        lblSubject: "المادة",
-        metaSubject: "مثل: اللغة الإنجليزية، العلوم، التاريخ",
-        lblGrade: "الصف / الفئة العمرية",
-        metaGrade: "مثل: الصف السابع، مستوى A2، من 10–12 سنة",
-        lblTopic: "الموضوع / عنوان العرض التقديمي",
-        metaTopic: "الفكرة الأساسية للجلسة",
-        lblSlides: "عدد الشرائح تقريباً",
-        metaSlides: "يُفضَّل من ١٠ إلى ١٥ شريحة",
-        lblPlatform: "المنصة",
-        metaPlatform: "فقط لمراعاة أسلوب التصميم",
-        lblObjectives: "الأهداف التعليمية (اختياري)",
-        metaObjectives: "إذا تُرك فارغاً، سيقوم الذكاء الاصطناعي بإنشاء أهداف ذكية SMART لك",
-        objectivesPlaceholder:
-          "- سيتمكن الطلاب من...\n- سيتعرّف الطلاب على...\n- سيُنشئ الطلاب...",
-        lblUpload: "ارفع درسك / نصك / ورقة العمل / صورة / ملف PDF (اختياري)",
-        metaUpload: "سيصمم الذكاء الاصطناعي الشرائح حول هذا المحتوى",
-        uploadHint:
-          "اختر صورة أو ملف PDF (مثل: ورقة عمل ممسوحة ضوئياً أو نص قراءة أو خطة درس).",
-        lessonPlaceholder:
-          "يمكنك أيضاً لصق الدرس المكتوب، نص القراءة، أسئلة ورقة العمل أو الملاحظات هنا...",
-        lblInclude: "ما الذي يجب أن يتضمّنه العرض بالتأكيد؟",
-        chipWarmUp: "تهيئة / نشاط افتتاحي",
-        chipStories: "أمثلة من الحياة الواقعية",
-        chipActivities: "أنشطة للطلاب",
-        chipAssessment: "تقويم سريع",
-        chipExtension: "نشاط إثرائي",
-        lblTheorists: "نظريات تربوية (اختياري)",
-        metaTheorists: "اختر إن كنت تريد الإشارة إليها عند الحاجة",
-        tipText:
-          "💡 تلميح: يمكنك الكتابة بأي لغة؛ سيتبع الذكاء الاصطناعي لغة إدخالك عند إنشاء العرض التقديمي.",
-        generateBtnLabel: "إنشاء الأمر بالذكاء الاصطناعي",
-        resetBtnLabel: "مسح الحقول",
-        finalCardTitle: "الأمر النهائي للذكاء الاصطناعي",
-        tagReady: "جاهز للنسخ واللصق",
-        finalHelper:
-          "هذا هو الأمر الكامل الذي يمكنك لصقه في ChatGPT أو أي أداة ذكاء اصطناعي. يحتوي بالفعل على جميع تفاصيل عرض الجلسة ٥.",
-        finalPlaceholder:
-          "املأ الحقول في الجهة اليسرى ثم اضغط على «إنشاء الأمر بالذكاء الاصطناعي».",
-        copyBtnLabel: "نسخ الأمر",
-        selectBtnLabel: "تحديد كل النص",
-        bottomNote:
-          "✅ الخطوة ١: أنشئ الأمر   ➜   ✅ الخطوة ٢: انسخه والصقه في أداة الذكاء الاصطناعي المفضلة لديك للحصول على عرض شرائح تفصيلي.",
-        footerText:
-          "الجلسة ٥ – عروض الذكاء الاصطناعي · منشئ الأوامر التفاعلي للمعلمين",
-        toggleLabel: "العودة إلى الإنجليزية"
-      }
-    };
-
-    function applyLanguage(lang) {
-      const s = strings[lang];
-
-      document.getElementById("badgeText").textContent = s.badgeText;
-      document.getElementById("headerTitle").textContent = s.headerTitle;
-      document.getElementById("headerSubtitle").textContent = s.headerSubtitle;
-
-      document.getElementById("teacherCardTitle").textContent = s.teacherCardTitle;
-      document.getElementById("teacherHelper").textContent = s.teacherHelper;
-
-      document.getElementById("lblTeacherName").textContent = s.lblTeacherName;
-      document.getElementById("metaTeacherName").textContent = s.metaTeacherName;
-
-      document.getElementById("lblSubject").textContent = s.lblSubject;
-      document.getElementById("metaSubject").textContent = s.metaSubject;
-
-      document.getElementById("lblGrade").textContent = s.lblGrade;
-      document.getElementById("metaGrade").textContent = s.metaGrade;
-
-      document.getElementById("lblTopic").textContent = s.lblTopic;
-      document.getElementById("metaTopic").textContent = s.metaTopic;
-
-      document.getElementById("lblSlides").textContent = s.lblSlides;
-      document.getElementById("metaSlides").textContent = s.metaSlides;
-
-      document.getElementById("lblPlatform").textContent = s.lblPlatform;
-      document.getElementById("metaPlatform").textContent = s.metaPlatform;
-
-      document.getElementById("lblObjectives").textContent = s.lblObjectives;
-      document.getElementById("metaObjectives").textContent = s.metaObjectives;
-      document.getElementById("objectives").placeholder = s.objectivesPlaceholder;
-
-      document.getElementById("lblUpload").textContent = s.lblUpload;
-      document.getElementById("metaUpload").textContent = s.metaUpload;
-      document.getElementById("uploadHint").textContent = s.uploadHint;
-      document.getElementById("lessonContent").placeholder = s.lessonPlaceholder;
-
-      document.getElementById("lblInclude").textContent = s.lblInclude;
-      document.getElementById("chipWarmUp").textContent = s.chipWarmUp;
-      document.getElementById("chipStories").textContent = s.chipStories;
-      document.getElementById("chipActivities").textContent = s.chipActivities;
-      document.getElementById("chipAssessment").textContent = s.chipAssessment;
-      document.getElementById("chipExtension").textContent = s.chipExtension;
-
-      document.getElementById("lblTheorists").textContent = s.lblTheorists;
-      document.getElementById("metaTheorists").textContent = s.metaTheorists;
-
-      document.getElementById("tipText").textContent = s.tipText;
-
-      document.getElementById("generateBtnLabel").textContent = s.generateBtnLabel;
-      document.getElementById("resetBtnLabel").textContent = s.resetBtnLabel;
-
-      document.getElementById("finalCardTitle").textContent = s.finalCardTitle;
-      document.getElementById("tagReady").textContent = s.tagReady;
-      document.getElementById("finalHelper").textContent = s.finalHelper;
-
-      if (!document.getElementById("finalPrompt").value.trim()) {
-        document.getElementById("finalPrompt").placeholder = s.finalPlaceholder;
-      }
-
-      document.getElementById("copyBtnLabel").textContent = s.copyBtnLabel;
-      document.getElementById("selectBtnLabel").textContent = s.selectBtnLabel;
-
-      document.getElementById("bottomNote").textContent = s.bottomNote;
-      document.getElementById("footerText").textContent = s.footerText;
-
-      document.getElementById("toggleLangLabel").textContent = s.toggleLabel;
-
-      if (lang === "ar") {
-        document.documentElement.lang = "ar";
-        document.documentElement.dir = "rtl";
-        document.body.classList.add("rtl");
-      } else {
-        document.documentElement.lang = "en";
-        document.documentElement.dir = "ltr";
-        document.body.classList.remove("rtl");
-      }
-    }
-
-    function buildPrompt() {
-      const teacherName = document.getElementById("teacherName").value.trim();
-      const subject = document.getElementById("subject").value.trim();
-      const grade = document.getElementById("grade").value.trim();
-      const topic = document.getElementById("topic").value.trim();
-      const slides = document.getElementById("slides").value.trim();
-      const platform = document.getElementById("platform").value;
-
-      const objectives = document.getElementById("objectives").value.trim();
-      const lessonContent = document.getElementById("lessonContent").value.trim();
-      const lessonFileInput = document.getElementById("lessonFile");
-      const lessonFile = lessonFileInput && lessonFileInput.files && lessonFileInput.files[0]
-        ? lessonFileInput.files[0]
-        : null;
-
-      const incWarmUp = document.getElementById("incWarmUp").checked;
-      const incStories = document.getElementById("incStories").checked;
-      const incActivities = document.getElementById("incActivities").checked;
-      const incAssessment = document.getElementById("incAssessment").checked;
-      const incExtension = document.getElementById("incExtension").checked;
-
-      const theoristInputs = document.querySelectorAll(".theorist");
-      const theorists = [];
-      theoristInputs.forEach((t) => {
-        if (t.checked) theorists.push(t.value);
-      });
-
-      const teacherLine = teacherName
-        ? `I am a teacher named ${teacherName}.`
-        : "I am a teacher preparing a lesson.";
-
-      const subjectLine = subject ? `The subject is ${subject}.` : "";
-      const gradeLine = grade ? `The grade/age group is: ${grade}.` : "";
-      const topicLine = topic
-        ? `The topic or title of the presentation is: "${topic}".`
-        : "You must suggest a clear, engaging title based on my content.";
-
-      const slidesLine = slides
-        ? `Create a detailed presentation of about ${slides} slides.`
-        : "Create a detailed presentation of about 10–15 slides.";
-
-      let objectivesBlock = "";
-      if (objectives) {
-        objectivesBlock = `Here are my learning objectives. Please keep them, refine them, and show them clearly on the 'Learning Objectives' slide:
-
-${objectives}
-
-`;
-      } else {
-        objectivesBlock =
-          "You must generate 3–5 SMART learning objectives that are appropriate for this level, and place them clearly on a 'Learning Objectives' slide.\n";
-      }
-
-      let contentBlock = "";
-
-      if (lessonFile && lessonContent) {
-        contentBlock = `I will also upload a file named "${lessonFile.name}" (${lessonFile.type || "file type unknown"}). Please read and use it together with the text below as the main source for key ideas, examples, and tasks. Do NOT ignore either the file or the text:
-
-${lessonContent}
-
-`;
-      } else if (lessonFile && !lessonContent) {
-        contentBlock = `I will upload a file named "${lessonFile.name}" (${lessonFile.type || "file type unknown"}). Please read and analyze this file and design the presentation around its content (worksheet, image, or PDF). If your interface supports file reading, use it as the primary source for the slides. If not, ask me to paste relevant parts.\n`;
-      } else if (!lessonFile && lessonContent) {
-        contentBlock = `Here is the lesson/text/worksheet content that the presentation must be built around. Use it as the main source for key ideas, examples, and tasks. Do NOT ignore it:
-
-${lessonContent}
-
-`;
-      } else {
-        contentBlock =
-          "I have not provided a full lesson text or file. Please design the presentation based on the topic and level only, using best educational practice.\n";
-      }
-
-      const includeBits = [];
-      if (incWarmUp) includeBits.push("an engaging warm-up / hook to activate prior knowledge");
-      if (incStories)
-        includeBits.push("real-life examples, short stories with character names, or simple case studies");
-      if (incActivities)
-        includeBits.push("at least one student-centered activity (pair work, discussion, task, experiment, project, etc.)");
-      if (incAssessment)
-        includeBits.push("a short 'Check for understanding' section with 3–5 questions");
-      if (incExtension)
-        includeBits.push("an optional extension or enrichment suggestion (homework, project, or cross-curricular link)");
-
-      const includeLine =
-        includeBits.length > 0
-          ? "You must include: " +
-            includeBits.map((b, i) => `${i + 1}) ${b}`).join("; ") +
-            "."
-          : "You can decide how to structure warm-ups, activities, and assessment as you see fit.";
-
-      const theoristsLine =
-        theorists.length > 0
-          ? `When relevant, you may make short references to well-known educational thinkers, such as: ${theorists.join(
-              ", "
-            )}. This is optional and should be natural, not forced.`
-          : "You do not need to reference specific theorists unless it is clearly helpful.";
-
-      const platformLine =
-        platform && platform !== "generic"
-          ? `Design and structure the slides so they are easy to build in ${platform} (clean layout, clear headings, minimal text per slide).`
-          : "Design the slides so they are easy to build in any slide platform (Canva, PowerPoint, Google Slides, etc.).";
-
-      const basePrompt = `You are an expert AI instructor, educator, curriculum designer, and presentation specialist.
-
-${teacherLine} ${subjectLine} ${gradeLine}
-${topicLine}
-${slidesLine}
-
-Your task:
-Create a complete, clear, and visually structured presentation that I can build for "Session 5 – AI Presentations". The presentation should be suitable for real classroom use and reflect good pedagogy.
-
-Use this structure as a guide (you may adapt slightly if it improves clarity):
-
-1) Title slide
-   - Title, subtitle, and an optional short quote or guiding question.
-2) Learning objectives slide
-   - 3–5 SMART objectives that match the subject, topic, and level.
-3) Warm-up / hook slide
-   - A quick engagement task, question, or mini-activity to activate prior knowledge.
-4) Introduction / overview slides
-   - Explain the topic in simple terms, why it matters, and provide clear context.
-5) Core content slides
-   - Break the topic into 3–5 key ideas. Use short bullet points, examples, mini visual ideas, and step-by-step explanations.
-6) Real-life application slide(s)
-   - Include stories, named characters, case studies, or classroom scenarios.
-7) Theory / research connection slide (optional if relevant)
-   - Connect the topic to appropriate educational or content-related theory in a short, accessible way.
-8) Activity / task slides
-   - Provide one or more student-centered tasks (individual, pair, or group) with clear instructions.
-9) Assessment / check for understanding slide
-   - 3–5 quick questions (MCQ, short answer, reflection) to check understanding.
-10) Summary slide
-    - Recap the key points in simple bullet points.
-11) Extension / enrichment slide (optional)
-    - Follow-up tasks, homework ideas, or deeper exploration.
-12) Closing reflection / exit ticket slide
-    - One or two reflective questions or prompts for students.
-
-${includeLine}
-
-${objectivesBlock}${contentBlock}${theoristsLine}
-
-Design and style guidelines:
-- Use clear, teacher-friendly language.
-- Keep each slide focused: short bullet points instead of long paragraphs.
-- Suggest simple visual ideas or icons for important slides (but do not generate actual images in the text).
-- Make the order very clear by numbering or titling each slide.
-- ${platformLine}
-- Present the final answer as a slide-by-slide outline. For each slide, clearly label:
-  • Slide number and slide title
-  • Bullet points for content
-  • Any example, story, or activity
-  • Optional design notes (e.g. "Use an icon of a lightbulb", "Use two columns", etc.)
-
-Now, using all of the information above, create the full, detailed slide-by-slide presentation outline.`;
-
-      return basePrompt;
-    }
-
-    document.getElementById("generateBtn").addEventListener("click", () => {
-      const prompt = buildPrompt();
-      document.getElementById("finalPrompt").value = prompt;
+    // Replace YEAR placeholder in footer
+    document.querySelectorAll("footer span").forEach(function (el) {
+      el.innerHTML = el.innerHTML.replace("YEAR", new Date().getFullYear());
     });
 
-    document.getElementById("copyBtn").addEventListener("click", () => {
-      const area = document.getElementById("finalPrompt");
-      if (!area.value.trim()) return;
-      area.select();
-      area.setSelectionRange(0, area.value.length);
-      try {
-        navigator.clipboard.writeText(area.value);
-      } catch (e) {
-        // selection already made
-      }
-    });
+    // Simple language toggle for all elements with data-en / data-ar
+    const toggleBtn = document.getElementById("translateToggle");
+    const translatable = document.querySelectorAll("[data-en]");
+    let currentLang = "en";
 
-    document.getElementById("selectBtn").addEventListener("click", () => {
-      const area = document.getElementById("finalPrompt");
-      if (!area.value.trim()) return;
-      area.focus();
-      area.select();
-    });
-
-    document.getElementById("resetBtn").addEventListener("click", () => {
-      if (!confirm("Clear all fields and start again?")) return;
-      document.querySelectorAll("input[type='text'], input[type='number'], textarea").forEach((el) => {
-        if (el.id === "slides") {
-          el.value = "12";
-        } else {
-          el.value = "";
+    function setLanguage(lang) {
+      translatable.forEach((el) => {
+        const text = el.getAttribute(lang === "en" ? "data-en" : "data-ar");
+        if (text) {
+          el.innerHTML = text;
         }
       });
 
-      const lessonFileInput = document.getElementById("lessonFile");
-      if (lessonFileInput) {
-        lessonFileInput.value = "";
-      }
+      currentLang = lang;
+      toggleBtn.textContent = lang === "en" ? "عربي" : "English";
+      document.documentElement.lang = lang === "en" ? "en" : "ar";
+      document.body.dir = lang === "en" ? "ltr" : "rtl";
+    }
 
-      document.getElementById("platform").value = "generic";
-
-      document.getElementById("incWarmUp").checked = true;
-      document.getElementById("incStories").checked = true;
-      document.getElementById("incActivities").checked = true;
-      document.getElementById("incAssessment").checked = true;
-      document.getElementById("incExtension").checked = true;
-
-      document.querySelectorAll(".theorist").forEach((t) => {
-        t.checked = t.value === "Lev Vygotsky";
-      });
-
-      document.getElementById("finalPrompt").value = "";
+    toggleBtn.addEventListener("click", () => {
+      setLanguage(currentLang === "en" ? "ar" : "en");
     });
 
-    document.getElementById("toggleLangBtn").addEventListener("click", () => {
-      isArabic = !isArabic;
-      applyLanguage(isArabic ? "ar" : "en");
-    });
-
-    // initial placeholders in English
-    applyLanguage("en");
+    // Initialise in English
+    setLanguage("en");
   </script>
 </body>
 </html>
