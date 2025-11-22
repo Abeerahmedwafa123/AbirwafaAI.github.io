@@ -108,6 +108,7 @@
       color: #1a2634;
     }
 
+    /* Pastel background for each card */
     .card:nth-of-type(1) { background: #ffe6f2; }
     .card:nth-of-type(2) { background: #ffeede; }
     .card:nth-of-type(3) { background: #e7f8ff; }
@@ -232,7 +233,7 @@
 
     <section id="sessions">
       <div class="grid">
-        <!-- Session 1 -->
+        <!-- SESSION 1 -->
         <article class="card">
           <span class="session-tag"
             data-en="Session 1 – Prompt Engineering & ChatGPT/Gemini"
@@ -265,7 +266,7 @@
           </a>
         </article>
 
-        <!-- Session 2 -->
+        <!-- SESSION 2 -->
         <article class="card">
           <span class="session-tag"
             data-en="Session 2 – Hyper-Personalised Lesson Plans"
@@ -298,7 +299,7 @@
           </a>
         </article>
 
-        <!-- Session 3 -->
+        <!-- SESSION 3 -->
         <article class="card">
           <span class="session-tag"
             data-en="Session 3 – Interactive Worksheets with Canva & ChatGPT"
@@ -322,8 +323,9 @@
             receive instant feedback, and enjoy game-like practice powered by
             Canva and ChatGPT.
           </p>
+          <!-- Opens the file directly on GitHub -->
           <a class="session-link"
-             href="session3.html"
+             href="https://github.com/Abeerahmedwafa123/AbirwafaAI.github.io/blob/main/session3_prompts_trainer_v5%20(1)%20(3).html"
              target="_blank"
              data-en="Open Session 3"
              data-ar="افتح الجلسة 3">
@@ -331,7 +333,7 @@
           </a>
         </article>
 
-        <!-- Session 4 -->
+        <!-- SESSION 4 -->
         <article class="card">
           <span class="session-tag"
             data-en="Session 4 – Standardised Exams & AI Feedback"
@@ -364,7 +366,7 @@
           </a>
         </article>
 
-        <!-- Session 5 -->
+        <!-- SESSION 5 -->
         <article class="card">
           <span class="session-tag"
             data-en="Session 5 – Gamma AI Presentations"
@@ -388,8 +390,9 @@
             speak directly to your learners, saving hours of design time while
             keeping your message crystal clear.
           </p>
+          <!-- Opens the file directly on GitHub -->
           <a class="session-link"
-             href="session5.html"
+             href="https://github.com/Abeerahmedwafa123/AbirwafaAI.github.io/blob/main/Session%205.html"
              target="_blank"
              data-en="Open Session 5"
              data-ar="افتح الجلسة 5">
@@ -397,7 +400,7 @@
           </a>
         </article>
 
-        <!-- Session 6 -->
+        <!-- SESSION 6 -->
         <article class="card">
           <span class="session-tag"
             data-en="Session 6 – Canva AI Certificates & Games"
@@ -429,7 +432,7 @@
           </a>
         </article>
 
-        <!-- Session 7 -->
+        <!-- SESSION 7 -->
         <article class="card">
           <span class="session-tag"
             data-en="Session 7 – Audio, Podcasts & Video Analysis"
@@ -462,7 +465,7 @@
           </a>
         </article>
 
-        <!-- Session 8 -->
+        <!-- SESSION 8 -->
         <article class="card">
           <span class="session-tag"
             data-en="Session 8 – Fixed-Seed Pictures & Story Worlds"
@@ -495,7 +498,7 @@
           </a>
         </article>
 
-        <!-- Session 9 -->
+        <!-- SESSION 9 -->
         <article class="card">
           <span class="session-tag"
             data-en="Session 9 – Videos & Animated Avatars"
@@ -528,7 +531,7 @@
           </a>
         </article>
 
-        <!-- Session 10 -->
+        <!-- SESSION 10 -->
         <article class="card">
           <span class="session-tag"
             data-en="Session 10 – Smart Video Editing"
@@ -550,8 +553,9 @@
             data-ar="استخدم CapCut لتحرير الفيديو وإضافة التأثيرات لإنتاج فيديو مثالي.">
             Use CapCut for editing and adding effects to deliver a flawless video.
           </p>
+          <!-- Opens the file directly on GitHub -->
           <a class="session-link"
-             href="session10.html"
+             href="https://github.com/Abeerahmedwafa123/AbirwafaAI.github.io/blob/main/session%2010.html"
              target="_blank"
              data-en="Open Session 10"
              data-ar="افتح الجلسة 10">
@@ -571,10 +575,12 @@
   </footer>
 
   <script>
+    // Replace YEAR in footer
     document.querySelectorAll("footer span").forEach(function (el) {
       el.innerHTML = el.innerHTML.replace("YEAR", new Date().getFullYear());
     });
 
+    // Language toggle
     const toggleBtn = document.getElementById("translateToggle");
     const translatable = document.querySelectorAll("[data-en]");
     let currentLang = "en";
